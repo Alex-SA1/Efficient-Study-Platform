@@ -43,6 +43,17 @@
 
 <body>
     <div class="container">
+
+        <br />
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong> {{ message }} </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
         <div class="mx-auto d-flex flex-column p-5 align-items-center justify-content-center" style="min-height: 70vh;">
             <h1 class="text-center text-black" style="font-size: 3rem">
                 <b>A lot of useful tools for every student</b>
