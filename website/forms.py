@@ -2,8 +2,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 
-
 class SignUpForm(UserCreationForm):
+    """
+    class responsible with the details about the signup form
+    """
     email = forms.EmailField(label="",
                              widget=forms.TextInput(
                                  attrs={'class': 'form-control', 'placeholder': 'Email Address'}))
@@ -22,6 +24,9 @@ class SignUpForm(UserCreationForm):
                   'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
+        """
+        setting the attributes that I need for every form field
+        """
         super(SignUpForm, self).__init__(*args, **kwargs)
 
         self.fields['username'].widget.attrs['class'] = 'form-control'
