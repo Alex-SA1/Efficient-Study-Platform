@@ -50,23 +50,11 @@
 </style>
 
 <body>
-
     <div class="container">
-        <br />
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-            <strong> {{ message }} </strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        <div class="mx-auto d-flex flex-column align-items-center justify-content-center minimal-form"
+        <div class="mx-auto d-flex flex-column align-items-center justify-content-center minimal-form mt-4"
             style="min-height: 90vh;">
             <div class="col-md-6">
-                <h1>Create an account</h1>
-                <br />
-
+                <h3 class="text-center">Task</h3>
                 <form method="POST" action="">
                     {% csrf_token %}
                     {% if form.errors %}
@@ -78,7 +66,6 @@
                         {% endif %}
                         {% endfor %}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-
                         </button>
                     </div>
                     {% endif %}
@@ -86,22 +73,12 @@
                     {{ form.as_p }}
 
                     <button type="submit" class="btn-submit">
-                        Register
+                        Submit
                     </button>
-                    <div class="text-center p-2">
-                        <a href="{% url 'login' %}" class="text-decoration-none form-text">Do you have an account?</a>
-                    </div>
                 </form>
-
             </div>
         </div>
-
     </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>
