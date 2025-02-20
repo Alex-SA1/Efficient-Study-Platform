@@ -70,10 +70,9 @@ def register_user(request):
 
     return render(request, 'register.html', {'form': form})
 
+
 # making main page accesible only for the users that are logged in on the website
 # if an user, that is not logged in his account, tries to access the main page he will be redirected to the login page
-
-
 @login_required(login_url='login')
 def main_page(request):
     """
@@ -81,9 +80,8 @@ def main_page(request):
     """
     return render(request, 'main.html', {})
 
+
 # class based view
-
-
 class TaskList(LoginRequiredMixin, ListView):
     """
     class responsible with showing all tasks of an user
