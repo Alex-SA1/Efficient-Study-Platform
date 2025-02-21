@@ -1,8 +1,10 @@
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .views import TaskList, login_user, logout_user, register_user, main_page, home
+from .views import TaskList, login_user, logout_user, register_user, main_page, home, TaskDetail, TaskCreate
 from django.contrib.messages import get_messages
+from .models import Task
+from django.contrib.auth.models import AnonymousUser
 
 
 class TestHomePage(TestCase):
@@ -100,6 +102,79 @@ class TestUserRegister(TestCase):
         user = self.client.session.get('_auth_user_id')
         self.assertIsNotNone(user)
 
+    def test_register_fail(self):
+        # testing some cases in which the registration of the user fails
+        
+        response = self.client.post(reverse(register_user),
+                                    {'username': 'new_user',
+                                     'email': 'user_email@gmail.com',
+                                     'first_name': 'user_first_name',
+                                     'last_name': 'user_last_name',
+                                     'password1': 'user_password',
+                                     'password2': 'just_password'})
+
+        # the passwords are different so the user can't be created
+        self.assertFalse(User.objects.filter(username='new_user').exists())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'register.html')
+
+        response = self.client.post(reverse(register_user),
+                                    {'username': '&new_user*',
+                                     'email': 'user_email@gmail.com',
+                                     'first_name': 'user_first_name',
+                                     'last_name': 'user_last_name',
+                                     'password1': 'user_password',
+                                     'password2': 'user_password'})
+
+        # invalid characters in the username so the user can't be created
+        self.assertFalse(User.objects.filter(username='&new_user*').exists())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'register.html')
+
+        response = self.client.post(reverse(register_user),
+                                    {'username': 'new_user',
+                                     'email': 'user_email@gmail.com',
+                                     'first_name': 'user_first_name',
+                                     'last_name': 'user_last_name',
+                                     'password1': 'pas',
+                                     'password2': 'pas'})
+
+        # password has less than 8 characters so the account can't be created
+        self.assertFalse(User.objects.filter(username='new_user').exists())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'register.html')
+
+        response = self.client.post(reverse(register_user),
+                                    {'username': 'new_user',
+                                     'email': 'user_email@gmail.com',
+                                     'first_name': 'user_first_name',
+                                     'last_name': 'user_last_name',
+                                     'password1': 'user_first_name1',
+                                     'password2': 'user_first_name_1'})
+
+        # password is too similar with other personal information so the account can't be created
+        self.assertFalse(User.objects.filter(username='new_user').exists())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'register.html')
+
+        response = self.client.post(reverse(register_user),
+                                    {'username': 'new_user',
+                                     'email': 'user_email@gmail.com',
+                                     'first_name': 'user_first_name',
+                                     'last_name': 'user_last_name',
+                                     'password1': '1234567890',
+                                     'password2': '1234567890'})
+
+        # password is entirely numeric so the account can't be created
+        self.assertFalse(User.objects.filter(username='new_user').exists())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'register.html')
+
 
 class TestMainPage(TestCase):
     def test_main_page_loads(self):
@@ -138,5 +213,3 @@ class TestMainPage(TestCase):
 
         # check if he is redirected to login page with the main as next url
         self.assertRedirects(response, reverse('login') + '?next=/main/')
-
-
