@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from .views import TaskList, TaskDetail, TaskCreate, TaskUpdate, TaskDelete
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -16,4 +18,4 @@ urlpatterns = [
          TaskUpdate.as_view(), name='update-task'),
     path('main/to-do-list/delete-task/task/<int:pk>/',
          TaskDelete.as_view(), name='delete-task')
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

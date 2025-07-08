@@ -1,0 +1,37 @@
+body {
+        background-color: #f8f9fa
+    }
+
+.minimal-form {
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+}
+
+.minimal-form .form-control {
+    background: #f8f9fa;
+    border: none;
+    padding: 14px 18px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    color: #212529;
+}
+
+.minimal-form .form-control:focus {
+    background: #fff;
+    box-shadow: 0 0 0 2px #228be6;
+}
+
+.minimal-form .btn-submit {
+    background: #228be6;
+    border: none;
+    padding: 12px 0;
+    font-weight: 600;
+    width: 100%;
+    color: white;
+}
+
+.minimal-form .btn-submit:hover {
+    background: #1c7ed6;
+}
