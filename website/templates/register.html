@@ -46,7 +46,56 @@
                     </div>
                     {% endif %}
 
-                    {{ form.as_p }}
+                    <p>
+                        <!-- {{ form.as_p }} -->
+
+                        <input type="text" name="username" maxlength="150" autofocus class="form-control"
+                            placeholder="User Name" required aria-describedby="id_username_helptext" id="id_username">
+                        <span class="helptext" id="id_username_helptext">
+                            <span class="form-text text-muted">
+                                <small>Required. 100 characteres or fewer letters, digits and @/./+/-/_ only.</small>
+                            </span>
+                        </span>
+                    </p>
+
+                    <p>
+                        <input type="text" name="first_name" class="form-control" placeholder="First Name"
+                            maxlength="100" required id="id_first_name">
+                    </p>
+
+                    <p>
+                        <input type="text" name="last_name" class="form-control" placeholder="Last Name" maxlength="100"
+                            required id="id_last_name">
+                    </p>
+
+                    <p>
+                        <input type="text" name="email" class="form-control" placeholder="Email Address" maxlength="320"
+                            required id="id_email">
+                    </p>
+
+                    <p>
+                        <input type="password" name="password1" autocomplete="new-password" class="form-control"
+                            placeholder="Password" required aria-describedby="id_password1_helptext" id="id_password1">
+                        <span class="helptext" id="id_password1_helptext">
+                            <ul class="form-text text-muted small">
+                                <li>Your password can't be too similar to your other personal information.</li>
+                                <li>Your password must contain at least 8 characters.</li>
+                                <li>Your password can't be a commonly used password.</li>
+                                <li>Your password can't be entirely numeric.</li>
+                            </ul>
+                        </span>
+                    </p>
+
+                    <p>
+                        <input type="password" name="password2" autocomplete="new-password" class="form-control"
+                            placeholder="Confirm Password" required aria-describedby="id_password2_helptext"
+                            id="id_password2">
+                        <span class="helptext" id="id_password2_helptext">
+                            <span class="form-text text-muted">
+                                <small>Enter the same password as before, for verification.</small>
+                            </span>
+                        </span>
+                    </p>
 
                     <button type="submit" class="btn-submit">
                         Register
