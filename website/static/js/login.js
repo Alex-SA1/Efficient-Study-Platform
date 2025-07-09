@@ -1,7 +1,7 @@
 function showPasswordTemporary() {
     var input = document.getElementById("id_password");
     var svgButton = document.getElementById("btnEye");
-    
+
     // while the mouse click is pressed, the password is shown
     if (input.type == "password") {
         input.type = "text";
@@ -43,7 +43,12 @@ function showPasswordTemporary() {
             `;
         }, 500);
     });
+}
 
+function showInfo() {
+    document.getElementById("infoAlert").style.display = 'block';
+}
 
-
+function closeInfo() {
+    document.getElementById("infoAlert").style.display = 'none';
 }

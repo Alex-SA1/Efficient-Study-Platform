@@ -16,8 +16,6 @@
 <body>
 
   <div class="container">
-
-    <br />
     {% if messages %}
     {% for message in messages %}
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
@@ -26,6 +24,40 @@
     </div>
     {% endfor %}
     {% endif %}
+
+    <div class="alert alert-success" id="infoAlert" role="alert" style="display: none;">
+
+      <h4 class="alert-heading">Information</h4>
+      <p>If you want to see your password you have to click on "eye" button and keep pressed the click. After releasing
+        the click,
+        the password will still be shown for 500ms. Also, you could leave the clickable area of the button with mouse
+        pressed and the
+        same behavior as for releasing the mouse action will occur.
+      </p>
+      <hr>
+      <button type="button" onclick="closeInfo()" style="border: none; background: none;">
+        <span aria-hidden="true" style="font-size: 1.2rem;">&times;</span>
+      </button>
+
+    </div>
+
+    <div class="p-2 d-flex justify-content-between align-items-center">
+      <a href="{% url 'home' %}"> <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+          class="bi bi-arrow-left-square" viewBox="0 0 16 16" style="color: #e4e0f3; cursor: pointer;">
+          <path fill-rule="evenodd"
+            d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+        </svg>
+        </svg>
+      </a>
+      <button type="button" onclick="showInfo()" style="background: none; border: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-info-square"
+          viewBox="0 0 16 16" style="color: #e4e0f3; cursor: pointer;">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+          <path
+            d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+        </svg>
+      </button>
+    </div>
 
     <div class="mx-auto d-flex flex-column align-items-center justify-content-center minimal-form"
       style="min-height: 90vh;">
@@ -41,6 +73,8 @@
         {% else %}
 
         <h1>Welcome back!</h1>
+
+
         <br />
         <form method="POST" action="{% url 'login' %}">
           {% csrf_token %}
