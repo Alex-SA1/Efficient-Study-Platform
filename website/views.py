@@ -10,6 +10,11 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from .utils import *
+from django.core.mail import send_mail
 
 
 def home(request):
@@ -54,16 +59,39 @@ def register_user(request):
     validating and saving the user data (registering the user on the website)
     """
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(username=username, password=password)
-            login(request, user)
+        user_email = request.POST.get('email')
+
+        try:
+            check_verification_code(request.POST.get(
+                'verification_code'), user_email)
+
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password1']
+
+                user = authenticate(username=username, password=password)
+                login(request, user)
+
+                messages.success(
+                    request, "You have been successfully registered! Welcome!")
+
+                delete_verification_code(user_email)
+
+                return redirect('main')
+
+        except Exception:
+            # the verification code entered by the user is wrong
+            form = SignUpForm()
+
             messages.success(
-                request, "You have been successfully registered! Welcome!")
-            return redirect('main')
+                request, "The verification code is wrong! You must enter again all form details and request for another verification code!")
+
+            delete_verification_code(user_email)
+
+            return render(request, 'register.html', {'form': form})
+
     else:
         form = SignUpForm()
         return render(request, 'register.html', {'form': form})
@@ -235,3 +263,29 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
             return redirect('/main/to-do-list')
 
         return super().dispatch(request, *args, **kwargs)
+
+
+def send_verification_code(request):
+    """
+    sending a random generated code via email to the user
+    """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data.get('username')
+        email = data.get('email')
+
+        if not username or not email:
+            return JsonResponse({'message': 'Missing fields!'}, status=400)
+
+        verification_code = generate_verification_code()
+
+        send_mail(
+            'Verification code',
+            f'The verification code for {username} is: {verification_code}\nThis code will expire in 3 minutes!',
+            'contdetestlucru@gmail.com',
+            [f"{email}"],
+        )
+
+        save_verification_code(email, verification_code)
+
+        return JsonResponse({'message': 'Success!'})
