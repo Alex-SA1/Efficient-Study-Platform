@@ -15,6 +15,8 @@ from django.http import JsonResponse
 import json
 from .utils import *
 from django.core.mail import send_mail
+from .decorators import login_required_restrictive
+from .decorators import ajax_request_required
 
 
 def home(request):
@@ -45,6 +47,7 @@ def login_user(request):
         return render(request, 'login.html', {})
 
 
+@login_required_restrictive
 def logout_user(request):
     """
     logging out the user (close the current session)
@@ -265,6 +268,7 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
+@ajax_request_required
 def send_verification_code(request):
     """
     sending a random generated code via email to the user
