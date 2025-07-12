@@ -9,7 +9,7 @@ def login_required_restrictive(view):
     def wrapper(request):
         if not request.user.is_authenticated:
             return redirect('/')
-        return view
+        return view(request)
 
     return wrapper
 
@@ -21,6 +21,6 @@ def ajax_request_required(view):
     def wrapper(request):
         if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
             return redirect('/')
-        return view
+        return view(request)
 
     return wrapper

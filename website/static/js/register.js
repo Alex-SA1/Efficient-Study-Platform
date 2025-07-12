@@ -24,3 +24,11 @@ function showPassword(passwordInputFieldId, inputFieldSVGId) {
         `;
     }
 }
+
+function showInfo() {
+    document.getElementById("infoAlert").style.display = 'block';
+}
+
+function closeInfo() {
+    document.getElementById("infoAlert").style.display = 'none';
+}
