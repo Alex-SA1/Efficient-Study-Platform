@@ -19,5 +19,6 @@ urlpatterns = [
     path('main/to-do-list/delete-task/task/<int:pk>/',
          TaskDelete.as_view(), name='delete-task'),
     path('send_verification_code/', views.send_verification_code,
-         name='send_verification_code')
+         name='send_verification_code'),
+    path('error_404/', views.error_404, name='error_404')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

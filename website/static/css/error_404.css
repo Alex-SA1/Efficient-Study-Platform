@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
+
+body {
+    font-family: "Baloo 2", cursive;
+    text-rendering: optimizeLegibility;
+    font-weight: initial;
+    background: #110f16;
+    color: #e6e0f7;
+}
+
+.btn-secondary {
+    background: #3f3753;
+    border-color: #6b6285;
+    color: #e6e0f7;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2), -4px -4px 12px rgba(26, 5, 103, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-secondary:hover {
+    box-shadow: 0 4px 15px rgba(127, 95, 215, 0.5);
+    transform: translateY(-2px);
+    background-color: #574b76;
+}
+
+.btn-secondary:active {
+    transform: translateY(2px);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1), -2px -2px 6px rgba(0, 0, 0, 0.66);
+}

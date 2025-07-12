@@ -26,6 +26,13 @@ def home(request):
     return render(request, 'home.html', {})
 
 
+def error_404(request):
+    """
+    method that renders a error 404 page
+    """
+    return render(request, 'error_404.html', {})
+
+
 def login_user(request):
     """
     handle the logic behind logging in an user on the website 
