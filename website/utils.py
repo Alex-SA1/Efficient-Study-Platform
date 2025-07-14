@@ -28,30 +28,23 @@ def generate_verification_code():
     return code
 
 
-def save_verification_code(email: string, verification_code: string):
+def save_verification_code(record_key: string, record_value: string):
     """
     helper function that saves in cache memory the verification code sent via email to the user 
     """
-
-    # email entered by the user in the registration form
-    user_email = email
-
-    # the key of the current record stored in cache memory (unique for every user)
-    record_key = user_email
-    record_value = verification_code
 
     # the verification code will be available for just 3 minutes (180 seconds)
     cache.set(record_key, record_value, timeout=180)
 
 
-def check_verification_code(verification_code: string, user_email: string) -> bool:
+def check_verification_code(verification_code: string, expected_verification_code_key: string) -> bool:
     """
     helper function that checks if the verification code entered by the user is the expected verification code
     raises Exception if the verification code is not right
     """
 
     # retrieving the verification code sent to the user from the cache memory (where it was stored temporary)
-    expected_verification_code = cache.get(user_email)
+    expected_verification_code = cache.get(expected_verification_code_key)
 
     if verification_code != expected_verification_code:
         raise Exception("Wrong verification code!")

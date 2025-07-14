@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django import forms
 
@@ -52,3 +53,49 @@ class SignUpForm(UserCreationForm):
             return None
 
         return email
+
+
+class ResetPasswordForm(forms.Form):
+    """
+    class responsible with the password resetting form
+    """
+
+    email = forms.EmailField(label="",
+                             widget=forms.TextInput(
+                                 attrs={'class': 'form-control', 'placeholder': 'Email Address'}))
+
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'New Password'}),
+    )
+
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'Confirm New Password'}),
+    )
+
+    def __init__(self, user=None, *args, **kwargs):
+        super(ResetPasswordForm, self).__init__(*args, **kwargs)
+
+        self.user = user
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password_1 = cleaned_data.get("new_password1")
+        new_password_2 = cleaned_data.get("new_password2")
+
+        if new_password_1 is None:
+            self.add_error("new_password1", "The password cannot be empty")
+            return None
+
+        if new_password_2 is None:
+            self.add_error("new_password2", "The password cannot be empty")
+            return None
+
+        if new_password_1 != new_password_2:
+            self.add_error("new_password2", "Passwords do not match")
+            return None
+
+        validate_password(new_password_1, self.user)
+
+        return cleaned_data

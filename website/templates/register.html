@@ -133,9 +133,6 @@
 
                     </p>
 
-
-
-
                     <p>
 
                     <div class="input-group">
@@ -264,7 +261,8 @@
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': '{{csrf_token}}',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-Requested-For': 'Registration'
                 },
                 body: JSON.stringify({ username, email })
             })

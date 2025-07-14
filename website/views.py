@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import SignUpForm
+from .forms import SignUpForm, ResetPasswordForm
 from django.views.generic.list import ListView
 from .models import Task
 from django.views.generic.detail import DetailView
@@ -17,6 +17,7 @@ from .utils import *
 from django.core.mail import send_mail
 from .decorators import login_required_restrictive
 from .decorators import ajax_request_required
+from django.contrib.auth.models import User
 
 
 def home(request):
@@ -54,6 +55,57 @@ def login_user(request):
         return render(request, 'login.html', {})
 
 
+def reset_password(request):
+    """
+    handle the logic behind resetting an user password
+    """
+
+    if request.method == "POST":
+        user_email = request.POST.get('email')
+
+        try:
+            verification_code = request.POST.get('verification_code')
+            expected_verification_code_key = "reset_password:" + user_email
+
+            check_verification_code(
+                verification_code, expected_verification_code_key)
+
+            form = ResetPasswordForm(None, request.POST)
+
+            try:
+                user = User.objects.get(email=user_email)
+                form.user = user
+            except User.DoesNotExist:
+                form.add_error("email", "No user found with that email adress")
+
+            if user and form.is_valid():
+                new_password = form.cleaned_data['new_password1']
+                user.set_password(new_password)
+                user.save()
+
+                update_session_auth_hash(request, user)
+
+                delete_verification_code(expected_verification_code_key)
+
+                return redirect('login')
+        except Exception:
+            form = ResetPasswordForm()
+
+            messages.success(
+                request, "The verification code is wrong! You must enter again all form details and request for another verification code!")
+
+            expected_verification_code_key = "reset_password:" + user_email
+            delete_verification_code(expected_verification_code_key)
+
+            return render(request, 'reset_password.html', {'form': form})
+
+    else:
+        form = ResetPasswordForm()
+        return render(request, 'reset_password.html', {'form': form})
+
+    return render(request, 'reset_password.html', {'form': form})
+
+
 @login_required_restrictive
 def logout_user(request):
     """
@@ -72,8 +124,11 @@ def register_user(request):
         user_email = request.POST.get('email')
 
         try:
-            check_verification_code(request.POST.get(
-                'verification_code'), user_email)
+            verification_code = request.POST.get('verification_code')
+            expected_verification_code_key = "registration:" + user_email
+
+            check_verification_code(
+                verification_code, expected_verification_code_key)
 
             form = SignUpForm(request.POST)
             if form.is_valid():
@@ -87,7 +142,7 @@ def register_user(request):
                 messages.success(
                     request, "You have been successfully registered! Welcome!")
 
-                delete_verification_code(user_email)
+                delete_verification_code(expected_verification_code_key)
 
                 return redirect('main')
 
@@ -98,7 +153,8 @@ def register_user(request):
             messages.success(
                 request, "The verification code is wrong! You must enter again all form details and request for another verification code!")
 
-            delete_verification_code(user_email)
+            expected_verification_code_key = "registration:" + user_email
+            delete_verification_code(expected_verification_code_key)
 
             return render(request, 'register.html', {'form': form})
 
@@ -285,18 +341,36 @@ def send_verification_code(request):
         username = data.get('username')
         email = data.get('email')
 
-        if not username or not email:
+        if request.headers.get('X-Requested-For') == 'Registration' and (not username or not email):
+            return JsonResponse({'message': 'Missing fields!'}, status=400)
+        elif request.headers.get('X-Requested-For') == 'Reset_Password' and not email:
             return JsonResponse({'message': 'Missing fields!'}, status=400)
 
         verification_code = generate_verification_code()
 
-        send_mail(
-            'Verification code',
-            f'The verification code for {username} is: {verification_code}\nThis code will expire in 3 minutes!',
-            'contdetestlucru@gmail.com',
-            [f"{email}"],
-        )
+        record_key = ""
+        if request.headers.get('X-Requested-For') == 'Registration':
+            record_key = "registration:" + email
 
-        save_verification_code(email, verification_code)
+            send_mail(
+                'Verification code - Registration',
+                f'The verification code for {username} is: {verification_code}\nThis code will expire in 3 minutes!',
+                'contdetestlucru@gmail.com',
+                [f"{email}"],
+            )
+
+        else:
+            # requested for password resetting
+            record_key = "reset_password:" + email
+
+            send_mail(
+                'Verification code - Password Reset',
+                f'The verification code is: {verification_code}\nThis code will expire in 3 minutes!',
+                'contdetestlucru@gmail.com',
+                [f"{email}"],
+            )
+
+        record_value = verification_code
+        save_verification_code(record_key, record_value)
 
         return JsonResponse({'message': 'Success!'})
