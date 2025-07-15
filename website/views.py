@@ -57,7 +57,7 @@ def login_user(request):
 
 def reset_password(request):
     """
-    handle the logic behind resetting an user password
+    handle the logic behind resetting a user password
     """
 
     if request.method == "POST":
