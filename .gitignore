@@ -1,5 +1,5 @@
 mydb.py
-efficient_study_platform/settings.py
+efficient_study_platform/.env
 
 # ignore all .pyc files
 *.pyc
