@@ -18,6 +18,7 @@ from django.core.mail import send_mail
 from .decorators import login_required_restrictive
 from .decorators import ajax_request_required
 from django.contrib.auth.models import User
+from .models import UserProfile
 
 
 def home(request):
@@ -137,6 +138,10 @@ def register_user(request):
                 password = form.cleaned_data['password1']
 
                 user = authenticate(username=username, password=password)
+
+                # other attributes will be empty at first
+                UserProfile.objects.create(user=user)
+
                 login(request, user)
 
                 messages.success(

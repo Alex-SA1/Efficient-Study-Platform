@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'website',
     'anymail',
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
@@ -152,3 +154,14 @@ ANYMAIL = {
 }
 
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+
+# cloud storage for media uploaded by the users (profile images)
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('API_KEY_CLOUDINARY'),
+    'API_SECRET': env('API_SECRET_CLOUDINARY'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+MEDIA_URL = '/media/'

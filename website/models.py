@@ -2,6 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class UserProfile(models.Model):
+    """
+    class responsible with the additional information for a User model 
+    """
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=False, blank=True)
+    country = models.CharField(max_length=60)
+    description = models.CharField(max_length=600)
+    profile_picture = models.ImageField(null=True, blank=True)
+
+
 class Task(models.Model):
     """
     class responsible with the details about a task from to-do list
