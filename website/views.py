@@ -379,3 +379,8 @@ def send_verification_code(request):
         save_verification_code(record_key, record_value)
 
         return JsonResponse({'message': 'Success!'})
+
+
+@login_required(login_url='login')
+def my_account(request):
+    return render(request, 'my_account.html', {})

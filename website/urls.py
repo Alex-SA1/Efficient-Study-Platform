@@ -18,8 +18,9 @@ urlpatterns = [
          TaskUpdate.as_view(), name='update-task'),
     path('main/to-do-list/delete-task/task/<int:pk>/',
          TaskDelete.as_view(), name='delete-task'),
-    path('send_verification_code/', views.send_verification_code,
+    path('send-verification-code/', views.send_verification_code,
          name='send_verification_code'),
-    path('error_404/', views.error_404, name='error_404'),
-    path('reset_password/', views.reset_password, name='reset_password')
+    path('error-404/', views.error_404, name='error_404'),
+    path('reset-password/', views.reset_password, name='reset_password'),
+    path('main/my-account/', views.my_account, name='my_account')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
