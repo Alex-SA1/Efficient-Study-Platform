@@ -77,7 +77,8 @@ def reset_password(request):
                 user = User.objects.get(email=user_email)
                 form.user = user
             except User.DoesNotExist:
-                form.add_error("email", "No user found with that email adress")
+                form.add_error(
+                    "email", "No user found with that email address")
 
             if user and form.is_valid():
                 new_password = form.cleaned_data['new_password1']
@@ -384,3 +385,8 @@ def send_verification_code(request):
 @login_required(login_url='login')
 def my_account(request):
     return render(request, 'my_account.html', {})
+
+
+@login_required(login_url='login')
+def edit_account(request):
+    return render(request, 'edit_account.html', {})

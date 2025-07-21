@@ -57,9 +57,11 @@
                             {% endif %}
 
                             <div class="mt-4">
-                                <button type="button" class="btn-edit">
-                                    edit profile
-                                </button>
+                                <a href="{% url 'edit_account' %}">
+                                    <button type="button" class="btn-edit">
+                                        edit profile
+                                    </button>
+                                </a>
                             </div>
                         </div>
                     </div>

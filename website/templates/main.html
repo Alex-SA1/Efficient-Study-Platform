@@ -29,6 +29,14 @@
         {% endfor %}
         {% endif %}
 
+        {% if not user.user_profile.country %}
+        <div class="alert alert-warning" role="alert">
+            Warning: You have to select your country for accessing features that are requiring time zone!
+            <br>
+            Update your profile from <a href="{% url 'my_account' %}">account page</a>.
+        </div>
+        {% endif %}
+
         <section class="dark">
             <div class="container py-4">
                 <div class="card dark">
@@ -72,8 +80,10 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <div class="d-flex flex-row align-items-center mb-2">
-                                    <p class="mb-0 me-2">
-                                        @{{ user.username }} ~ {{ user.first_name }} {{ user.last_name }}
+                                    <p class="mb-0 me-2 mt-2">
+                                        @{{ user.username }}
+                                        <br>
+                                        {{ user.last_name }} {{ user.first_name }}
                                     </p>
                                 </div>
                             </div>
