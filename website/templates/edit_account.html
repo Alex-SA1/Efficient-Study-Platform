@@ -30,7 +30,7 @@
                         </a>
                     </div>
 
-                    <form method="POST" action="">
+                    <form method="POST" action="{% url 'edit_account' %}">
 
                         <div class="card">
                             <div class="card-body text-center">
@@ -54,7 +54,12 @@
                                 <div class="select d-flex justify-content-center align-items-center w-100">
                                     <select id="country" name="country" class="form-select w-25"
                                         aria-label="Default select example">
+                                        {% if user.user_profile.country %}
+                                        <option class="form-option" selected>{{ user.user_profile.country }}</option>
+                                        {% else %}
                                         <option class="form-option" selected>Select country</option>
+                                        {% endif %}
+
                                         <option class="form-option" value="Albania">Albania</option>
                                         <option class="form-option" value="Andorra">Andorra</option>
                                         <option class="form-option" value="Armenia">Armenia</option>
