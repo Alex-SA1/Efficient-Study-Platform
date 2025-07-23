@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 
 class UserProfile(models.Model):
@@ -7,10 +8,13 @@ class UserProfile(models.Model):
     class responsible with the additional information for a User model 
     """
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, null=False, blank=True)
+        User, on_delete=models.CASCADE, null=False, blank=True, related_name='user_profile')
     country = models.CharField(max_length=60)
     description = models.CharField(max_length=600)
-    profile_picture = models.ImageField(null=True, blank=True)
+    profile_picture = models.ImageField(
+        storage=MediaCloudinaryStorage(),
+        upload_to='profile_pictures/',
+        null=True, blank=True)
 
 
 class Task(models.Model):

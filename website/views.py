@@ -19,6 +19,9 @@ from .decorators import login_required_restrictive
 from .decorators import ajax_request_required
 from django.contrib.auth.models import User
 from .models import UserProfile
+import cloudinary.uploader
+
+from django.conf import settings
 
 
 def home(request):
@@ -384,9 +387,39 @@ def send_verification_code(request):
 
 @login_required(login_url='login')
 def my_account(request):
+    """
+    rendering the template for my account page
+    """
     return render(request, 'my_account.html', {})
 
 
 @login_required(login_url='login')
 def edit_account(request):
+
+    if request.method == "POST":
+        user = request.user
+        user_profile = UserProfile.objects.get(user=user)
+
+        current_profile_picture = user_profile.profile_picture
+        current_country = user_profile.country
+        current_description = user_profile.description
+
+        new_profile_picture = request.FILES.get('profile_picture')
+        new_country = request.POST['country']
+        new_description = request.POST['description']
+
+        if new_profile_picture is not None and current_profile_picture != new_profile_picture:
+            user_profile.profile_picture.save(
+                new_profile_picture.name, new_profile_picture)
+
+        if new_country is not None and current_country != new_country:
+            setattr(user_profile, 'country', new_country)
+
+        if new_description is not None and current_description != new_description:
+            setattr(user_profile, 'description', new_description)
+
+        user_profile.save()
+
+        return redirect('my_account')
+
     return render(request, 'edit_account.html', {})

@@ -71,11 +71,13 @@
                         <div class="d-flex align-items-center mt-2">
                             <div class="flex-shrink-0">
                                 {% if user.user_profile.profile_picture %}
-                                <img src="{{ user.user_profile.profile_picture }}"
-                                    class="img-fluid rounded-circle border border-dark border-3" style="width: 70px;">
+                                <img src="{{ user.user_profile.profile_picture.url }}"
+                                    class="img-fluid rounded-circle border border-dark border-3"
+                                    style="width: 70px; height: 70px;">
                                 {% else %}
                                 <img src="https://robohash.org/default_profile_picture?set=set1&size=200x200"
-                                    class="img-fluid rounded-circle border border-dark border-3" style="width: 70px;">
+                                    class="img-fluid rounded-circle border border-dark border-3"
+                                    style="width: 70px; height: 70px;">
                                 {% endif %}
                             </div>
                             <div class="flex-grow-1 ms-3">

@@ -30,13 +30,27 @@
                         </a>
                     </div>
 
-                    <form method="POST" action="{% url 'edit_account' %}">
+                    <form method="POST" action="{% url 'edit_account' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% if form.errors %}
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            Your Form Has errors
+                            {% for field in form %}
+                            {% if field.errors %}
+                            {{ field.errors }}
+                            {% endif %}
+                            {% endfor %}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+
+                            </button>
+                        </div>
+                        {% endif %}
 
                         <div class="card">
                             <div class="card-body text-center">
 
                                 {% if user.user_profile.profile_picture %}
-                                <img src="{{ user.user_profile.profile_picture }}" class="rounded-circle mb-3"
+                                <img src="{{ user.user_profile.profile_picture.url }}" class="rounded-circle mb-3"
                                     width="150" height="150">
                                 {% else %}
                                 <img src="https://robohash.org/default_profile_picture?set=set1&size=200x200"
@@ -86,31 +100,31 @@
                                         <option class="form-option" value="Ireland">Ireland</option>
                                         <option class="form-option" value="Italy">Italy</option>
                                         <option class="form-option" value="Kosovo">Kosovo</option>
-                                        <option class="form-option" value="Latvi">Latvia</option>
-                                        <option class="form-option" value="Liechtenstei">Liechtenstein</option>
-                                        <option class="form-option" value="Lithuani">Lithuania</option>
-                                        <option class="form-option" value="Luxembour">Luxembourg</option>
-                                        <option class="form-option" value="Malt">Malta</option>
-                                        <option class="form-option" value="Moldov">Moldova</option>
-                                        <option class="form-option" value="Monac">Monaco</option>
-                                        <option class="form-option" value="Montenegr">Montenegro</option>
-                                        <option class="form-option" value="Netherland">Netherlands</option>
-                                        <option class="form-option" value="Norwa">Norway</option>
-                                        <option class="form-option" value="Polan">Poland</option>
-                                        <option class="form-option" value="Republic Portugoption">Republic Portugal
+                                        <option class="form-option" value="Latvia">Latvia</option>
+                                        <option class="form-option" value="Liechtenstein">Liechtenstein</option>
+                                        <option class="form-option" value="Lithuania">Lithuania</option>
+                                        <option class="form-option" value="Luxembourg">Luxembourg</option>
+                                        <option class="form-option" value="Malta">Malta</option>
+                                        <option class="form-option" value="Moldova">Moldova</option>
+                                        <option class="form-option" value="Monaco">Monaco</option>
+                                        <option class="form-option" value="Montenegro">Montenegro</option>
+                                        <option class="form-option" value="Netherlands">Netherlands</option>
+                                        <option class="form-option" value="Norway">Norway</option>
+                                        <option class="form-option" value="Poland">Poland</option>
+                                        <option class="form-option" value="Republic Republic Portugal">Republic Portugal
                                         </option>
-                                        <option class="form-option" value="Romani">Romania</option>
-                                        <option class="form-option" value="Russi">Russia</option>
-                                        <option class="form-option" value="San Marin">San Marino</option>
-                                        <option class="form-option" value="Serbi">Serbia</option>
-                                        <option class="form-option" value="Slovaki">Slovakia</option>
-                                        <option class="form-option" value="Sloveni">Slovenia</option>
-                                        <option class="form-option" value="Spai">Spain</option>
-                                        <option class="form-option" value="Swede">Sweden</option>
-                                        <option class="form-option" value="Switzerlan">Switzerland</option>
-                                        <option class="form-option" value="Turke">Turkey</option>
-                                        <option class="form-option" value="Ukrain">Ukraine</option>
-                                        <option class="form-option" value="United Kingdo">United Kingdom</option>
+                                        <option class="form-option" value="Romania">Romania</option>
+                                        <option class="form-option" value="Russia">Russia</option>
+                                        <option class="form-option" value="San Marino">San Marino</option>
+                                        <option class="form-option" value="Serbia">Serbia</option>
+                                        <option class="form-option" value="Slovakia">Slovakia</option>
+                                        <option class="form-option" value="Slovenia">Slovenia</option>
+                                        <option class="form-option" value="Spain">Spain</option>
+                                        <option class="form-option" value="Sweden">Sweden</option>
+                                        <option class="form-option" value="Switzerland">Switzerland</option>
+                                        <option class="form-option" value="Turkey">Turkey</option>
+                                        <option class="form-option" value="Ukraine">Ukraine</option>
+                                        <option class="form-option" value="United Kingdom">United Kingdom</option>
                                     </select>
                                 </div>
 
@@ -120,7 +134,7 @@
                                     class="form-control">{{ user.user_profile.description }}</textarea>
 
                                 <div class="mt-4">
-                                    <button type="button" class="btn-save">
+                                    <button type="submit" class="btn-save">
                                         save profile
                                     </button>
                                 </div>
