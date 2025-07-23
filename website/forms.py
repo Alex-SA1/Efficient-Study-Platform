@@ -102,29 +102,14 @@ class ResetPasswordForm(forms.Form):
         return cleaned_data
 
 
-class EditAccountForm(forms.Form):
+class EditAccountForm(forms.ModelForm):
     """
     class responsible with account editing form
     """
 
-    country = forms.CharField(max_length=60,
-                              required=False,
-                              widget=forms.TextInput(
-                                  attrs={'class': 'form-select'}))
-
-    description = forms.CharField(max_length=600,
-                                  required=False,
-                                  widget=forms.TextInput(
-                                      attrs={'class': 'form-control'}))
-
-    profile_picture = forms.ImageField(
-        required=False,
-        widget=forms.FileInput(
-            attrs={'class': 'form-control'}))
-
     class Meta:
         model = UserProfile
-        fields = ('country', 'description', 'profile_picture')
+        fields = ['country', 'description', 'profile_picture']
 
     def __init__(self, *args, **kwargs):
         super(EditAccountForm, self).__init__(*args, **kwargs)
