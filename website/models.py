@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary_storage.storage import MediaCloudinaryStorage
+from django.core.validators import FileExtensionValidator
 
 
 class UserProfile(models.Model):
@@ -14,7 +15,8 @@ class UserProfile(models.Model):
     profile_picture = models.ImageField(
         storage=MediaCloudinaryStorage(),
         upload_to='profile_pictures/',
-        null=True, blank=True)
+        null=True, blank=True,
+        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png'])])
 
 
 class Task(models.Model):
