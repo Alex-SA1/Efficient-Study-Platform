@@ -3,6 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django import forms
 from .models import UserProfile
+from .validators import *
 
 
 class SignUpForm(UserCreationForm):
@@ -113,3 +114,14 @@ class EditAccountForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EditAccountForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        profile_picture = cleaned_data.get('profile_picture')
+
+        if profile_picture is not None:
+            validate_image(profile_picture)
+            validate_image_size(profile_picture)
+
+        return cleaned_data

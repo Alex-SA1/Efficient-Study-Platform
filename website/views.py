@@ -19,6 +19,7 @@ from .decorators import login_required_restrictive
 from .decorators import ajax_request_required
 from django.contrib.auth.models import User
 from .models import UserProfile
+from django.core.exceptions import ValidationError
 
 
 def home(request):
@@ -49,7 +50,7 @@ def login_user(request):
             messages.success(request, "You have been logged in!")
             return redirect('main')
         else:
-            messages.success(
+            messages.error(
                 request, "There was an error loggin in, please try again!")
             return redirect('main')
     else:
@@ -93,7 +94,7 @@ def reset_password(request):
         except Exception:
             form = ResetPasswordForm()
 
-            messages.success(
+            messages.error(
                 request, "The verification code is wrong! You must enter again all form details and request for another verification code!")
 
             expected_verification_code_key = "reset_password:" + user_email
@@ -156,7 +157,7 @@ def register_user(request):
             # the verification code entered by the user is wrong
             form = SignUpForm()
 
-            messages.success(
+            messages.error(
                 request, "The verification code is wrong! You must enter again all form details and request for another verification code!")
 
             expected_verification_code_key = "registration:" + user_email
@@ -407,8 +408,6 @@ def edit_account(request):
         new_country = request.POST['country']
         new_description = request.POST['description']
 
-        form = EditAccountForm(request.POST, request.FILES)
-
         modified_profile_picture = False
         if new_profile_picture is not None and current_profile_picture != new_profile_picture:
             modified_profile_picture = True
@@ -421,10 +420,15 @@ def edit_account(request):
         if new_description is not None and current_description != new_description:
             modified_description = True
 
+        form = EditAccountForm(request.POST, request.FILES)
+
         if modified_profile_picture == False and modified_country == False and modified_description == False:
             form.add_error(None, "No field has been modified!")
 
         if form.is_valid():
+
+            new_profile_picture = form.cleaned_data['profile_picture']
+
             if modified_profile_picture:
                 user_profile.profile_picture.save(
                     new_profile_picture.name, new_profile_picture)
@@ -438,7 +442,6 @@ def edit_account(request):
             user_profile.save()
 
             return redirect('my_account')
-
     else:
         form = EditAccountForm()
 
