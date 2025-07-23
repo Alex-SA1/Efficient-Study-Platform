@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import SignUpForm, ResetPasswordForm
+from .forms import SignUpForm, ResetPasswordForm, EditAccountForm
 from django.views.generic.list import ListView
 from .models import Task
 from django.views.generic.detail import DetailView
@@ -19,9 +19,6 @@ from .decorators import login_required_restrictive
 from .decorators import ajax_request_required
 from django.contrib.auth.models import User
 from .models import UserProfile
-import cloudinary.uploader
-
-from django.conf import settings
 
 
 def home(request):
@@ -395,7 +392,9 @@ def my_account(request):
 
 @login_required(login_url='login')
 def edit_account(request):
-
+    """
+    handling request for updating the user account details
+    """
     if request.method == "POST":
         user = request.user
         user_profile = UserProfile.objects.get(user=user)
@@ -408,18 +407,24 @@ def edit_account(request):
         new_country = request.POST['country']
         new_description = request.POST['description']
 
-        if new_profile_picture is not None and current_profile_picture != new_profile_picture:
-            user_profile.profile_picture.save(
-                new_profile_picture.name, new_profile_picture)
+        form = EditAccountForm(request.POST, request.FILES)
 
-        if new_country is not None and current_country != new_country:
-            setattr(user_profile, 'country', new_country)
+        if form.is_valid():
+            if new_profile_picture is not None and current_profile_picture != new_profile_picture:
+                user_profile.profile_picture.save(
+                    new_profile_picture.name, new_profile_picture)
 
-        if new_description is not None and current_description != new_description:
-            setattr(user_profile, 'description', new_description)
+            if new_country is not None and current_country != new_country:
+                setattr(user_profile, 'country', new_country)
 
-        user_profile.save()
+            if new_description is not None and current_description != new_description:
+                setattr(user_profile, 'description', new_description)
 
-        return redirect('my_account')
+            user_profile.save()
 
-    return render(request, 'edit_account.html', {})
+            return redirect('my_account')
+
+    else:
+        form = EditAccountForm()
+
+    return render(request, 'edit_account.html', {'form': form})

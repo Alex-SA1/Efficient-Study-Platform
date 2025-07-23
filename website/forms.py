@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django import forms
+from .models import UserProfile
 
 
 class SignUpForm(UserCreationForm):
@@ -99,3 +100,31 @@ class ResetPasswordForm(forms.Form):
         validate_password(new_password_1, self.user)
 
         return cleaned_data
+
+
+class EditAccountForm(forms.Form):
+    """
+    class responsible with account editing form
+    """
+
+    country = forms.CharField(max_length=60,
+                              required=False,
+                              widget=forms.TextInput(
+                                  attrs={'class': 'form-select'}))
+
+    description = forms.CharField(max_length=600,
+                                  required=False,
+                                  widget=forms.TextInput(
+                                      attrs={'class': 'form-control'}))
+
+    profile_picture = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(
+            attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = UserProfile
+        fields = ('country', 'description', 'profile_picture')
+
+    def __init__(self, *args, **kwargs):
+        super(EditAccountForm, self).__init__(*args, **kwargs)
