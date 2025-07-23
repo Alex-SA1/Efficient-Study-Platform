@@ -409,15 +409,30 @@ def edit_account(request):
 
         form = EditAccountForm(request.POST, request.FILES)
 
+        modified_profile_picture = False
+        if new_profile_picture is not None and current_profile_picture != new_profile_picture:
+            modified_profile_picture = True
+
+        modified_country = False
+        if new_country is not None and current_country != new_country:
+            modified_country = True
+
+        modified_description = False
+        if new_description is not None and current_description != new_description:
+            modified_description = True
+
+        if modified_profile_picture == False and modified_country == False and modified_description == False:
+            form.add_error(None, "No field has been modified!")
+
         if form.is_valid():
-            if new_profile_picture is not None and current_profile_picture != new_profile_picture:
+            if modified_profile_picture:
                 user_profile.profile_picture.save(
                     new_profile_picture.name, new_profile_picture)
 
-            if new_country is not None and current_country != new_country:
+            if modified_country:
                 setattr(user_profile, 'country', new_country)
 
-            if new_description is not None and current_description != new_description:
+            if modified_description:
                 setattr(user_profile, 'description', new_description)
 
             user_profile.save()

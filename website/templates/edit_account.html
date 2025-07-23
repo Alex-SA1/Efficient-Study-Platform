@@ -34,11 +34,15 @@
                         {% csrf_token %}
                         {% if form.errors %}
                         <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                            Your Form Has errors
+                            Form errors:
                             {% for field in form %}
                             {% if field.errors %}
                             {{ field.errors }}
                             {% endif %}
+                            {% endfor %}
+                            <br>
+                            {% for error in form.non_field_errors %}
+                            {{ error }}
                             {% endfor %}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
 
@@ -147,6 +151,10 @@
             </div>
         </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
