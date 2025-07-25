@@ -20,6 +20,7 @@ from .decorators import ajax_request_required
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 
 def home(request):
