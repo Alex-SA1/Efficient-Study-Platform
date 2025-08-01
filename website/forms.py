@@ -2,8 +2,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django import forms
-from .models import UserProfile
+from .models import UserProfile, Task
 from .validators import *
+from django.utils import timezone
 
 
 class SignUpForm(UserCreationForm):
@@ -123,5 +124,37 @@ class EditAccountForm(forms.ModelForm):
         if profile_picture is not None:
             validate_image(profile_picture)
             validate_image_size(profile_picture)
+
+        return cleaned_data
+
+
+class CreateTaskForm(forms.ModelForm):
+    """
+    class responsible with task creating form
+    """
+
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'deadline', 'category']
+
+    def __init__(self, *args, **kwargs):
+        super(CreateTaskForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        title = cleaned_data.get('title')
+
+        if title is None or title == "":
+            self.add_error("title", "Title must be a non-empty value")
+
+        deadline = cleaned_data.get('deadline')
+        current_datetime = timezone.localtime(timezone.now())
+
+        if deadline < current_datetime:
+            self.add_error(
+                "deadline", "The deadline selected represents a date from the past")
+
+            return None
 
         return cleaned_data

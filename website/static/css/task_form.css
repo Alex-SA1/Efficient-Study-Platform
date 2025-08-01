@@ -1,37 +1,174 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
+
 body {
-        background-color: #f8f9fa
-    }
+    font-family: "Baloo 2", cursive;
+    color: #e4e0f3;
+    text-rendering: optimizeLegibility;
+    font-weight: initial;
+    background: #110f16;
+}
 
 .minimal-form {
-    background: white;
-    padding: 3rem;
+    background: #18151f;
+    padding: 1rem;
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
 }
 
 .minimal-form .form-control {
-    background: #f8f9fa;
-    border: none;
+    background: #2a2633;
+    border-color: #444;
     padding: 14px 18px;
     font-size: 15px;
     transition: all 0.2s ease;
-    color: #212529;
+    color: #e4e0f3;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px
 }
 
 .minimal-form .form-control:focus {
-    background: #fff;
-    box-shadow: 0 0 0 2px #228be6;
+    background: #332e41;
+    border-color: #7f5fd7;
+    box-shadow: 0 0 0 3px rgba(127, 95, 215, 0.35);
+    outline: none;
+}
+
+.minimal-form .form-control::placeholder {
+    color: #88829c;
 }
 
 .minimal-form .btn-submit {
-    background: #228be6;
+    background: #5c5470;
     border: none;
+    border-radius: 0.5rem;
     padding: 12px 0;
     font-weight: 600;
     width: 100%;
-    color: white;
+    color: #e4e0f3;
 }
 
 .minimal-form .btn-submit:hover {
-    background: #1c7ed6;
+    background: #6e6584;
+}
+
+.picker {
+    background-color: #18151f;
+    border-radius: 1rem;
+    position: relative;
+    margin-top: 0.5rem;
+    z-index: 1050;
+    display: none;
+}
+
+.calendar {
+    max-width: 60%;
+    margin-left: 20%;
+}
+
+.calendar-header button {
+    color: #ffffff;
+    font-size: 1.5rem;
+}
+
+.calendar-header button:hover {
+    color: #9a86f3;
+}
+
+.days div.inactive {
+    color: #555061;
+    pointer-events: none;
+}
+
+.days div.selected {
+    background-color: #6e63e6 !important;
+    color: #fff !important;
+    font-weight: 700;
+}
+
+select.form-select {
+    background-color: #110f16;
+    border-color: #9a86f3;
+    color: #ffffff;
+}
+
+select.form-select:focus {
+    border-color: #6e63e6;
+    box-shadow: none;
+    background-color: #201d2b;
+    color: #ffffff;
+}
+
+#datetime-input {
+    background-color: #18151f;
+    border-color: #9a86f3;
+    color: #ffffff;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+#datetime-input:focus {
+    background-color: #201d2b;
+    border-color: #6e63e6;
+    box-shadow: none;
+}
+
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.category input[type="radio"] {
+    display: none;
+}
+
+.category label {
+    background-color: #2a2633;
+    color: #ccc;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    user-select: none;
+}
+
+.category input[type="radio"]:checked+label {
+    background-color: #6f42c1;
+    color: #fff;
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.3);
+}
+
+.category label:hover {
+    background-color: #3a3544;
+}
+
+.btn-primary {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+}
+
+.btn-primary:hover {
+    background-color: #5936a2;
+}
+
+.category.hidden {
+    display: none;
+}
+
+.btn-toggle {
+    background: none;
+    color: #aaa;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-toggle:hover {
+    color: #fff;
 }

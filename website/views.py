@@ -21,6 +21,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from .forms import CreateTaskForm
 
 
 def home(request):
@@ -231,36 +232,22 @@ class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     template_name = 'task_form.html'
 
-    fields = ['title', 'description']
+    form_class = CreateTaskForm
+
     success_url = reverse_lazy('to-do-list')
 
     login_url = '/login'
     redirect_field_name = 'next'
 
-    # taking the user automatically from the current session data and ignoring the user field
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['datetime'] = timezone.localtime(timezone.now()).isoformat()
+        print(timezone.localtime(timezone.now()))
+        return context
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-
-    # updating some properties of the fields
-    def get_form(self, *args, **kwargs):
-        form = super().get_form(*args, **kwargs)
-
-        form.fields['title'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Title',
-        })
-
-        form.fields['title'].label = ''
-
-        form.fields['description'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Write a description for your task...'
-        })
-
-        form.fields['description'].label = ''
-
-        return form
 
 
 # class based view
