@@ -21,7 +21,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from .forms import CreateTaskForm
+from .forms import CreateTaskForm, UpdateTaskForm
 
 
 def home(request):
@@ -230,7 +230,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
     class responsible with the creation of a task
     """
     model = Task
-    template_name = 'task_form.html'
+    template_name = 'create_task.html'
 
     form_class = CreateTaskForm
 
@@ -242,7 +242,6 @@ class TaskCreate(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['datetime'] = timezone.localtime(timezone.now()).isoformat()
-        print(timezone.localtime(timezone.now()))
         return context
 
     def form_valid(self, form):
@@ -256,8 +255,11 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     class responsible with the update of a task (modifying the title, description or status - complete or not - of a task)
     """
     model = Task
-    template_name = 'task_form.html'
-    fields = ['title', 'description', 'is_complete']
+    template_name = 'update_task.html'
+
+    context_object_name = 'task'
+    form_class = UpdateTaskForm
+
     success_url = reverse_lazy('to-do-list')
 
     login_url = '/login'
@@ -268,31 +270,10 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-    # updating some properties of the fields
-    def get_form(self, *args, **kwargs):
-        form = super().get_form(*args, **kwargs)
-
-        form.fields['title'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Title',
-        })
-
-        form.fields['title'].label = ''
-
-        form.fields['description'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Write a description for your task...'
-        })
-
-        form.fields['description'].label = ''
-
-        form.fields['is_complete'].widget.attrs.update({
-            'class': 'form-check-input'
-        })
-
-        form.fields['is_complete'].label = 'Completed:'
-
-        return form
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['datetime'] = timezone.localtime(timezone.now()).isoformat()
+        return context
 
     # overriding the dispatch method to make all pages that are containing information from other users unavailable for the current logged in user
     # if an user tries to acces other user information, denying his access and redirecting him back to a page that he has access to

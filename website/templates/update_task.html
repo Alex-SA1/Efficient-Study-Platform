@@ -1,0 +1,590 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Efficient Study</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static '/css/task_form.css' %}">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="p-2 d-flex justify-content-between align-items-center">
+            <a href="{% url 'to-do-list' %}"> <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                    fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16"
+                    style="color: #e4e0f3; cursor: pointer;">
+                    <path fill-rule="evenodd"
+                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+                </svg>
+                </svg>
+            </a>
+        </div>
+
+        <div class="mx-auto d-flex flex-column align-items-center justify-content-center minimal-form"
+            style="min-height: 90vh;">
+            <div class="col-12 col-md-6">
+                <h3 class="text-center">Task</h3>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        Form errors:
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {{ field.errors }}
+                        {% endif %}
+                        {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+
+                        </button>
+                    </div>
+                    {% endif %}
+
+                    <div class="form-check mb-3 mt-3">
+                        {% if task.is_complete == 1 %}
+                        <input class="form-check-input" type="checkbox" name="is_complete" id="btnCompleteTask" checked>
+                        {% else %}
+                        <input class="form-check-input" type="checkbox" name="is_complete" id="btnCompleteTask">
+                        {% endif %}
+                        <label class="form-check-label" for="defaultCheck1">
+                            Complete
+                        </label>
+                    </div>
+
+                    <p>
+                        <!-- {{ form.as_p }} -->
+                        <input type="text" name="title" id="title" maxlength="200" autofocus class="form-control"
+                            placeholder="Title" value="{{ task.title }}" required>
+                    </p>
+
+                    <p>
+                        <textarea id="description" name="description" class="form-control"
+                            placeholder="Task description (optional)">{{ task.description }}</textarea>
+                    </p>
+
+                    <div class="mb-3">
+                        <input type="text" id="deadline" name="deadline" class="form-control"
+                            placeholder="Select date and time (optional)" aria-haspopup="dialog" aria-expanded="false"
+                            aria-controls="picker" readonly />
+
+                        <div class="picker" id="picker" role="dialog" aria-modal="true" aria-labelledby="month-year">
+                            <div class="calendar">
+                                <div class="calendar-header mb-3 d-flex justify-content-between align-items-center">
+                                    <button id="prev-month" aria-label="Previous Month" class="btn btn-link"
+                                        type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-caret-left" viewBox="0 0 16 16">
+                                            <path
+                                                d="M10 12.796V3.204L4.519 8zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753" />
+                                        </svg>
+                                    </button>
+                                    <h6 id="month-year"></h6>
+                                    <button id="next-month" aria-label="Next Month" class="btn btn-link" type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="d-grid" style="grid-template-columns: repeat(7, 1fr); gap: 0.3rem;">
+                                    <div class="text-center text-secondary">Sun</div>
+                                    <div class="text-center text-secondary">Mon</div>
+                                    <div class="text-center text-secondary">Tue</div>
+                                    <div class="text-center text-secondary">Wed</div>
+                                    <div class="text-center text-secondary">Thu</div>
+                                    <div class="text-center text-secondary">Fri</div>
+                                    <div class="text-center text-secondary">Sat</div>
+                                </div>
+                                <div id="days" class="d-grid"
+                                    style="grid-template-columns: repeat(7, 1fr); gap: 0.3rem;">
+                                    <!-- here will be inserted (by javascript code) divs for every day -->
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <select id="hours" class="form-select form-select-sm w-auto" aria-label="Select Hour">
+                                    <!-- here will be inserted (by javascript code) divs for every hour -->
+                                </select>
+                                <span class="text-white fs-4 mt-1">:</span>
+                                <select id="minutes" class="form-select form-select-sm w-auto"
+                                    aria-label="Select Minute">
+                                    <!-- here will be inserted (by javascript code) divs for every minute -->
+                                </select>
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-3">
+                                <button id="btn-close-picker" class="btn btn-outline-secondary btn-sm"
+                                    type="button">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3 p-1">
+                        <div class="categories">
+                            {% if task.category == "Homework" %}
+                            <div class="category">
+                                <input type="radio" id="category-homework" name="category" value="Homework" checked>
+                                <label for="category-homework">Homework</label>
+                            </div>
+                            {% else %}
+                            <div class="category">
+                                <input type="radio" id="category-homework" name="category" value="Homework">
+                                <label for="category-homework">Homework</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Review" %}
+                            <div class="category">
+                                <input type="radio" id="category-review" name="category" value="Review" checked>
+                                <label for="category-review">Review</label>
+                            </div>
+                            {% else %}
+                            <div class="category">
+                                <input type="radio" id="category-review" name="category" value="Review">
+                                <label for="category-review">Review</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Reading" %}
+                            <div class="category">
+                                <input type="radio" id="category-reading" name="category" value="Reading" checked>
+                                <label for="category-reading">Reading</label>
+                            </div>
+                            {% else %}
+                            <div class="category">
+                                <input type="radio" id="category-reading" name="category" value="Reading">
+                                <label for="category-reading">Reading</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Project" %}
+                            <div class="category">
+                                <input type="radio" id="category-project" name="category" value="Project" checked>
+                                <label for="category-project">Project</label>
+                            </div>
+                            {% else %}
+                            <div class="category">
+                                <input type="radio" id="category-project" name="category" value="Project">
+                                <label for="category-project">Project</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Essay" %}
+                            <div class="category">
+                                <input type="radio" id="category-essay" name="category" value="Essay" checked>
+                                <label for="category-essay">Essay</label>
+                            </div>
+                            {% else %}
+                            <div class="category">
+                                <input type="radio" id="category-essay" name="category" value="Essay">
+                                <label for="category-essay">Essay</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Lab Work" %}
+                            <div class="category">
+                                <input type="radio" id="category-lab-work" name="category" value="Lab Work" checked>
+                                <label for="category-lab-work">Lab Work</label>
+                            </div>
+                            {% else %}
+                            <div class="category">
+                                <input type="radio" id="category-lab-work" name="category" value="Lab Work">
+                                <label for="category-lab-work">Lab Work</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Group Work" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-group-work" name="category" value="Group Work" checked>
+                                <label for="category-group-work">Group Work</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-group-work" name="category" value="Group Work">
+                                <label for="category-group-work">Group Work</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Presentation" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-presentation" name="category" value="Presentation"
+                                    checked>
+                                <label for="category-presentation">Presentation</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-presentation" name="category" value="Presentation">
+                                <label for="category-presentation">Presentation</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Quiz Prep" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-quiz-prep" name="category" value="Quiz Prep" checked>
+                                <label for="category-quiz-prep">Quiz Prep</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-quiz-prep" name="category" value="Quiz Prep">
+                                <label for="category-quiz-prep">Quiz Prep</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Exam Prep" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-exam-prep" name="category" value="Exam Prep" checked>
+                                <label for="category-exam-prep">Exam Prep</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-exam-prep" name="category" value="Exam Prep">
+                                <label for="category-exam-prep">Exam Prep</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Personal Project" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-personal-project" name="category"
+                                    value="Personal Project" checked>
+                                <label for="category-personal-project">Personal Project</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-personal-project" name="category"
+                                    value="Personal Project">
+                                <label for="category-personal-project">Personal Project</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Extra Credit" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-extra-credit" name="category" value="Extra Credit"
+                                    checked>
+                                <label for="category-extra-credit">Extra Credit</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-extra-credit" name="category" value="Extra Credit">
+                                <label for="category-extra-credit">Extra Credit</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Cath-Up Work" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-catch-up-work" name="category" value="Catch-Up Work"
+                                    checked>
+                                <label for="category-catch-up-work">Catch-Up Work</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-catch-up-work" name="category" value="Catch-Up Work">
+                                <label for="category-catch-up-work">Catch-Up Work</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Optional" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-optional" name="category" value="Optional" checked>
+                                <label for="category-optional">Optional</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-optional" name="category" value="Optional">
+                                <label for="category-optional">Optional</label>
+                            </div>
+                            {% endif %}
+
+                            {% if task.category == "Revisit Later" %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-revisit-later" name="category" value="Revisit Later"
+                                    checked>
+                                <label for="category-revisit-later">Revisit Later</label>
+                            </div>
+                            {% else %}
+                            <div class="category hidden">
+                                <input type="radio" id="category-revisit-later" name="category" value="Revisit Later">
+                                <label for="category-revisit-later">Revisit Later</label>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <button type="button" id="btnToggle" class="btn-toggle mt-2" value="show-more"
+                            onclick="toggleCategories()">Show
+                            More</button>
+                    </div>
+
+
+
+                    <button type="submit" class="btn-submit">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            const deadlineInput = document.getElementById('deadline');
+            const picker = document.getElementById('picker');
+
+            const monthYear = document.getElementById('month-year');
+            const daysDiv = document.getElementById('days');
+            const prevBtn = document.getElementById('prev-month');
+            const nextBtn = document.getElementById('next-month');
+
+            const hoursSelect = document.getElementById('hours');
+            const minutesSelect = document.getElementById('minutes');
+
+            const closeBtn = document.getElementById('btn-close-picker');
+
+            let currentDatetime = "{{ datetime }}"
+
+            const [date, time] = currentDatetime.split("T")
+            const [tmpYear, tmpMonth, tmpDay] = date.split("-").map(Number)
+            const [tmpHourString, tmpMinuteString, secondsExtended] = time.split(":")
+            const [tmpSecondsString, fractionalSeconds_Timezone] = secondsExtended.split(".")
+
+            const tmpHour = Number(tmpHourString)
+            const tmpMinute = Number(tmpMinuteString)
+            const tmpSeconds = Number(tmpSecondsString)
+
+            let currentDate = new Date(tmpYear, tmpMonth - 1, tmpDay, tmpHour, tmpMinute, tmpSeconds);
+            let selectedDate = null;
+            let selectedHour = 0;
+            let selectedMinute = 0;
+
+            function togglePicker(show) {
+                if (show == true)
+                    picker.style.display = 'block'
+                else
+                    picker.style.display = 'none'
+
+                deadlineInput.setAttribute('aria-expanded', show);
+            }
+
+            function updateCalendar() {
+                daysDiv.innerHTML = '';
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth();
+
+                const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+
+                monthYear.textContent = months[month] + " " + year;
+
+                // day of the week for the first day of the month
+                const firstDayCurrentMonth = new Date(year, month, 1).getDay();
+                const daysNumberCurrentMonth = new Date(year, month + 1, 0).getDate();
+                const daysNumberPrevMonth = new Date(year, month, 0).getDate();
+
+                // divs for previous month days
+                for (let i = firstDayCurrentMonth - 1; i >= 0; i--) {
+                    const dayDiv = document.createElement('div');
+
+                    dayDiv.classList.add('text-center', 'text-secondary', 'inactive', 'py-1', 'rounded');
+                    dayDiv.textContent = daysNumberPrevMonth - i;
+
+                    daysDiv.appendChild(dayDiv);
+                }
+
+                // divs for current month days
+                for (let day = 1; day <= daysNumberCurrentMonth; day++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.classList.add('text-center', 'py-1', 'rounded');
+                    dayDiv.textContent = day;
+
+                    if (tmpDay == day && tmpMonth - 1 == currentDate.getMonth() && tmpYear == currentDate.getFullYear())
+                        dayDiv.classList.add('text-info')
+
+                    if (selectedDate && selectedDate.getFullYear() === year && selectedDate.getMonth() === month && selectedDate.getDate() === day) {
+                        if (dayDiv.classList.contains('text-info'))
+                            dayDiv.classList.remove('text-info')
+
+                        dayDiv.classList.add('selected', 'text-success');
+                    }
+
+
+                    dayDiv.style.cursor = 'pointer';
+                    dayDiv.addEventListener('click', () => {
+                        selectedDate = new Date(year, month, day);
+                        updateCalendar();
+                        updateSelectedDatetime();
+                        //togglePicker(false);
+                    });
+
+                    daysDiv.appendChild(dayDiv);
+                }
+
+                // divs for next month days (to fill the grid)
+                const totalGridCells = daysDiv.children.length;
+                const daysNumberToFill = 7 * 6 - totalGridCells;
+                for (let day = 1; day <= daysNumberToFill; day++) {
+                    const dayDiv = document.createElement('div');
+
+                    dayDiv.classList.add('text-center', 'text-secondary', 'inactive', 'py-1', 'rounded');
+                    dayDiv.textContent = day;
+
+                    daysDiv.appendChild(dayDiv);
+                }
+            }
+
+            function fillTimePicker() {
+                for (let h = 0; h < 24; h++) {
+                    const option = document.createElement('option');
+
+                    option.value = h;
+                    option.textContent = h.toString().padStart(2, '0');
+
+                    hoursSelect.appendChild(option);
+                }
+
+                for (let m = 0; m < 60; m += 5) {
+                    const option = document.createElement('option');
+
+                    option.value = m;
+                    option.textContent = m.toString().padStart(2, '0');
+
+                    minutesSelect.appendChild(option);
+                }
+            }
+
+            function updateSelectedDatetime() {
+                if (!selectedDate) {
+                    deadlineInput.value = "";
+                    return;
+                }
+
+                selectedHour = parseInt(hoursSelect.value);
+                selectedMinute = parseInt(minutesSelect.value);
+
+                const year = selectedDate.getFullYear();
+                const month = selectedDate.getMonth() + 1;
+                const day = selectedDate.getDate();
+
+                const formattedDate = year + "-" + month.toString().padStart(2, '0') + "-" + day.toString().padStart(2, '0');
+                const formattedTime = selectedHour.toString().padStart(2, '0') + ":" + selectedMinute.toString().padStart(2, '0');
+
+                deadlineInput.value = formattedDate + " " + formattedTime;
+            }
+
+            prevBtn.addEventListener('click', () => {
+                currentDate.setDate(1);
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                updateCalendar();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentDate.setDate(1);
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                updateCalendar();
+            });
+
+            hoursSelect.addEventListener('change', () => {
+                updateSelectedDatetime();
+            });
+
+            minutesSelect.addEventListener('change', () => {
+                updateSelectedDatetime();
+            });
+
+
+            deadlineInput.addEventListener('click', () => togglePicker(true));
+
+            closeBtn.addEventListener('click', () => {
+                togglePicker(false);
+            });
+
+            fillTimePicker();
+            updateCalendar();
+
+            // loading task selected deadline in input field and also in calendar/time picker
+            let selected_deadline = "{{ task.deadline }}";
+            if (selected_deadline !== "None") {
+                let [selected_deadline_month_day, selected_deadline_year, selected_deadline_time] = selected_deadline.split(", ")
+                const months_abbreviation = {
+                    'Jan': 0,
+                    'Feb': 1,
+                    'Mar': 2,
+                    'Apr': 3,
+                    'May': 4,
+                    'Jun': 5,
+                    'Jul': 6,
+                    'Aug': 7,
+                    'Sep': 8,
+                    'Oct': 9,
+                    'Nov': 10,
+                    'Dec': 11
+                };
+
+                const hours_pm = {
+                    "1": "13",
+                    "2": "14",
+                    "3": "15",
+                    "4": "16",
+                    "5": "17",
+                    "6": "18",
+                    "7": "19",
+                    "8": "20",
+                    "9": "21",
+                    "10": "22",
+                    "11": "23",
+                    "12": "00"
+                }
+
+                let [selected_deadline_month, selected_deadline_day] = selected_deadline_month_day.split(". ")
+                let [selected_deadline_hm, selected_deadline_ot] = selected_deadline_time.split(" ")
+                let [selected_deadline_hour, selected_deadline_minutes] = selected_deadline_hm.split(":")
+
+                if (selected_deadline_ot === "p.m.")
+                    selected_deadline_hour = hours_pm[selected_deadline_hour]
+
+                selected_deadline_year = parseInt(selected_deadline_year)
+
+                selected_deadline_month = months_abbreviation[selected_deadline_month]
+                selected_deadline_month = parseInt(selected_deadline_month)
+
+                selected_deadline_day = parseInt(selected_deadline_day)
+
+                hoursSelect.value = parseInt(selected_deadline_hour);
+                minutesSelect.value = parseInt(selected_deadline_minutes)
+                console.log(minutesSelect.value)
+
+                selectedDate = new Date(selected_deadline_year, selected_deadline_month, selected_deadline_day);
+                updateCalendar();
+                updateSelectedDatetime();
+            }
+
+        })();
+
+        function toggleCategories() {
+            const btnToggle = document.getElementById('btnToggle');
+            const hiddenCategories = document.querySelectorAll('.category.hidden');
+
+            if (btnToggle.value == 'show-more') {
+                btnToggle.value = 'show-less';
+                btnToggle.textContent = 'Show Less';
+
+                hiddenCategories.forEach(category => category.style.display = 'inline-block');
+            }
+            else {
+                btnToggle.value = 'show-more';
+                btnToggle.textContent = 'Show More';
+
+                hiddenCategories.forEach(category => category.style.display = 'none');
+            }
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

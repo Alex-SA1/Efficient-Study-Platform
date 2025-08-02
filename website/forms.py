@@ -158,3 +158,36 @@ class CreateTaskForm(forms.ModelForm):
             return None
 
         return cleaned_data
+
+
+class UpdateTaskForm(forms.ModelForm):
+    """
+    class responsible with task updating form
+    """
+
+    class Meta:
+        model = Task
+        fields = ['title', 'description',
+                  'deadline', 'category', 'is_complete']
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateTaskForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        title = cleaned_data.get('title')
+
+        if title is None or title == "":
+            self.add_error("title", "Title must be a non-empty value")
+
+        deadline = cleaned_data.get('deadline')
+        current_datetime = timezone.localtime(timezone.now())
+
+        if deadline < current_datetime:
+            self.add_error(
+                "deadline", "The deadline selected represents a date from the past")
+
+            return None
+
+        return cleaned_data

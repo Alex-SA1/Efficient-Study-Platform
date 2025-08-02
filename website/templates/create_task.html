@@ -266,7 +266,7 @@
                     dayDiv.classList.add('text-center', 'py-1', 'rounded');
                     dayDiv.textContent = day;
 
-                    if (day == tmpDay && tmpMonth - 1 == currentDate.getMonth())
+                    if (tmpDay == day && tmpMonth - 1 == currentDate.getMonth() && tmpYear == currentDate.getFullYear())
                         dayDiv.classList.add('text-info')
 
                     if (selectedDate && selectedDate.getFullYear() === year && selectedDate.getMonth() === month && selectedDate.getDate() === day) {
