@@ -508,9 +508,7 @@
 
             // loading task selected deadline in input field and also in calendar/time picker
             let selected_deadline = "{{ task.deadline }}";
-            console.log(selected_deadline)
             if (selected_deadline !== "None") {
-                let [selected_deadline_month_day, selected_deadline_year, selected_deadline_time] = selected_deadline.split(", ")
                 const months_abbreviation = {
                     'Jan': 0,
                     'Feb': 1,
@@ -541,14 +539,25 @@
                     "12": "12"
                 }
 
+                let [selected_deadline_month_day, selected_deadline_year, selected_deadline_time] = selected_deadline.split(", ")
                 let [selected_deadline_month, selected_deadline_day] = selected_deadline_month_day.split(". ")
-                let [selected_deadline_hm, selected_deadline_ot] = selected_deadline_time.split(" ")
-                let [selected_deadline_hour, selected_deadline_minutes] = selected_deadline_hm.split(":")
 
-                if (selected_deadline_ot === "p.m.")
-                    selected_deadline_hour = hours_pm[selected_deadline_hour]
-                else if (selected_deadline_ot == "a.m." && selected_deadline_hour === "12")
-                    selected_deadline_hour = "00"
+                if (selected_deadline_time !== "midnight") {
+                    var [selected_deadline_hm, selected_deadline_ot] = selected_deadline_time.split(" ")
+                    var [selected_deadline_hour, selected_deadline_minutes] = selected_deadline_hm.split(":")
+
+                    if (selected_deadline_minutes === undefined)
+                        selected_deadline_minutes = "00"
+
+                    if (selected_deadline_ot === "p.m.")
+                        selected_deadline_hour = hours_pm[selected_deadline_hour]
+                    else if (selected_deadline_ot === "a.m." && selected_deadline_hour === "12")
+                        selected_deadline_hour = "00"
+                }
+                else {
+                    var selected_deadline_hour = "00"
+                    var selected_deadline_minutes = "00"
+                }
 
                 selected_deadline_year = parseInt(selected_deadline_year)
 
@@ -557,7 +566,7 @@
 
                 selected_deadline_day = parseInt(selected_deadline_day)
 
-                hoursSelect.value = parseInt(selected_deadline_hour);
+                hoursSelect.value = parseInt(selected_deadline_hour)
                 minutesSelect.value = parseInt(selected_deadline_minutes)
 
                 selectedDate = new Date(selected_deadline_year, selected_deadline_month, selected_deadline_day);
