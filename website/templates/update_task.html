@@ -508,6 +508,7 @@
 
             // loading task selected deadline in input field and also in calendar/time picker
             let selected_deadline = "{{ task.deadline }}";
+            console.log(selected_deadline)
             if (selected_deadline !== "None") {
                 let [selected_deadline_month_day, selected_deadline_year, selected_deadline_time] = selected_deadline.split(", ")
                 const months_abbreviation = {
@@ -537,7 +538,7 @@
                     "9": "21",
                     "10": "22",
                     "11": "23",
-                    "12": "00"
+                    "12": "12"
                 }
 
                 let [selected_deadline_month, selected_deadline_day] = selected_deadline_month_day.split(". ")
@@ -546,6 +547,8 @@
 
                 if (selected_deadline_ot === "p.m.")
                     selected_deadline_hour = hours_pm[selected_deadline_hour]
+                else if (selected_deadline_ot == "a.m." && selected_deadline_hour === "12")
+                    selected_deadline_hour = "00"
 
                 selected_deadline_year = parseInt(selected_deadline_year)
 

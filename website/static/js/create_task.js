@@ -13,7 +13,6 @@
     const closeBtn = document.getElementById('btn-close-picker');
 
     let currentDatetime = window.datetime;
-    console.log(currentDatetime)
 
     const [date, time] = currentDatetime.split("T")
     const [tmpYear, tmpMonth, tmpDay] = date.split("-").map(Number)
