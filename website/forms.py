@@ -151,7 +151,7 @@ class CreateTaskForm(forms.ModelForm):
         deadline = cleaned_data.get('deadline')
         current_datetime = timezone.localtime(timezone.now())
 
-        if deadline < current_datetime:
+        if deadline is not None and deadline < current_datetime:
             self.add_error(
                 "deadline", "The deadline selected represents a date from the past")
 
@@ -184,7 +184,7 @@ class UpdateTaskForm(forms.ModelForm):
         deadline = cleaned_data.get('deadline')
         current_datetime = timezone.localtime(timezone.now())
 
-        if deadline < current_datetime:
+        if deadline is not None and deadline < current_datetime:
             self.add_error(
                 "deadline", "The deadline selected represents a date from the past")
 
