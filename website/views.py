@@ -290,7 +290,7 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     class responsible with the deletion of a task
     """
     model = Task
-    template_name = 'task_confirm_delete.html'
+    template_name = 'confirm_delete_task.html'
     context_object_name = 'task'
     success_url = reverse_lazy('to-do-list')
 
