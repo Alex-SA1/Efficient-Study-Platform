@@ -313,6 +313,8 @@ class TaskDelete(DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
+@require_POST
+@csrf_protect
 @ajax_request_required
 def send_verification_code(request):
     """
