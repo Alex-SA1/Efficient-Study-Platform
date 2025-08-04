@@ -2,6 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
 from django.contrib import messages
 from .forms import SignUpForm, ResetPasswordForm, EditAccountForm
 from django.views.generic.list import ListView
@@ -285,16 +288,13 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
 
 
 # class based view
-class TaskDelete(LoginRequiredMixin, DeleteView):
+class TaskDelete(DeleteView):
     """
     class responsible with the deletion of a task
     """
     model = Task
 
     context_object_name = 'task'
-
-    login_url = '/login'
-    redirect_field_name = 'next'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -304,7 +304,8 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
 
     # overriding the dispatch method to make all pages that are containing information from other users unavailable for the current logged in user
     # if an user tries to acces other user information, denying his access and redirecting him back to a page that he has access to
-
+    @method_decorator(require_POST)
+    @method_decorator(csrf_protect)
     def dispatch(self, request, *args, **kwargs):
         if self.get_object().user_id != request.user.id:
             return redirect('/main/to-do-list')
