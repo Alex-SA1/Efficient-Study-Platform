@@ -79,6 +79,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'efficient_study_platform.wsgi.application'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
