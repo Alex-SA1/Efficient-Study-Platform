@@ -24,10 +24,10 @@
             </th>
         </tr>
         {% for task in tasks %}
-        <tr>
+        <tr id="task-{{ task.id }}">
             <td>{{task.title}}</td>
             <td>
-                <a id="task-{{ task.id }}" href="{% url 'task' task.id %}">View</a>
+                <a href="{% url 'task' task.id %}">View</a>
             </td>
 
             <td>
@@ -85,13 +85,19 @@
                         body: JSON.stringify({})
                     })
                         .then(response => response.json())
-                        .then(data =>
+                        .then(data => {
+                            const taskElementId = "task-" + taskId;
+                            const taskElement = document.getElementById(taskElementId);
+
+                            if (taskElement)
+                                taskElement.remove()
+
                             Swal.fire({
                                 title: "Deleted",
                                 text: "The task has been successfully deleted!",
                                 icon: "success"
                             })
-                        )
+                        })
                         .catch(
                             Swal.fire({
                                 title: "Oops...",
