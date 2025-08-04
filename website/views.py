@@ -290,12 +290,17 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     class responsible with the deletion of a task
     """
     model = Task
-    template_name = 'confirm_delete_task.html'
+
     context_object_name = 'task'
-    success_url = reverse_lazy('to-do-list')
 
     login_url = '/login'
     redirect_field_name = 'next'
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+
+        return JsonResponse({'message': 'Success!'})
 
     # overriding the dispatch method to make all pages that are containing information from other users unavailable for the current logged in user
     # if an user tries to acces other user information, denying his access and redirecting him back to a page that he has access to

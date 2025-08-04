@@ -27,7 +27,7 @@
         <tr>
             <td>{{task.title}}</td>
             <td>
-                <a href="{% url 'task' task.id %}">View</a>
+                <a id="task-{{ task.id }}" href="{% url 'task' task.id %}">View</a>
             </td>
 
             <td>
@@ -35,7 +35,10 @@
             </td>
 
             <td>
-                <a href="{% url 'delete-task' task.id %}">Delete</a>
+                <!-- <a href="{% url 'delete-task' task.id %}">Delete</a> -->
+                <button id="btnOpenDeleteTaskConfirmation" type="button" value="{% url 'delete-task' task.id %}"
+                    onclick="openDeleteTaskConfirmation('{{task.title}}', '{{task.id}}')"
+                    style="border: none; background: none; text-decoration: underline; ">Delete</button>
             </td>
         </tr>
         {% empty %}
@@ -43,4 +46,63 @@
         {% endfor %}
     </table>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function getCookieCSRFToken() {
+            const name = "csrftoken";
+            const cookies = document.cookie.split(';');
+
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    return cookie.substring(name.length + 1);
+                }
+            }
+            return null;
+        }
+
+        function openDeleteTaskConfirmation(taskTitle, taskId) {
+            const fetchURL = document.getElementById("btnOpenDeleteTaskConfirmation").value;
+            textTitle = "Are you sure you want to delete the task \"" + taskTitle + "\" ?";
+
+            Swal.fire({
+                title: textTitle,
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(fetchURL, {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookieCSRFToken(),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({})
+                    })
+                        .then(response => response.json())
+                        .then(data =>
+                            Swal.fire({
+                                title: "Deleted",
+                                text: "The task has been successfully deleted!",
+                                icon: "success"
+                            })
+                        )
+                        .catch(
+                            Swal.fire({
+                                title: "Oops...",
+                                text: "There was an error deleting the task!",
+                                icon: "error",
+                            })
+                        )
+                }
+            });
+        }
+    </script>
 </body>
+
+</html>
