@@ -20,7 +20,7 @@ urlpatterns = [
          TaskDelete.as_view(), name='delete-task'),
     path('send-verification-code/', views.send_verification_code,
          name='send_verification_code'),
-    path('error-404/', views.error_404, name='error_404'),
+    path('404/', views.error_404, name='error_404'),
     path('reset-password/', views.reset_password, name='reset_password'),
     path('main/my-account/', views.my_account, name='my_account'),
     path('main/edit-account/', views.edit_account, name='edit_account')

@@ -38,7 +38,7 @@ def error_404(request):
     """
     method that renders a error 404 page
     """
-    return render(request, 'error_404.html', {})
+    return render(request, '404.html', {})
 
 
 def login_user(request):
