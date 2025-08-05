@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
+
+body {
+    color: #e4e0f3;
+    text-rendering: optimizeLegibility;
+    font-weight: initial;
+    /* background-color: #1c1924; */
+    background: #110f16;
+}
+
+.header {
+    /* background: linear-gradient(180deg, #1c1924 0%, #252131 100%); */
+    background-color: #1c1924;
+    padding: 3rem 1rem;
+}
+
+.header .title-text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.btnCreateTask {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(145deg, #542c9f, #6545a1);
+    color: #e4e0f3;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+.btnCreateTask:hover {
+    color: #ffffff;
+    filter: brightness(1.1);
+    box-shadow: 0 6px 14px rgba(106, 72, 189, 0.35);
+}
+
+.btnCreateTask svg {
+    width: 18px;
+    height: 18px;
+}
+
+.filter-buttons .btn {
+    background-color: #2a2535;
+    border: 1px solid #3a3545;
+    color: #e4e0f3;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.filter-buttons .btn:hover,
+.filter-buttons .btn:focus {
+    background-color: #3c3650;
+    border-color: #5a4fa0;
+    color: #e4e0f3;
+}
+
+.filter-buttons .btn.active {
+    background-color: #5a4fa0;
+    border-color: #7a6ce0;
+    color: #e4e0f3;
+}
+
+.accordion-item {
+    background-color: #2a2535;
+    border: 1px solid #3a3545;
+    color: #e4e0f3;
+}
+
+.accordion-button {
+    background-color: #2a2535;
+    color: #e4e0f3;
+    transition: background-color 0.2s ease;
+}
+
+.accordion-button:hover {
+    background-color: #3c3650;
+    color: #e4e0f3;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #5a4fa0;
+    color: #e4e0f3;
+    box-shadow: none;
+}
+
+.accordion-body {
+    background-color: #241f30;
+    color: #d1cede;
+}
+
+.accordion-button::after {
+    filter: brightness(0.8);
+}

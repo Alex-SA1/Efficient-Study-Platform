@@ -8,14 +8,126 @@
     <title>Efficient Study</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href="{% static '/css/task_list.css' %}" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+
+
 </head>
 
 <body>
+    <div class="header w-100 d-flex flex-column align-items-center justify-content-center p-2">
+        <div class="title w-25 text-center mb-5">
+            <p class="title-text">Tasks</p>
+        </div>
+        <div class="button-section p-2">
+            <a href="{% url 'create-task' %}">
+                <button class="btn btnCreateTask" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                    Create
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="container p-4">
+        <div class="row justify-content-start">
+            <div class="col-12 col-md-4">
+                <h4 class="mb-4">Select Filter</h4>
 
-    <h1>TO-DO list</h1>
-    <a href="{% url 'create-task' %}">Add task</a>
+                <div class="filter-buttons d-flex flex-column">
+                    <button type="button" class="btn active">All</button>
+                    <button type="button" class="btn">Uncompleted</button>
+                    <button type="button" class="btn">Completed</button>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="accordion" id="accordionPanelsStayOpen">
+                    {% for task in tasks %}
+                    <div id="task-{{ task.id }}" class="accordion-item">
+                        <div class="accordion-header d-flex justify-content-between align-items-center w-100"
+                            id="panelsStayOpen-heading-{{task.id}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapse-{{task.id}}" aria-expanded="false"
+                                aria-controls="panelsStayOpen-collapse-{{task.id}}">
+                                <span class="me-auto">{{task.title}}</span>
 
-    <table>
+                                {% if task.is_complete %}
+                                <span class="d-flex align-items-center p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                        class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
+                                        <path
+                                            d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
+                                    </svg>
+                                </span>
+                                {% endif %}
+                            </button>
+
+                            <div class="accordion-actions d-flex align-items-center gap-4 me-3 ms-2">
+                                <a href="{% url 'update-task' task.id %}"
+                                    style="text-decoration: none; color: inherit;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                        class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path
+                                            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                                    </svg>
+                                </a>
+
+                                <button id="btnOpenDeleteTaskConfirmation" type="button"
+                                    value="{% url 'delete-task' task.id %}"
+                                    onclick="openDeleteTaskConfirmation('{{task.title}}', '{{task.id}}')"
+                                    style="border: none; background: none; color: white; ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                        class="bi bi-trash3" viewBox="0 0 16 16">
+                                        <path
+                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="panelsStayOpen-collapse-{{task.id}}" class="accordion-collapse collapse"
+                            aria-labelledby="panelsStayOpen-heading-{{task.id}}">
+                            <div class="accordion-body">
+                                {% if task.category %}
+                                <strong>Category:</strong>
+                                {{task.category}}
+                                <br><br>
+                                {% endif %}
+
+                                {% if task.description %}
+                                <strong>Description:</strong>
+                                <br>
+                                {{task.description}}
+                                <br><br>
+                                {% endif %}
+
+                                {% if task.deadline %}
+                                <strong>Deadline:</strong>
+                                {{task.deadline}}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <h3>No items in list</h3>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- <table>
         <tr>
             <th>
                 Item
@@ -36,8 +148,8 @@
             </td>
 
             <td>
-                <!-- <a href="{% url 'delete-task' task.id %}">Delete</a> -->
-                <button id="btnOpenDeleteTaskConfirmation" type="button" value="{% url 'delete-task' task.id %}"
+                <a href="{% url 'delete-task' task.id %}">Delete</a> -->
+    <!-- <button id="btnOpenDeleteTaskConfirmation" type="button" value="{% url 'delete-task' task.id %}"
                     onclick="openDeleteTaskConfirmation('{{task.title}}', '{{task.id}}')"
                     style="border: none; background: none; text-decoration: underline; ">Delete</button>
             </td>
@@ -45,7 +157,7 @@
         {% empty %}
         <h3>No items in list</h3>
         {% endfor %}
-    </table>
+    </table> -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{% static '/js/task_list.js' %}"></script>

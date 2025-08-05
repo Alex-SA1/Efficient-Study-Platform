@@ -22,7 +22,9 @@ function openDeleteTaskConfirmation(taskTitle, taskId) {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonText: "Yes, delete it!",
+        color: '#e4e0f3',
+        background: '#110f16'
     }).then((result) => {
         if (result.isConfirmed) {
             fetch(fetchURL, {
@@ -45,7 +47,9 @@ function openDeleteTaskConfirmation(taskTitle, taskId) {
                     Swal.fire({
                         title: "Deleted",
                         text: "The task has been successfully deleted!",
-                        icon: "success"
+                        icon: "success",
+                        color: '#e4e0f3',
+                        background: '#110f16'
                     })
                 })
                 .catch(
@@ -53,6 +57,8 @@ function openDeleteTaskConfirmation(taskTitle, taskId) {
                         title: "Oops...",
                         text: "There was an error deleting the task!",
                         icon: "error",
+                        color: '#e4e0f3',
+                        background: '#110f16'
                     })
                 )
         }
