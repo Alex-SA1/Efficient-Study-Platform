@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import TaskList, TaskDetail, TaskCreate, TaskUpdate, TaskDelete
+from .views import TaskList, TaskCreate, TaskUpdate, TaskDelete
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -11,7 +11,6 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('main/', views.main_page, name='main'),
     path('main/to-do-list/', TaskList.as_view(), name='to-do-list'),
-    path('main/to-do-list/task/<int:pk>/', TaskDetail.as_view(), name='task'),
     path('main/to-do-list/create-task/',
          TaskCreate.as_view(), name='create-task'),
     path('main/to-do-list/update-task/task/<int:pk>/',

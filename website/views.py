@@ -205,28 +205,6 @@ class TaskList(LoginRequiredMixin, ListView):
         # showing just the tasks that are created by the user logged in this session
         return Task.objects.filter(user=self.request.user)
 
-
-# class based view
-class TaskDetail(LoginRequiredMixin, DetailView):
-    """
-    class responsible with showing the details about a task
-    """
-    model = Task
-    template_name = 'task_detail.html'
-    context_object_name = 'task'
-
-    login_url = '/login'
-    redirect_field_name = 'next'
-
-    # overriding the dispatch method to make all pages that are containing information from other users unavailable for the current logged in user
-    # if an user tries to acces other user information, denying his access and redirecting him back to a page that he has access to
-    def dispatch(self, request, *args, **kwargs):
-        if self.get_object().user_id != request.user.id:
-            return redirect('/main/to-do-list')
-
-        return super().dispatch(request, *args, **kwargs)
-
-
 # class based view
 class TaskCreate(LoginRequiredMixin, CreateView):
     """

@@ -117,47 +117,12 @@
                         </div>
                     </div>
                     {% empty %}
-                    <h3>No items in list</h3>
+                    <h3>No tasks</h3>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-    <!-- <table>
-        <tr>
-            <th>
-                Item
-            </th>
-            <th>
-
-            </th>
-        </tr>
-        {% for task in tasks %}
-        <tr id="task-{{ task.id }}">
-            <td>{{task.title}}</td>
-            <td>
-                <a href="{% url 'task' task.id %}">View</a>
-            </td>
-
-            <td>
-                <a href="{% url 'update-task' task.id %}">Edit</a>
-            </td>
-
-            <td>
-                <a href="{% url 'delete-task' task.id %}">Delete</a> -->
-    <!-- <button id="btnOpenDeleteTaskConfirmation" type="button" value="{% url 'delete-task' task.id %}"
-                    onclick="openDeleteTaskConfirmation('{{task.title}}', '{{task.id}}')"
-                    style="border: none; background: none; text-decoration: underline; ">Delete</button>
-            </td>
-        </tr>
-        {% empty %}
-        <h3>No items in list</h3>
-        {% endfor %}
-    </table> -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{% static '/js/task_list.js' %}"></script>
