@@ -1,0 +1,60 @@
+function getCookieCSRFToken() {
+    const name = "csrftoken";
+    const cookies = document.cookie.split(';');
+
+    for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return null;
+}
+
+function openDeleteTaskConfirmation(taskTitle, taskId) {
+    const fetchURL = document.getElementById("btnOpenDeleteTaskConfirmation").value;
+    textTitle = "Are you sure you want to delete the task \"" + taskTitle + "\" ?";
+
+    Swal.fire({
+        title: textTitle,
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(fetchURL, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookieCSRFToken(),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const taskElementId = "task-" + taskId;
+                    const taskElement = document.getElementById(taskElementId);
+
+                    if (taskElement)
+                        taskElement.remove()
+
+                    Swal.fire({
+                        title: "Deleted",
+                        text: "The task has been successfully deleted!",
+                        icon: "success"
+                    })
+                })
+                .catch(
+                    Swal.fire({
+                        title: "Oops...",
+                        text: "There was an error deleting the task!",
+                        icon: "error",
+                    })
+                )
+        }
+    });
+}
