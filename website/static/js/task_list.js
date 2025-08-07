@@ -41,8 +41,17 @@ function openDeleteTaskConfirmation(taskTitle, taskId) {
                     const taskElementId = "task-" + taskId;
                     const taskElement = document.getElementById(taskElementId);
 
-                    if (taskElement)
-                        taskElement.remove()
+                    if (taskElement) {
+                        taskElement.remove();
+
+                        // check if the recently removed task was the last one
+                        const taskParentElement = document.getElementById('accordion');
+                        if (taskParentElement.querySelectorAll('div').length === 1) {
+                            // the only child div is the one hidden which contains the message for empty task list case
+                            const noTasksElement = document.getElementById('no-tasks');
+                            noTasksElement.style.display = 'block';
+                        }
+                    }
 
                     Swal.fire({
                         title: "Deleted",

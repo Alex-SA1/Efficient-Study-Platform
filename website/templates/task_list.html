@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-4">
-                <div class="accordion" id="accordionPanelsStayOpen">
+                <div id="accordion" class="accordion" id="accordionPanelsStayOpen">
                     {% for task in tasks %}
                     <div id="task-{{ task.id }}" class="accordion-item">
                         <div class="accordion-header d-flex justify-content-between align-items-center w-100"
@@ -125,9 +125,19 @@
                             </div>
                         </div>
                     </div>
-                    {% empty %}
-                    <h3>No tasks</h3>
                     {% endfor %}
+
+                    {% if tasks|length > 0 %}
+                    <div id="no-tasks" class="alert alert-info text-center mt-4" role="alert" style="display: none;
+                        background-color: #1c1924; margin: none; color: #e4e0f3; border: none;">
+                        <i class="bi bi-info-circle"></i> Nothing to show. Try adding some tasks!
+                    </div>
+                    {% else %}
+                    <div id="no-tasks" class="alert alert-info text-center mt-4" role="alert"
+                        style="background-color: #1c1924; margin: none; color: #e4e0f3; border: none;">
+                        <i class="bi bi-info-circle"></i> Nothing to show. Try adding some tasks!
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
