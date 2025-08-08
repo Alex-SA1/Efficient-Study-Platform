@@ -100,3 +100,26 @@ body {
 .accordion-button::after {
     filter: brightness(0.8);
 }
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.pagination .page-link {
+    background-color: transparent;
+    border: 1px solid #444;
+    color: #fff;
+}
+
+.pagination .page-link:hover {
+    background-color: #222;
+    color: #fff;
+}
+
+.pagination .active .page-link {
+    background-color: #444;
+    border-color: #666;
+    color: #fff;
+}

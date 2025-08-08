@@ -199,6 +199,13 @@ class TaskList(LoginRequiredMixin, ListView):
     login_url = '/login'
     redirect_field_name = 'next'
 
+    paginate_by = 8
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task_page'] = context['page_obj']
+        return context
+
     # overriding the get_queryset method so that for every user are shown just his tasks
     def get_queryset(self):
         # self.request.user is the logged in user from the current session
@@ -206,6 +213,8 @@ class TaskList(LoginRequiredMixin, ListView):
         return Task.objects.filter(user=self.request.user)
 
 # class based view
+
+
 class TaskCreate(LoginRequiredMixin, CreateView):
     """
     class responsible with the creation of a task

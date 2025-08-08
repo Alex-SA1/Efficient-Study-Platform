@@ -139,6 +139,51 @@
                     </div>
                     {% endif %}
                 </div>
+
+                <div class="pagination-container">
+                    <nav>
+                        <ul class="pagination">
+                            {% if task_page.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ task_page.previous_page_number }}">Previous</a>
+                            </li>
+                            {% endif %}
+
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ task_page.previous_page_number }}">
+                                    {{ task_page.previous_page_number }}</a>
+                            </li>
+                            {% endif %}
+
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ task_page.number }}"
+                                    style="background-color: #222;">{{ task_page.number }}</a>
+                            </li>
+
+                            {% if task_page.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ task_page.next_page_number }}">
+                                    {{ task_page.next_page_number }}</a>
+                            </li>
+                            {% endif %}
+
+
+                            {% if task_page.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ task_page.next_page_number }}">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ task_page.paginator.num_pages }}">Last</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+
             </div>
         </div>
     </div>
