@@ -201,6 +201,13 @@ class TaskList(LoginRequiredMixin, ListView):
 
     paginate_by = 8
 
+    def get(self, request, *args, **kwargs):
+        url_page_specifier = 'page'
+        if url_page_specifier not in request.GET:
+            # add default page number to url at first rendering
+            return redirect(f"{request.path}?page=1")
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['task_page'] = context['page_obj']
