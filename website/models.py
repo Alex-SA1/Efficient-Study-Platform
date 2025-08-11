@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary_storage.storage import MediaCloudinaryStorage
 from django.core.validators import FileExtensionValidator
+from django.db.models import F
 
 
 class UserProfile(models.Model):
@@ -40,4 +41,4 @@ class Task(models.Model):
     class Meta:
         # setting a priority to the tasks that are not completed yet
         # the tasks that are marked as completed will be shown in the bottom section of the tasks list
-        ordering = ['is_complete']
+        ordering = ['is_complete', F('deadline').asc(nulls_last=True)]
