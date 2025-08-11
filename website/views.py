@@ -203,9 +203,13 @@ class TaskList(LoginRequiredMixin, ListView):
 
     def get(self, request, *args, **kwargs):
         url_page_specifier = 'page'
-        if url_page_specifier not in request.GET:
+        query_dict = request.GET.copy()
+        if url_page_specifier not in query_dict:
             # add default page number to url at first rendering
-            return redirect(f"{request.path}?page=1")
+            # keeping all other query parameters
+            query_dict[url_page_specifier] = 1
+            return redirect(f"{request.path}?{query_dict.urlencode()}")
+
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -215,9 +219,14 @@ class TaskList(LoginRequiredMixin, ListView):
 
     # overriding the get_queryset method so that for every user are shown just his tasks
     def get_queryset(self):
-        # self.request.user is the logged in user from the current session
-        # showing just the tasks that are created by the user logged in this session
-        return Task.objects.filter(user=self.request.user)
+        queryset = Task.objects.filter(user=self.request.user)
+        filter = self.request.GET.get('filter')
+
+        if filter == "completed" or filter == "uncompleted":
+            is_complete_value = True if filter == "completed" else False
+            queryset = queryset.filter(is_complete=is_complete_value)
+
+        return queryset
 
 # class based view
 

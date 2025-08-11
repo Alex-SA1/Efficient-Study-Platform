@@ -50,11 +50,14 @@
                     <h4 class="mb-0">Select Filter</h4>
                 </div>
 
-                <div class="filter-buttons d-flex flex-column">
-                    <button type="button" class="btn active">All</button>
-                    <button type="button" class="btn">Uncompleted</button>
-                    <button type="button" class="btn">Completed</button>
-                </div>
+                <form method="GET">
+                    <div class="filter-buttons d-flex flex-column">
+                        <button type="submit" name="filter" class="btn" value="all">All</button>
+                        <button type="submit" name="filter" class="btn" value="uncompleted">Uncompleted</button>
+                        <button type="submit" name="filter" class="btn" value="completed">Completed</button>
+                    </div>
+                </form>
+
             </div>
             <div class="col-12 col-md-4">
                 <div id="accordion" class="accordion" id="accordionPanelsStayOpen">
@@ -145,28 +148,33 @@
                         <ul class="pagination">
                             {% if task_page.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?page=1">First</a>
+                                <a class="page-link"
+                                    href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1">First</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ task_page.previous_page_number }}">Previous</a>
+                                <a class="page-link"
+                                    href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ task_page.previous_page_number }}">Previous</a>
                             </li>
                             {% endif %}
 
                             {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ task_page.previous_page_number }}">
+                                <a class="page-link"
+                                    href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ task_page.previous_page_number }}">
                                     {{ task_page.previous_page_number }}</a>
                             </li>
                             {% endif %}
 
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ task_page.number }}"
+                                <a class="page-link"
+                                    href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ task_page.number }}"
                                     style="background-color: #222;">{{ task_page.number }}</a>
                             </li>
 
                             {% if task_page.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ task_page.next_page_number }}">
+                                <a class="page-link"
+                                    href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ task_page.next_page_number }}">
                                     {{ task_page.next_page_number }}</a>
                             </li>
                             {% endif %}
@@ -174,10 +182,12 @@
 
                             {% if task_page.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ task_page.next_page_number }}">Next</a>
+                                <a class="page-link"
+                                    href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ task_page.next_page_number }}">Next</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ task_page.paginator.num_pages }}">Last</a>
+                                <a class="page-link"
+                                    href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ task_page.paginator.num_pages }}">Last</a>
                             </li>
                             {% endif %}
                         </ul>
