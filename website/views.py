@@ -18,7 +18,7 @@ from django.http import JsonResponse
 import json
 from .utils import *
 from django.core.mail import send_mail
-from .decorators import login_required_restrictive
+from .decorators import login_required_restrictive, country_required
 from .decorators import ajax_request_required
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -228,6 +228,10 @@ class TaskList(LoginRequiredMixin, ListView):
 
         return queryset
 
+    @method_decorator(country_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 # class based view
 
 
@@ -253,6 +257,10 @@ class TaskCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+    @method_decorator(country_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 # class based view
@@ -283,6 +291,7 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
 
     # overriding the dispatch method to make all pages that are containing information from other users unavailable for the current logged in user
     # if an user tries to acces other user information, denying his access and redirecting him back to a page that he has access to
+    @method_decorator(country_required)
     def dispatch(self, request, *args, **kwargs):
         if self.get_object().user_id != request.user.id:
             return redirect('/main/to-do-list')
