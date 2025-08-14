@@ -92,47 +92,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="card dark">
-                    <div class="card-text">
-                        <h1 class="card-title blue"><a href="{% url 'to-do-list' %}">to-do list</a></h1>
-                        <div class="card-bar"></div>
-                        <div class="card-preview-txt">Here is your to-do app.<br>
-                            This is the place where you can add all activities that you have to
-                            do and mark them as completed when you finish them.
-                            <br>
-                            The purpose of this app is to help you managing your tasks so that you finish them
-                            at time and assuring you that you don't forget any of them.
-                        </div>
-                        <ul class="card-buttons">
-                            <li class="button play blue">
-                                <a href="{% url 'to-do-list' %}">enter
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" fill="currentColor"
-                                        class="bi bi-box-arrow-in-right" viewBox="0 0 17 17">
-                                        <path fill-rule="evenodd"
-                                            d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z" />
-                                        <path fill-rule="evenodd"
-                                            d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card dark">
-                    <div class="card-text">
-                        <h1 class="card-title blue"><a href="#">coming soon...</a></h1>
-                        <div class="card-subtitle small">
-                        </div>
-                        <div class="card-bar"></div>
-                        <div class="card-preview-txt"></div>
-                        <ul class="card-buttons">
-                            <li class="button play blue">
-                                <a href="#">Enter</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
 
+                    <div class="col">
+                        <div class="app-card h-100">
+                            <div class="app-card-body">
+                                <h5 class="app-card-title">to-do app</h5>
+                                {% if not user.user_profile.country %}
+                                <p class="app-card-text"><i>To be able to access this feature you need to have a
+                                        country selected</i></p>
+                                {% else %}
+                                <br>
+                                {% endif %}
+                                <a href="{% url 'to-do-list' %}" class="btn btn-primary">Open</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col">
+                        <div class="app-card h-100">
+                            <div class="app-card-body">
+                                <h5 class="app-card-title">coming soon...</h5>
+                                <p class="app-card-text"></p>
+                                <a href="#" class="btn btn-primary">Open</a>
+                            </div>
+                        </div>
+                    </div> -->
+
+                </div>
             </div>
         </section>
     </div>

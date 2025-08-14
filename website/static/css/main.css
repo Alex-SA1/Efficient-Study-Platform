@@ -29,10 +29,6 @@ a:hover {
         background-color: #18151f;
     }
 
-    &.light {
-        background-color: #e1e5ea;
-    }
-
     .t-dark {
         color: #18151f;
     }
@@ -185,4 +181,37 @@ a:hover {
     color: #fff;
     background-color: #131e26;
     border-color: #131e26
+}
+
+.app-card {
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #18151f;
+    border: 1px solid #18151f;
+    color: #f1f1f1;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.app-card .app-card-title {
+    color: #ffffff;
+}
+
+.app-card .app-card-text {
+    color: #a1a1b1;
+}
+
+.app-card .btn {
+    background: #5c5470;
+    border: none;
+    border-radius: 0.5rem;
+    color: #e4e0f3;
+}
+
+.app-card .btn:hover {
+    background: #6e6584;
 }
