@@ -119,6 +119,7 @@
                     </div> -->
 
                 </div>
+                {% if user.user_profile.country %}
                 <div class="mt-4 text-center" style="background-color: #18151f; border-radius: 10px;">
                     <div class="calendar-title pt-3" id="calendar-title">
                         <h4>deadlines calendar</h4>
@@ -135,6 +136,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </section>
     </div>
@@ -143,10 +145,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+    {% if user.user_profile.country %}
     <script>
         window.datetime = "{{ datetime|escapejs }}"
     </script>
     <script src="{% static '/js/deadlines_calendar.js' %}"></script>
+    {% endif %}
 </body>
 
 </html>
