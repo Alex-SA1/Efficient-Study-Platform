@@ -184,7 +184,8 @@ def main_page(request):
     """
     rendering the main page
     """
-    return render(request, 'main.html', {})
+    currentDatetime = timezone.localtime(timezone.now()).isoformat()
+    return render(request, 'main.html', {'datetime': currentDatetime})
 
 
 # class based view

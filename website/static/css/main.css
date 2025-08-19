@@ -20,7 +20,6 @@ a:hover {
     display: flex;
     box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
     border-radius: 10px;
-    margin: 0 0 2rem 0;
     overflow: hidden;
     position: relative;
     color: #ffffff;
@@ -214,4 +213,60 @@ a:hover {
 
 .app-card .btn:hover {
     background: #6e6584;
+}
+
+.deadlines-calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-x: auto;
+    padding: 20px;
+}
+
+.calendar {
+    display: flex;
+    gap: 3px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.month-labels {
+    display: flex;
+    margin-left: 30px;
+    margin-bottom: 5px;
+    color: #e4e0f3;
+}
+
+.weekday-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+    margin-right: 10px;
+    font-size: 12px;
+    color: #e4e0f3;
+}
+
+.month-label {
+    width: 40px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.day {
+    width: 12px;
+    height: 12px;
+    background-color: #e4e0f3;
+    border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+    .month-label {
+        font-size: 10px;
+        width: 40px;
+    }
 }
