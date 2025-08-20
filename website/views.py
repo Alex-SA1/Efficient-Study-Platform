@@ -184,8 +184,26 @@ def main_page(request):
     """
     rendering the main page
     """
+    tasks = Task.objects.filter(user=request.user)
+    deadline_freq = {}
+
+    for task in tasks:
+        if task.deadline is not None and task.is_complete == False:
+            # adjusting the deadline month to 0-indexed version of Javascript
+            deadline = str(timezone.localtime(task.deadline).year) + "-" + \
+                str(timezone.localtime(task.deadline).month - 1) + \
+                "-" + str(timezone.localtime(task.deadline).day)
+
+            if deadline in deadline_freq:
+                deadline_freq[deadline] += 1
+            else:
+                deadline_freq[deadline] = 1
+
     currentDatetime = timezone.localtime(timezone.now()).isoformat()
-    return render(request, 'main.html', {'datetime': currentDatetime})
+    return render(request, 'main.html', {
+        'datetime': currentDatetime,
+        'deadlines': deadline_freq
+    })
 
 
 # class based view

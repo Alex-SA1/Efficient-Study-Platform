@@ -2,6 +2,9 @@
     const calendar = document.getElementById('calendar');
     const calendarTitle = document.getElementById('calendar-title');
     const monthLabels = document.getElementById('month-labels');
+    const deadlinesFrequency = JSON.parse(
+        document.getElementById('deadlines-frequency-data').textContent
+    );
 
     let currentDatetime = window.datetime;
     const [date, time] = currentDatetime.split("T")
@@ -60,6 +63,17 @@
             const day = document.createElement('div');
             day.classList.add('day');
             column.appendChild(day);
+
+            const currentDate = currentYearStart.getFullYear() + "-" + currentYearStart.getMonth() + "-" + currentYearStart.getDate();
+            if (currentDate in deadlinesFrequency) {
+                const currentDeadlineFrequency = deadlinesFrequency[currentDate];
+                if (currentDeadlineFrequency === 1)
+                    day.classList.add('level-1');
+                else if (currentDeadlineFrequency <= 3)
+                    day.classList.add('level-2');
+                else
+                    day.classList.add('level-3');
+            }
 
             currentYearStart.setDate(currentYearStart.getDate() + 1);
         }

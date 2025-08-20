@@ -215,6 +215,11 @@ a:hover {
     background: #6e6584;
 }
 
+.deadlines-calendar-card {
+    background-color: #18151f;
+    border-radius: 10px;
+}
+
 .deadlines-calendar {
     display: flex;
     flex-direction: column;
@@ -262,6 +267,18 @@ a:hover {
     height: 12px;
     background-color: #e4e0f3;
     border-radius: 2px;
+}
+
+.level-1 {
+    background-color: #aed389;
+}
+
+.level-2 {
+    background-color: #5f7a43;
+}
+
+.level-3 {
+    background-color: #aa0b1d;
 }
 
 @media (max-width: 768px) {

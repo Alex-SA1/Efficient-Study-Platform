@@ -120,7 +120,7 @@
 
                 </div>
                 {% if user.user_profile.country %}
-                <div class="mt-4 text-center" style="background-color: #18151f; border-radius: 10px;">
+                <div class="deadlines-calendar-card mt-4 text-center">
                     <div class="calendar-title pt-3" id="calendar-title">
                         <h4>deadlines calendar</h4>
                     </div>
@@ -150,6 +150,7 @@
     <script>
         window.datetime = "{{ datetime|escapejs }}"
     </script>
+    {{ deadlines|json_script:"deadlines-frequency-data" }}
     <script src="{% static '/js/deadlines_calendar.js' %}"></script>
     {% endif %}
 </body>
