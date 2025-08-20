@@ -1,3 +1,58 @@
+function sendVerificationCode() {
+    var username = document.getElementById("username").value;
+    var email = document.getElementById("email").value;
+
+    if (!username || !email) {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Username or email is missing!",
+            color: '#e4e0f3',
+            background: '#110f16',
+            confirmButtonColor: '#5c5470'
+
+        });
+        return;
+    }
+
+    const sendVerificationCodeUrl = document.getElementById('register-page-main-script').dataset.sendVerificationCodeUrl;
+    const csrfToken = document.getElementById('register-page-main-script').dataset.csrfToken;
+
+    fetch(sendVerificationCodeUrl, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Requested-For': 'Registration'
+        },
+        body: JSON.stringify({ username, email })
+    })
+        .then(response => response.json())
+        .then(data =>
+            Swal.fire({
+                icon: "success",
+                title: "Verification code was sent successfully!",
+                showConfirmButton: false,
+                timer: 2200,
+                color: '#e4e0f3',
+                background: '#110f16'
+            })
+        )
+        .catch(err =>
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "There was an error sending the verification code!",
+                color: '#e4e0f3',
+                background: '#110f16',
+                showConfirmButton: false,
+                timer: 2500,
+            })
+        )
+
+}
+
 function showPassword(passwordInputFieldId, inputFieldSVGId) {
     var input = document.getElementById(passwordInputFieldId);
     if (input.type == "password") {
