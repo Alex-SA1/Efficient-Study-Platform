@@ -6,7 +6,7 @@
         document.getElementById('deadlines-frequency-data').textContent
     );
 
-    let currentDatetime = window.datetime;
+    let currentDatetime = document.currentScript.dataset.datetime;
     const [date, time] = currentDatetime.split("T")
     const [tmpYear, tmpMonth, tmpDay] = date.split("-").map(Number)
     // const [tmpHourString, tmpMinuteString, secondsExtended] = time.split(":")
