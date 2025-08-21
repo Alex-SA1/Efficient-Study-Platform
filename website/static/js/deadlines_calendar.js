@@ -60,11 +60,25 @@
                 break;
             }
 
-            const day = document.createElement('div');
+            let deadlineDate = currentYearStart.getFullYear() + "-";
+
+            if (currentYearStart.getMonth() + 1 < 10)
+                deadlineDate += "0" + (currentYearStart.getMonth() + 1) + "-";
+            else
+                deadlineDate += (currentYearStart.getMonth() + 1) + "-";
+
+            if (currentYearStart.getDate() < 10)
+                deadlineDate += "0" + currentYearStart.getDate();
+            else
+                deadlineDate += currentYearStart.getDate();
+
+            const day = document.createElement('a');
             day.classList.add('day');
+            day.href = document.currentScript.dataset.toDoListPageUrl + "?deadline=" + deadlineDate;
             column.appendChild(day);
 
             const currentDate = currentYearStart.getFullYear() + "-" + currentYearStart.getMonth() + "-" + currentYearStart.getDate();
+
             if (currentDate in deadlinesFrequency) {
                 const currentDeadlineFrequency = deadlinesFrequency[currentDate];
                 if (currentDeadlineFrequency === 1)

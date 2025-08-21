@@ -1,6 +1,9 @@
+from django.core.cache import cache
+from django.utils import timezone
+from .models import Task
+from django.db.models.query import QuerySet
 import string
 import random
-from django.core.cache import cache
 import json
 import pickle
 
@@ -60,3 +63,17 @@ def delete_verification_code(record_key: string):
         cache.delete(record_key)
     except:
         return
+
+
+def filter_tasks_by_deadline_date(tasks: QuerySet, deadline_date: string):
+    """
+    helper function that filters the tasks received as parameter by a given deadline date
+    """
+    filtered_tasks_pks = []
+
+    for task in tasks:
+        deadline_field = str(timezone.localtime(getattr(task, 'deadline')))
+        if deadline_date in deadline_field:
+            filtered_tasks_pks.append(task.pk)
+
+    return tasks.filter(pk__in=filtered_tasks_pks)

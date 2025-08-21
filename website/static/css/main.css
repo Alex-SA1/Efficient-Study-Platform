@@ -263,6 +263,7 @@ a:hover {
 }
 
 .day {
+    display: block;
     width: 12px;
     height: 12px;
     background-color: #e4e0f3;

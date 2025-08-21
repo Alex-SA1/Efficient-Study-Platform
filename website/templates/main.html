@@ -148,7 +148,8 @@
 
     {% if user.user_profile.country %}
     {{ deadlines|json_script:"deadlines-frequency-data" }}
-    <script src="{% static '/js/deadlines_calendar.js' %}" defer data-datetime="{{ datetime }}"></script>
+    <script src="{% static '/js/deadlines_calendar.js' %}" defer data-datetime="{{ datetime }}"
+        data-to-do-list-page-url="{% url 'to-do-list' %}"></script>
     {% endif %}
 </body>
 

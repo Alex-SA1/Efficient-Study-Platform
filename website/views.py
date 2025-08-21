@@ -239,6 +239,17 @@ class TaskList(LoginRequiredMixin, ListView):
     # overriding the get_queryset method so that for every user are shown just his tasks
     def get_queryset(self):
         queryset = Task.objects.filter(user=self.request.user)
+
+        if 'deadline' in self.request.GET:
+            deadline_date = self.request.GET.get('deadline')
+            # we have to show all uncompleted tasks that have the
+            # deadline date equal to the filter deadline date
+            # this filter allows only pagination (no other filters are allowed; if other filters are set, the deadline filter will be ignored)
+            queryset = queryset.filter(is_complete=False)
+            queryset = filter_tasks_by_deadline_date(queryset, deadline_date)
+
+            return queryset
+
         filter = self.request.GET.get('filter')
 
         if filter == "completed" or filter == "uncompleted":
