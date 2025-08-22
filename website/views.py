@@ -25,6 +25,7 @@ from .models import UserProfile
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from .forms import CreateTaskForm, UpdateTaskForm
+from django.core.cache import cache
 
 
 def home(request):
@@ -465,3 +466,53 @@ def edit_account(request):
         form = EditAccountForm()
 
     return render(request, 'edit_account.html', {'form': form})
+
+
+@login_required(login_url='login')
+def collaborative_study_session_menu(request):
+    """
+    rendering the template for collaborative study session menu page
+    """
+    return render(request, 'collaborative_study_session_menu.html', {})
+
+
+@login_required(login_url='login')
+def study_session(request, session_code):
+    """
+    rendering the template for study session page
+    """
+
+    if cache.get(session_code) is None:
+        return render(request, '404.html')
+
+    return render(request, 'study_session.html', {'session_code': session_code})
+
+
+@require_POST
+@csrf_protect
+@ajax_request_required
+def generate_study_session_code(request):
+    """
+    generate a random and unique code for a study session
+    """
+
+    if request.method == "POST":
+        letters = string.ascii_lowercase + string.ascii_uppercase
+
+        available_characters = list(letters)
+        random.shuffle(available_characters)
+
+        code_uniqueness = False
+        session_code = None
+        while code_uniqueness == False:
+            code = ""
+            for _ in range(12):
+                random_index = random.randint(0, len(available_characters) - 1)
+                code += available_characters[random_index]
+
+            if cache.get(code) is None:
+                cache.set(code, 1, timeout=None)
+                session_code = code
+                code_uniqueness = True
+
+        return JsonResponse({'study_session_code': session_code})

@@ -22,5 +22,11 @@ urlpatterns = [
     path('404/', views.error_404, name='error_404'),
     path('reset-password/', views.reset_password, name='reset_password'),
     path('main/my-account/', views.my_account, name='my_account'),
-    path('main/edit-account/', views.edit_account, name='edit_account')
+    path('main/edit-account/', views.edit_account, name='edit_account'),
+    path('main/collaborative-study-session-menu/',
+         views.collaborative_study_session_menu, name='collaborative_study_session_menu'),
+    path('main/collaborative-study-session-menu/study-session/<str:session_code>',
+         views.study_session, name='study_session'),
+    path('generate-study-session-code/', views.generate_study_session_code,
+         name='generate_study_session_code')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

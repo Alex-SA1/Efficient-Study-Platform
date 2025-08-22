@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,6 +78,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'efficient_study_platform.asgi.application'
 WSGI_APPLICATION = 'efficient_study_platform.wsgi.application'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -100,6 +102,15 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": env('REDIS_CACHE_LOCATION'),
     }
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
 
 
