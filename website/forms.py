@@ -5,6 +5,7 @@ from django import forms
 from .models import UserProfile, Task
 from .validators import *
 from django.utils import timezone
+import string
 
 
 class SignUpForm(UserCreationForm):
@@ -188,6 +189,45 @@ class UpdateTaskForm(forms.ModelForm):
             self.add_error(
                 "deadline", "The deadline selected represents a date from the past")
 
+            return None
+
+        return cleaned_data
+
+
+class JoinStudySessionForm(forms.Form):
+    """
+    class responsible with join study session form
+    """
+    session_code = forms.CharField(label="",
+                                   max_length=12,
+                                   widget=forms.TextInput(
+                                       attrs={'class': 'form-control',
+                                              'placeholder': 'Enter code...'}
+                                   ))
+
+    def __init__(self, *args, **kwargs):
+        super(JoinStudySessionForm, self).__init__(*args, *kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        session_code = cleaned_data.get("session_code")
+
+        if session_code is None or len(session_code) != 12:
+            self.add_error(
+                "session_code", "The session code must have the length equal to 12!")
+            return None
+
+        letters = string.ascii_lowercase + string.ascii_uppercase
+        valid = True
+        for character in session_code:
+            if character not in letters:
+                valid = False
+                break
+
+        if valid == False:
+            self.add_error(
+                "session_code", "The session code must contain only lowercase and uppercase letters!")
             return None
 
         return cleaned_data

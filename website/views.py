@@ -24,7 +24,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from .forms import CreateTaskForm, UpdateTaskForm
+from .forms import CreateTaskForm, UpdateTaskForm, JoinStudySessionForm
 from django.core.cache import cache
 
 
@@ -473,7 +473,22 @@ def collaborative_study_session_menu(request):
     """
     rendering the template for collaborative study session menu page
     """
-    return render(request, 'collaborative_study_session_menu.html', {})
+
+    if request.method == "POST":
+        form = JoinStudySessionForm(request.POST)
+        if form.is_valid():
+            session_code = form.cleaned_data['session_code']
+
+            if cache.get(session_code) is not None:
+                return redirect('study_session', session_code=session_code)
+            else:
+                messages.error(
+                    request, f"There is no active study session with the following session code: {session_code}")
+                return redirect('error_404')
+    else:
+        form = JoinStudySessionForm()
+
+    return render(request, 'collaborative_study_session_menu.html', {'form': form})
 
 
 @login_required(login_url='login')

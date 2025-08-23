@@ -20,12 +20,28 @@
                 <div class="custom-card text-center">
                     <h5>Enter Study Session Code</h5>
 
-                    <div class="mb-3 mt-4">
-                        <input id="sessionCode" type="text" class="form-control" placeholder="Enter code..." />
-                    </div>
-                    <button id="joinSessionBtn" type="button" class="btn custom-btn w-100"
-                        onclick="joinStudySession()">Join Study
-                        Session</button>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if form.errors %}
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            Form errors:
+                            {% for field in form %}
+                            {% if field.errors %}
+                            {{ field.errors }}
+                            {% endif %}
+                            {% endfor %}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+
+                            </button>
+                        </div>
+                        {% endif %}
+                        <div class="mb-3 mt-4">
+                            <input id="session_code" name="session_code" type="text" class="form-control"
+                                placeholder="Enter code..." />
+                        </div>
+                        <button type="submit" class="btn custom-btn w-100">Join Study
+                            Session</button>
+                    </form>
 
                 </div>
             </div>
@@ -49,6 +65,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script id="collaborative-study-session-menu-page-main-script"
         src="{% static '/js/collaborative_study_session.js' %}" defer
         data-generate-study-session-code-url="{% url 'generate_study_session_code' %}"
