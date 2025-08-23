@@ -498,6 +498,8 @@ def study_session(request, session_code):
     """
 
     if valid_study_session(session_code) == False:
+        messages.error(
+            request, f"There is no active study session with the following session code: {session_code}")
         return render(request, '404.html')
 
     return render(request, 'study_session.html', {'session_code': session_code})

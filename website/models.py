@@ -42,3 +42,23 @@ class Task(models.Model):
         # setting a priority to the tasks that are not completed yet
         # the tasks that are marked as completed will be shown in the bottom section of the tasks list
         ordering = ['is_complete', F('deadline').asc(nulls_last=True)]
+
+
+class StudySessionMessage(models.Model):
+    """
+    class responsible with the details about a message from a study session room
+    """
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=True
+    )
+    group_name = models.CharField(max_length=30, null=False, blank=True)
+    message_content = models.TextField(null=False, blank=True)
+    create = models.DateTimeField(
+        auto_now_add=True, null=False, blank=True
+    )
+
+    def __str__(self):
+        return self.message_content
+
+    class Meta:
+        ordering = ['create']
