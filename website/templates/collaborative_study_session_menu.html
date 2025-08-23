@@ -19,12 +19,14 @@
             <div class="col-12 col-md-5">
                 <div class="custom-card text-center">
                     <h5>Enter Study Session Code</h5>
-                    <form>
-                        <div class="mb-3 mt-4">
-                            <input type="text" class="form-control" placeholder="Enter code..." />
-                        </div>
-                        <button type="submit" class="btn custom-btn w-100">Join Study Session</button>
-                    </form>
+
+                    <div class="mb-3 mt-4">
+                        <input id="sessionCode" type="text" class="form-control" placeholder="Enter code..." />
+                    </div>
+                    <button id="joinSessionBtn" type="button" class="btn custom-btn w-100"
+                        onclick="joinStudySession()">Join Study
+                        Session</button>
+
                 </div>
             </div>
 
@@ -39,7 +41,6 @@
             </div>
         </div>
 
-        <!-- Go Back Button -->
         <div class="row justify-content-center mt-5">
             <div class="col-auto">
                 <a class="btn custom-btn" href="{% url 'main' %}">Exit</a>
