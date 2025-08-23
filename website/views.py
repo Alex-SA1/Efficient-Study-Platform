@@ -527,7 +527,7 @@ def generate_study_session_code(request):
                 random_index = random.randint(0, len(available_characters) - 1)
                 code += available_characters[random_index]
 
-            if valid_study_session(session_code) == False:
+            if valid_study_session(code) == False:
                 cache.set(code, 1, timeout=None)
                 session_code = code
                 code_uniqueness = True
