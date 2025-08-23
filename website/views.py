@@ -479,7 +479,7 @@ def collaborative_study_session_menu(request):
         if form.is_valid():
             session_code = form.cleaned_data['session_code']
 
-            if cache.get(session_code) is not None:
+            if valid_study_session(session_code) == True:
                 return redirect('study_session', session_code=session_code)
             else:
                 messages.error(
@@ -497,7 +497,7 @@ def study_session(request, session_code):
     rendering the template for study session page
     """
 
-    if cache.get(session_code) is None:
+    if valid_study_session(session_code) == False:
         return render(request, '404.html')
 
     return render(request, 'study_session.html', {'session_code': session_code})
@@ -525,7 +525,7 @@ def generate_study_session_code(request):
                 random_index = random.randint(0, len(available_characters) - 1)
                 code += available_characters[random_index]
 
-            if cache.get(code) is None:
+            if valid_study_session(session_code) == False:
                 cache.set(code, 1, timeout=None)
                 session_code = code
                 code_uniqueness = True

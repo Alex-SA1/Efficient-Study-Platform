@@ -77,3 +77,12 @@ def filter_tasks_by_deadline_date(tasks: QuerySet, deadline_date: string):
             filtered_tasks_pks.append(task.pk)
 
     return tasks.filter(pk__in=filtered_tasks_pks)
+
+
+def valid_study_session(session_code: string) -> bool:
+    """
+    helper function that checks if the given session code corresponds to a valid study session
+    returns True if there is a valid study session with the given code or False otherwise
+    """
+    
+    return cache.get(session_code) is not None
