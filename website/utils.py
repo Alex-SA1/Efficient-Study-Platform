@@ -119,3 +119,24 @@ def remove_user_from_study_session(session_code: string, username: string):
 
     users.remove(username)
     cache.set(session_code, users, timeout=None)
+
+
+def study_session_empty(session_code: string) -> bool:
+    """
+    helper function that checks if a study session is empty (if there are no users in session)
+    """
+    users = cache.get(session_code, [])
+
+    return len(users) == 0
+
+
+def remove_study_session(session_code: string):
+    """
+    helper function that removes a study session
+
+    precondition: the given session code corresponds to a valid study session
+    """
+    study_session_group_key = f"asgi:group:study_session_{session_code}"
+
+    cache.delete(session_code)
+    cache.delete(study_session_group_key)
