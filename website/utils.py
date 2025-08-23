@@ -106,7 +106,7 @@ def add_user_to_study_session(session_code: string, username: string):
     users = cache.get(session_code, [])
 
     users.append(username)
-    cache.set(session_code, users)
+    cache.set(session_code, users, timeout=None)
 
 
 def remove_user_from_study_session(session_code: string, username: string):
@@ -118,4 +118,4 @@ def remove_user_from_study_session(session_code: string, username: string):
     users = cache.get(session_code, [])
 
     users.remove(username)
-    cache.set(session_code, users)
+    cache.set(session_code, users, timeout=None)
