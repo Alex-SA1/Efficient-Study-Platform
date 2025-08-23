@@ -480,6 +480,7 @@ def collaborative_study_session_menu(request):
             session_code = form.cleaned_data['session_code']
 
             if valid_study_session(session_code) == True:
+                add_user_to_study_session(session_code, request.user.username)
                 return redirect('study_session', session_code=session_code)
             else:
                 messages.error(
@@ -528,7 +529,7 @@ def generate_study_session_code(request):
                 code += available_characters[random_index]
 
             if valid_study_session(code) == False:
-                cache.set(code, 1, timeout=None)
+                register_study_session(code, request.user.username)
                 session_code = code
                 code_uniqueness = True
 

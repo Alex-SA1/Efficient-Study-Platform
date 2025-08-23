@@ -84,5 +84,26 @@ def valid_study_session(session_code: string) -> bool:
     helper function that checks if the given session code corresponds to a valid study session
     returns True if there is a valid study session with the given code or False otherwise
     """
-    
+
     return cache.get(session_code) is not None
+
+
+def register_study_session(session_code: string, username: string):
+    """
+    helper function that registers in cache memory a study session
+
+    username: the username of the user that created the study session
+    """
+    cache.set(session_code, [username], timeout=None)
+
+
+def add_user_to_study_session(session_code: string, username: string):
+    """
+    helper function that adds a user to a study session
+
+    pre-condition: the given session code corresponds to a valid study session
+    """
+    users = cache.get(session_code, [])
+
+    users.append(username)
+    cache.set(session_code, users)
