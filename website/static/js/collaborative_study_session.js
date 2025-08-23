@@ -36,13 +36,3 @@ async function createStudySession() {
         return;
     }
 }
-
-function joinStudySession() {
-    const mainScript = document.getElementById('collaborative-study-session-menu-page-main-script');
-    const collaborativeStudySessionMenuUrl = mainScript.dataset.collaborativeStudySessionMenuUrl;
-    const sessionCode = document.getElementById('sessionCode').value;
-
-    const studySessionUrl = collaborativeStudySessionMenuUrl + "study-session/" + sessionCode;
-
-    window.location.href = studySessionUrl;
-}
