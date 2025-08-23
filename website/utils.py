@@ -101,9 +101,21 @@ def add_user_to_study_session(session_code: string, username: string):
     """
     helper function that adds a user to a study session
 
-    pre-condition: the given session code corresponds to a valid study session
+    precondition: the given session code corresponds to a valid study session
     """
     users = cache.get(session_code, [])
 
     users.append(username)
+    cache.set(session_code, users)
+
+
+def remove_user_from_study_session(session_code: string, username: string):
+    """
+    helper function that removes a user from a study session
+
+    precondition: the given session code corresponds to a valid study session
+    """
+    users = cache.get(session_code, [])
+
+    users.remove(username)
     cache.set(session_code, users)

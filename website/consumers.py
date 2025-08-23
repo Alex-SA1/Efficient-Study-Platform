@@ -4,6 +4,8 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import StudySessionMessage
+from asgiref.sync import sync_to_async
+from .utils import remove_user_from_study_session
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -18,6 +20,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.session_group_name, self.channel_name)
+        await sync_to_async(remove_user_from_study_session)(
+            self.session_code, self.user.username
+        )
 
     async def save_message(self, message):
         await database_sync_to_async(StudySessionMessage.objects.create)(
