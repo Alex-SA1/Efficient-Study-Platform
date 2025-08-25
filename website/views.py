@@ -503,6 +503,15 @@ def study_session(request, session_code):
             request, f"There is no active study session with the following session code: {session_code}")
         return render(request, '404.html')
 
+    if request.method == "POST":
+        remove_user_from_study_session(session_code, request.user.username)
+
+        is_study_session_empty = study_session_empty(session_code)
+        if is_study_session_empty == True:
+            remove_study_session(session_code)
+
+        return redirect('collaborative_study_session_menu')
+
     return render(request, 'study_session.html', {'session_code': session_code})
 
 

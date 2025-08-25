@@ -20,13 +20,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.session_group_name, self.channel_name)
-        await sync_to_async(remove_user_from_study_session)(
-            self.session_code, self.user.username
-        )
-
-        is_study_session_empty = await sync_to_async(study_session_empty)(self.session_code)
-        if is_study_session_empty == True:
-            await sync_to_async(remove_study_session)(self.session_code)
 
     async def save_message(self, message):
         await database_sync_to_async(StudySessionMessage.objects.create)(
