@@ -1,6 +1,6 @@
 from django.core.cache import cache
 from django.utils import timezone
-from .models import Task
+from .models import Task, StudySessionMessage
 from django.db.models.query import QuerySet
 import string
 import random
@@ -130,6 +130,14 @@ def study_session_empty(session_code: string) -> bool:
     return len(users) == 0
 
 
+def delete_study_session_chat_history(session_code: string):
+    """
+    helper function that deletes all messages saved for a study session chat
+    """
+    StudySessionMessage.objects.filter(
+        group_name=f"study_session_{session_code}").delete()
+
+
 def remove_study_session(session_code: string):
     """
     helper function that removes a study session
@@ -140,3 +148,4 @@ def remove_study_session(session_code: string):
 
     cache.delete(session_code)
     cache.delete(study_session_group_key)
+    delete_study_session_chat_history(session_code)
