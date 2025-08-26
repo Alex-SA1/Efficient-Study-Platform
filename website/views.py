@@ -26,6 +26,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from .forms import CreateTaskForm, UpdateTaskForm, JoinStudySessionForm
 from django.core.cache import cache
+from .serializers import StudySessionMessageSerializer
 
 
 def home(request):
@@ -512,7 +513,49 @@ def study_session(request, session_code):
 
         return redirect('collaborative_study_session_menu')
 
-    return render(request, 'study_session.html', {'session_code': session_code})
+    # fetching messages paginated
+    messages_page_size = 10
+    default_messages_page = 1
+    current_messages_page = int(request.GET.get(
+        'messages-page', default_messages_page))
+
+    messages_page_offset = (current_messages_page - 1) * messages_page_size
+
+    study_session_messages = StudySessionMessage.objects.filter(
+        group_name=f"study_session_{session_code}").order_by("-create")
+
+    loaded_messages = study_session_messages[messages_page_offset:
+                                             messages_page_offset + messages_page_size]
+
+    try:
+        next_unloaded_message = study_session_messages[messages_page_offset +
+                                                       messages_page_size]
+        has_next_messages_page = True
+    except IndexError:
+        next_unloaded_message = None
+        has_next_messages_page = False
+
+    loaded_messages = loaded_messages[::-1]
+    serialized_messages = StudySessionMessageSerializer(
+        loaded_messages, many=True)
+
+    # check if there was made an Ajax request
+    # all pages except the first one are sent via Json Response
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+
+        return JsonResponse({
+            'messages': serialized_messages.data,
+            'has_next_messages_page': has_next_messages_page,
+            'next_messages_page': current_messages_page + 1
+        })
+
+    # first messages page is sent in context data
+    return render(request, 'study_session.html', {
+        'session_code': session_code,
+        'messages': serialized_messages.data,
+        'has_next_messages_page': has_next_messages_page,
+        'next_messages_page': current_messages_page + 1
+    })
 
 
 @require_POST

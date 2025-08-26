@@ -17,6 +17,21 @@
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
 
+    <h1>chat history</h1>
+    <div id="messages">
+        {% for message in messages %}
+        <p>message sent by: {{ message.sender }}</p>
+        <p>message: {{ message.message_content }}</p>
+        <hr>
+        {% endfor %}
+
+    </div>
+
+    {% if has_next_messages_page %}
+    <button id="loadMoreBtn" data-study-session-url="{% url 'study_session' session_code %}"
+        data-next-messages-page="{{ next_messages_page }}">Load more</button>
+    {% endif %}
+
     <form method="POST">
         {% csrf_token %}
         <button type="submit" class="btn">Leave study session</button>

@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'website',
     'anymail',
     'cloudinary',
-    'cloudinary_storage'
+    'cloudinary_storage',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
