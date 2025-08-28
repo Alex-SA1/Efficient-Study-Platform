@@ -11,8 +11,8 @@ class UserProfile(models.Model):
     """
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=False, blank=True, related_name='user_profile')
-    country = models.CharField(max_length=60)
-    description = models.CharField(max_length=600)
+    country = models.CharField(max_length=60, null=True, blank=True)
+    description = models.CharField(max_length=600, null=True, blank=True)
     profile_picture = models.ImageField(
         storage=MediaCloudinaryStorage(),
         upload_to='profile_pictures/',
