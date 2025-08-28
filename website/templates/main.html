@@ -112,7 +112,12 @@
                         <div class="app-card h-100">
                             <div class="app-card-body">
                                 <h5 class="app-card-title">collaborative study session</h5>
+                                {% if not user.user_profile.country %}
+                                <p class="app-card-text"><i>To be able to access this feature you need to have a
+                                        country selected</i></p>
+                                {% else %}
                                 <br>
+                                {% endif %}
                                 <a href="{% url 'collaborative_study_session_menu' %}" class="btn btn-primary">Open</a>
                             </div>
                         </div>

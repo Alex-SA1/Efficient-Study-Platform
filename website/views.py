@@ -470,6 +470,7 @@ def edit_account(request):
 
 
 @login_required(login_url='login')
+@country_required
 def collaborative_study_session_menu(request):
     """
     rendering the template for collaborative study session menu page
@@ -494,6 +495,7 @@ def collaborative_study_session_menu(request):
 
 
 @login_required(login_url='login')
+@country_required
 def study_session(request, session_code):
     """
     rendering the template for study session page
