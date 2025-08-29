@@ -89,6 +89,19 @@ input.form-control.session-code::placeholder {
     color: #88829c;
 }
 
+.leave-study-session-btn {
+    border: none;
+    color: rgb(255, 101, 101);
+    background-color: #1e1b29;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.leave-study-session-btn:hover {
+    color: rgb(255, 101, 101);
+    background-color: rgba(94, 71, 158, 0.35);
+}
+
 .card {
     border: none;
     background: none;

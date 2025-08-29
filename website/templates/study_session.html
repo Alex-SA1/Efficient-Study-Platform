@@ -55,12 +55,14 @@
         </div>
 
 
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn">Leave study session</button>
-        </form>
+        <div class="leave-study-session-button-section d-flex justify-content-center p-2">
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn leave-study-session-btn">Leave study session</button>
+            </form>
+        </div>
 
-        <div class="row d-flex justify-content-center">
+        <div class="row d-flex justify-content-center mt-3">
             <div class="col-md-8 col-lg-6 col-xl-4">
 
                 <div class="card">
