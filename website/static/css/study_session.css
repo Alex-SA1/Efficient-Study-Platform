@@ -26,6 +26,69 @@ body {
     background-color: #6f4ded;
 }
 
+.btn-show-modal {
+    border: none;
+    color: #c7bfff;
+    background-color: #1e1b29;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.modal-content {
+    background-color: #131119;
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-footer {
+    border: none;
+}
+
+.btn-close {
+    color: white;
+}
+
+.close-modal-btn {
+    color: #e4e0f3;
+    background-color: rgba(127, 95, 215, 0.35);
+}
+
+.close-modal-btn:hover {
+    background-color: rgba(157, 129, 234, 0.35);
+}
+
+.copy-to-clipboard-btn {
+    color: #e4e0f3;
+    background-color: rgba(127, 95, 215, 0.35);
+}
+
+.copy-to-clipboard-btn:hover {
+    background-color: rgba(157, 129, 234, 0.35);
+}
+
+input.form-control.session-code {
+    font-size: 1.3rem;
+    background: #332e41;
+    border-color: #7f5fd7;
+    box-shadow: 0 0 0 3px rgba(127, 95, 215, 0.35);
+    outline: none;
+    color: #e4e0f3;
+}
+
+input.form-control.session-code:focus {
+    background: #332e41;
+    border-color: #7f5fd7;
+    box-shadow: 0 0 0 3px rgba(127, 95, 215, 0.35);
+    outline: none;
+    color: #e4e0f3;
+}
+
+input.form-control.session-code::placeholder {
+    color: #88829c;
+}
+
 .card {
     border: none;
     background: none;
@@ -89,12 +152,12 @@ input.form-control:focus {
     background-color: #1c1925
 }
 
-.btnSubmitMessage {
+.submit-message-btn {
     color: #e4e0f3;
     background-color: #4f36b2;
 }
 
-.btnSubmitMessage:hover {
+.submit-message-btn:hover {
     color: #e4e0f3;
     background-color: #654ccb;
 }

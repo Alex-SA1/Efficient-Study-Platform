@@ -103,6 +103,11 @@ function setChatBoxScrollbarToBottom() {
     chatBoxElement.scrollTop = chatBoxElement.scrollHeight;
 }
 
+function copyToClipboard() {
+    const textElement = document.querySelector('.form-control.session-code');
+    navigator.clipboard.writeText(textElement.value);
+}
+
 (() => {
     const sessionCode = document.currentScript.dataset.sessionCode;
 
