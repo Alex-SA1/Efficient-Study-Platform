@@ -156,40 +156,43 @@ function setChatBoxScrollbarToBottom() {
 
     setChatBoxScrollbarToBottom();
 
-    document.getElementById('loadMoreBtn').addEventListener('click', (event) => {
-        const nextMessagesPage = event.target.dataset.nextMessagesPage;
-        const studySessionUrl = event.target.dataset.studySessionUrl;
-        const nextMessagesPageQueryUrl = studySessionUrl + "?messages-page=" + nextMessagesPage;
+    const loadMoreBtnElement = document.getElementById('loadMoreBtn');
+    if (loadMoreBtnElement !== null) {
+        loadMoreBtnElement.addEventListener('click', (event) => {
+            const nextMessagesPage = event.target.dataset.nextMessagesPage;
+            const studySessionUrl = event.target.dataset.studySessionUrl;
+            const nextMessagesPageQueryUrl = studySessionUrl + "?messages-page=" + nextMessagesPage;
 
 
-        fetch(nextMessagesPageQueryUrl, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                const chatBoxElement = document.getElementById('chatBox');
-                const lastChatBoxMessage = chatBoxElement.firstChild.nextSibling.nextSibling.nextSibling;
-
-                for (let messageIndex = 0; messageIndex < data.messages.length; messageIndex++) {
-                    const message = data.messages[messageIndex];
-
-                    const messageHeader = createMessageHeader(message.datetime, message.sender);
-                    const messageBody = createMessageBody(message.message_content, message.sender, message.profile_picture_url);
-
-                    chatBoxElement.insertBefore(messageHeader, lastChatBoxMessage);
-
-                    chatBoxElement.insertBefore(messageBody, lastChatBoxMessage);
-
+            fetch(nextMessagesPageQueryUrl, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const chatBoxElement = document.getElementById('chatBox');
+                    const lastChatBoxMessage = chatBoxElement.firstChild.nextSibling.nextSibling.nextSibling;
 
-                if (data.has_next_messages_page) {
-                    event.target.dataset.nextMessagesPage = data.next_messages_page;
-                } else {
-                    event.target.remove();
-                }
-            });
-    });
+                    for (let messageIndex = 0; messageIndex < data.messages.length; messageIndex++) {
+                        const message = data.messages[messageIndex];
+
+                        const messageHeader = createMessageHeader(message.datetime, message.sender);
+                        const messageBody = createMessageBody(message.message_content, message.sender, message.profile_picture_url);
+
+                        chatBoxElement.insertBefore(messageHeader, lastChatBoxMessage);
+
+                        chatBoxElement.insertBefore(messageBody, lastChatBoxMessage);
+
+                    }
+
+                    if (data.has_next_messages_page) {
+                        event.target.dataset.nextMessagesPage = data.next_messages_page;
+                    } else {
+                        event.target.remove();
+                    }
+                });
+        });
+    }
 })();
 
