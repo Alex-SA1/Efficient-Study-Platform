@@ -108,6 +108,189 @@ function copyToClipboard() {
     navigator.clipboard.writeText(textElement.value);
 }
 
+function updatePomodoroTimerCircleProgress(progressPercentage) {
+    const circleProgress = document.getElementById("circle-progress");
+
+    const dashArrayValue = (progressPercentage / 100) * 314;
+
+    circleProgress.setAttribute('stroke-dasharray', `${dashArrayValue}, 314`);
+    circleProgress.setAttribute('data-progress', progressPercentage);
+
+    // 25min = 1500seconds
+    // 1second = 0,06666666666666666666666666666667% from 25min 
+
+    return progressPercentage + 0.06666666666666666666666666666667;
+}
+
+function switchPomodoroTimerMode(pomodoroCycle) {
+    const pomodoroTimerModeElement = document.getElementById('pomodoro-timer-mode');
+    let mode = pomodoroTimerModeElement.textContent;
+
+    if (mode === "Long Break") {
+        mode = "Finished";
+
+        Swal.fire({
+            icon: "info",
+            title: "The Pomodoro Session is done!",
+            showConfirmButton: false,
+            timer: 2600,
+            color: '#e4e0f3',
+            background: '#110f16'
+        });
+
+        return mode;
+    }
+    else if (pomodoroCycle === 4 && mode === "Short Break") {
+        mode = "Long Break";
+
+        Swal.fire({
+            icon: "info",
+            title: "All Pomodoro Cycles are done! Take a well deserved long break!",
+            showConfirmButton: false,
+            timer: 2200,
+            color: '#e4e0f3',
+            background: '#110f16'
+        });
+
+        const pomodoroTimerCycleElement = document.getElementById('pomodoro-timer-cycle');
+        pomodoroTimerCycleElement.textContent = `All cycles are done`;
+    }
+    else if (mode === "Work") {
+        mode = "Short Break"
+
+        Swal.fire({
+            icon: "info",
+            title: "Let's take a short break!",
+            showConfirmButton: false,
+            timer: 2200,
+            color: '#e4e0f3',
+            background: '#110f16'
+        });
+    }
+    else if (mode === "Short Break") {
+        mode = "Work";
+
+        Swal.fire({
+            icon: "info",
+            title: "It's time to go back to work!",
+            showConfirmButton: false,
+            timer: 2200,
+            color: '#e4e0f3',
+            background: '#110f16'
+        });
+
+        const pomodoroTimerCycleElement = document.getElementById('pomodoro-timer-cycle');
+        pomodoroTimerCycleElement.textContent = `Cycle ${pomodoroCycle + 1}`;
+    }
+
+    pomodoroTimerModeElement.textContent = mode;
+    return mode;
+}
+
+function updatePomodoroTimerTimeValue(cycle) {
+    const pomodoroTimerMinutesElement = document.getElementById('pomodoro-timer-minutes');
+    const pomodoroTimerSecondsElement = document.getElementById('pomodoro-timer-seconds')
+
+    let minutes = Number(pomodoroTimerMinutesElement.textContent)
+    let seconds = Number(pomodoroTimerSecondsElement.textContent);
+
+    if (minutes === 0 && seconds === 0) {
+        const timerMode = switchPomodoroTimerMode(cycle);
+
+        switch (timerMode) {
+            case "Work":
+                cycle += 1;
+                minutes = 25;
+                seconds = 0;
+                break;
+            case "Short Break":
+                minutes = 5;
+                seconds = 0;
+                break;
+            case "Long Break":
+                minutes = 20;
+                seconds = 0;
+                break;
+            default:
+                cycle = -1;
+        }
+
+        if (cycle === -1)
+            return cycle;
+    }
+    else if (seconds === 0) {
+        minutes -= 1;
+        seconds = 59;
+    }
+    else {
+        seconds -= 1;
+    }
+
+    if (minutes < 10)
+        pomodoroTimerMinutesElement.textContent = `0${minutes}`;
+    else
+        pomodoroTimerMinutesElement.textContent = minutes;
+
+
+    if (seconds < 10)
+        pomodoroTimerSecondsElement.textContent = `0${seconds}`;
+    else
+        pomodoroTimerSecondsElement.textContent = seconds;
+
+    return cycle;
+}
+
+function resetPomodoroTimerTimeValue() {
+    const pomodoroTimerMinutesElement = document.getElementById('pomodoro-timer-minutes');
+    const pomodoroTimerSecondsElement = document.getElementById('pomodoro-timer-seconds')
+
+    pomodoroTimerMinutesElement.textContent = "25";
+    pomodoroTimerSecondsElement.textContent = "00";
+}
+
+function initializePomodoroSession() {
+    let progressPercentage = 0;
+    let intervalId = 0;
+    let cycle = 1;
+
+    function resetPomodoroTimer() {
+        clearInterval(intervalId);
+        intervalId = 0;
+
+        progressPercentage = 0;
+        updatePomodoroTimerCircleProgress(progressPercentage);
+
+        resetPomodoroTimerTimeValue();
+
+        cycle = 1;
+
+        const pomodoroTimerCycleElement = document.getElementById('pomodoro-timer-cycle');
+        pomodoroTimerCycleElement.textContent = "Cycle 1";
+
+        const pomodoroTimerModeElement = document.getElementById('pomodoro-timer-mode');
+        pomodoroTimerModeElement.textContent = "Work";
+    }
+
+    function startPomodoroTimer() {
+        intervalId = setInterval(() => {
+            progressPercentage = updatePomodoroTimerCircleProgress(progressPercentage);
+            cycle = updatePomodoroTimerTimeValue(cycle);
+
+            if (cycle === -1)
+                resetPomodoroTimer();
+
+        }, 1000)
+    }
+
+    function stopPomodoroTimer() {
+        clearInterval(intervalId);
+    }
+
+    document.getElementById('btnStartPomodoroTimer').addEventListener('click', startPomodoroTimer);
+    document.getElementById('btnStopPomodoroTimer').addEventListener('click', stopPomodoroTimer);
+    document.getElementById('btnResetPomodoroTimer').addEventListener('click', resetPomodoroTimer);
+}
+
 (() => {
     const sessionCode = document.currentScript.dataset.sessionCode;
 
@@ -199,5 +382,8 @@ function copyToClipboard() {
                 });
         });
     }
+
+    initializePomodoroSession();
+
 })();
 

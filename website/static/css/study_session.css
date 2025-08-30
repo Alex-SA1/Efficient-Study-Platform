@@ -178,3 +178,63 @@ input.form-control:focus {
 .card-footer {
     background-color: #131119;
 }
+
+.container.pomodoro-timer {
+    background-color: #18151f;
+    border-radius: 10px;
+}
+
+.pomodoro-timer-cycle {
+    color: #c7bfff;
+    margin-bottom: 0;
+}
+
+.pomodoro-timer-mode {
+    color: #c7bfff;
+}
+
+.progress-circle {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.circle-background,
+.circle-progress {
+    fill: none;
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.circle-background {
+    stroke: #b09feb;
+}
+
+.circle-progress {
+    stroke: #4f36b2;
+    transition: stroke-dasharray 1s ease;
+}
+
+.circle-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+    stroke: #e4e0f3;
+}
+
+.control-btn {
+    font-size: 0.9rem;
+    color: #e4e0f3;
+    background-color: #4f36b2;
+}
+
+.control-btn:hover {
+    color: #e4e0f3;
+    background-color: #654ccb;
+}

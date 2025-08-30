@@ -15,7 +15,7 @@
 
 <body>
 
-    <div class="container pt-1 pb-5">
+    <div class="container content pt-1 pb-5">
         <div class="show-modal-button-section w-100 d-flex justify-content-center">
             <button type="button" class="btn-show-modal" data-bs-toggle="modal" data-bs-target="#study-session-code">
                 Show Study Session Code
@@ -62,9 +62,36 @@
             </form>
         </div>
 
-        <div class="row d-flex justify-content-center mt-3">
-            <div class="col-md-8 col-lg-6 col-xl-4">
+        <div class="row d-flex justify-content-center mt-5">
+            <div class="col-xl-6 col-md-6 col-sm-12">
+                <div class="container pomodoro-timer text-center p-5">
+                    <h4>Pomodoro Timer</h4>
+                    <p id="pomodoro-timer-cycle" class="pomodoro-timer-cycle fs-6">Cycle 1</p>
+                    <p id="pomodoro-timer-mode" class="pomodoro-timer-mode fs-6">Work</p>
 
+                    <div class="progress-circle-section">
+                        <svg class="progress-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+                            <circle class="circle-background" cx="60" cy="60" r="50"></circle>
+
+                            <circle id="circle-progress" class="circle-progress" cx="60" cy="60" r="50"
+                                stroke-dasharray="0, 314" data-progress="0"></circle>
+
+                            <text class="circle-text" id="pomodoro-timer-minutes" x="120" y="110" text-anchor="middle"
+                                alignment-baseline="middle">25</text>
+
+                            <text class="circle-text" id="pomodoro-timer-seconds" x="120" y="130" text-anchor="middle"
+                                alignment-baseline="middle">00</text>
+                        </svg>
+                    </div>
+
+                    <div class="pomodoro-timer-buttons mt-3">
+                        <button id="btnStartPomodoroTimer" type="button" class="btn control-btn start">Start</button>
+                        <button id="btnStopPomodoroTimer" type="button" class="btn control-btn stop">Stop</button>
+                        <button id="btnResetPomodoroTimer" type="button" class="btn control-btn reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-6 col-sm-12 mt-3 mt-xl-0 mt-md-0">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center p-3">
                         <h5 class="mb-0">Chat</h5>
@@ -131,6 +158,7 @@
 
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
