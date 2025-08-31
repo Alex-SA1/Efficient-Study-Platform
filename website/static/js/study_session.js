@@ -108,7 +108,7 @@ function copyToClipboard() {
     navigator.clipboard.writeText(textElement.value);
 }
 
-function updatePomodoroTimerCircleProgress(progressPercentage) {
+function updatePomodoroTimerCircleProgress(progressPercentage, timeMinutes) {
     const circleProgress = document.getElementById("circle-progress");
 
     const dashArrayValue = (progressPercentage / 100) * 314;
@@ -116,15 +116,16 @@ function updatePomodoroTimerCircleProgress(progressPercentage) {
     circleProgress.setAttribute('stroke-dasharray', `${dashArrayValue}, 314`);
     circleProgress.setAttribute('data-progress', progressPercentage);
 
-    // 25min = 1500seconds
-    // 1second = 0,06666666666666666666666666666667% from 25min 
+    let timeSeconds = timeMinutes * 60;
+    let percentage = 100 / timeSeconds;
 
-    return progressPercentage + 0.06666666666666666666666666666667;
+    return progressPercentage + percentage;
 }
 
 function switchPomodoroTimerMode(pomodoroCycle) {
     const pomodoroTimerModeElement = document.getElementById('pomodoro-timer-mode');
     let mode = pomodoroTimerModeElement.textContent;
+    let modeTime = 0;
 
     if (mode === "Long Break") {
         mode = "Finished";
@@ -138,10 +139,11 @@ function switchPomodoroTimerMode(pomodoroCycle) {
             background: '#110f16'
         });
 
-        return mode;
+        return [mode, modeTime];
     }
     else if (pomodoroCycle === 4 && mode === "Short Break") {
         mode = "Long Break";
+        modeTime = 20;
 
         Swal.fire({
             icon: "info",
@@ -157,6 +159,7 @@ function switchPomodoroTimerMode(pomodoroCycle) {
     }
     else if (mode === "Work") {
         mode = "Short Break"
+        modeTime = 5;
 
         Swal.fire({
             icon: "info",
@@ -169,6 +172,7 @@ function switchPomodoroTimerMode(pomodoroCycle) {
     }
     else if (mode === "Short Break") {
         mode = "Work";
+        modeTime = 25;
 
         Swal.fire({
             icon: "info",
@@ -184,10 +188,10 @@ function switchPomodoroTimerMode(pomodoroCycle) {
     }
 
     pomodoroTimerModeElement.textContent = mode;
-    return mode;
+    return [mode, modeTime];
 }
 
-function updatePomodoroTimerTimeValue(cycle) {
+function updatePomodoroTimerTimeValue(cycle, progressPercentage, timerTime) {
     const pomodoroTimerMinutesElement = document.getElementById('pomodoro-timer-minutes');
     const pomodoroTimerSecondsElement = document.getElementById('pomodoro-timer-seconds')
 
@@ -195,21 +199,25 @@ function updatePomodoroTimerTimeValue(cycle) {
     let seconds = Number(pomodoroTimerSecondsElement.textContent);
 
     if (minutes === 0 && seconds === 0) {
-        const timerMode = switchPomodoroTimerMode(cycle);
+        let timerMode = "";
+        [timerMode, timerTime] = switchPomodoroTimerMode(cycle);
 
         switch (timerMode) {
             case "Work":
                 cycle += 1;
                 minutes = 25;
                 seconds = 0;
+                progressPercentage = 0;
                 break;
             case "Short Break":
                 minutes = 5;
                 seconds = 0;
+                progressPercentage = 0;
                 break;
             case "Long Break":
                 minutes = 20;
                 seconds = 0;
+                progressPercentage = 0;
                 break;
             default:
                 cycle = -1;
@@ -237,7 +245,7 @@ function updatePomodoroTimerTimeValue(cycle) {
     else
         pomodoroTimerSecondsElement.textContent = seconds;
 
-    return cycle;
+    return [cycle, progressPercentage, timerTime];
 }
 
 function resetPomodoroTimerTimeValue() {
@@ -252,6 +260,7 @@ function initializePomodoroSession() {
     let progressPercentage = 0;
     let intervalId = 0;
     let cycle = 1;
+    let timerTime = 25;
 
     function resetPomodoroTimer() {
         clearInterval(intervalId);
@@ -273,8 +282,8 @@ function initializePomodoroSession() {
 
     function startPomodoroTimer() {
         intervalId = setInterval(() => {
-            progressPercentage = updatePomodoroTimerCircleProgress(progressPercentage);
-            cycle = updatePomodoroTimerTimeValue(cycle);
+            progressPercentage = updatePomodoroTimerCircleProgress(progressPercentage, timerTime);
+            [cycle, progressPercentage, timerTime] = updatePomodoroTimerTimeValue(cycle, progressPercentage, timerTime);
 
             if (cycle === -1)
                 resetPomodoroTimer();
