@@ -267,7 +267,8 @@ function initializePomodoroSession() {
         intervalId = 0;
 
         progressPercentage = 0;
-        updatePomodoroTimerCircleProgress(progressPercentage);
+        timerTime = 25;
+        updatePomodoroTimerCircleProgress(progressPercentage, timerTime);
 
         resetPomodoroTimerTimeValue();
 
