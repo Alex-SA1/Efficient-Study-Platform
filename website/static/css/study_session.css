@@ -238,3 +238,22 @@ input.form-control:focus {
     color: #e4e0f3;
     background-color: #654ccb;
 }
+
+.pomodoro-timer-settings-btn {
+    border: none;
+    background: none;
+    color: white;
+}
+
+.form-control.pomodoro-timer-settings {
+    background: #2a2633;
+    border-color: #444;
+    padding: 7px 9px;
+    font-size: 17px;
+    transition: all 0.2s ease;
+    color: #e4e0f3;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px
+}

@@ -122,7 +122,7 @@ function updatePomodoroTimerCircleProgress(progressPercentage, timeMinutes) {
     return progressPercentage + percentage;
 }
 
-function switchPomodoroTimerMode(pomodoroCycle) {
+function switchPomodoroTimerMode(workTime, shortBreakTime, longBreakTime, pomodoroCycle) {
     const pomodoroTimerModeElement = document.getElementById('pomodoro-timer-mode');
     let mode = pomodoroTimerModeElement.textContent;
     let modeTime = 0;
@@ -143,7 +143,7 @@ function switchPomodoroTimerMode(pomodoroCycle) {
     }
     else if (pomodoroCycle === 4 && mode === "Short Break") {
         mode = "Long Break";
-        modeTime = 20;
+        modeTime = longBreakTime;
 
         Swal.fire({
             icon: "info",
@@ -159,7 +159,7 @@ function switchPomodoroTimerMode(pomodoroCycle) {
     }
     else if (mode === "Work") {
         mode = "Short Break"
-        modeTime = 5;
+        modeTime = shortBreakTime;
 
         Swal.fire({
             icon: "info",
@@ -172,7 +172,7 @@ function switchPomodoroTimerMode(pomodoroCycle) {
     }
     else if (mode === "Short Break") {
         mode = "Work";
-        modeTime = 25;
+        modeTime = workTime;
 
         Swal.fire({
             icon: "info",
@@ -191,7 +191,7 @@ function switchPomodoroTimerMode(pomodoroCycle) {
     return [mode, modeTime];
 }
 
-function updatePomodoroTimerTimeValue(cycle, progressPercentage, timerTime) {
+function updatePomodoroTimerTimeValue(workTime, shortBreakTime, longBreakTime, cycle, progressPercentage, timerTime) {
     const pomodoroTimerMinutesElement = document.getElementById('pomodoro-timer-minutes');
     const pomodoroTimerSecondsElement = document.getElementById('pomodoro-timer-seconds')
 
@@ -200,22 +200,22 @@ function updatePomodoroTimerTimeValue(cycle, progressPercentage, timerTime) {
 
     if (minutes === 0 && seconds === 0) {
         let timerMode = "";
-        [timerMode, timerTime] = switchPomodoroTimerMode(cycle);
+        [timerMode, timerTime] = switchPomodoroTimerMode(workTime, shortBreakTime, longBreakTime, cycle);
 
         switch (timerMode) {
             case "Work":
                 cycle += 1;
-                minutes = 25;
+                minutes = workTime;
                 seconds = 0;
                 progressPercentage = 0;
                 break;
             case "Short Break":
-                minutes = 5;
+                minutes = shortBreakTime;
                 seconds = 0;
                 progressPercentage = 0;
                 break;
             case "Long Break":
-                minutes = 20;
+                minutes = longBreakTime;
                 seconds = 0;
                 progressPercentage = 0;
                 break;
@@ -248,11 +248,15 @@ function updatePomodoroTimerTimeValue(cycle, progressPercentage, timerTime) {
     return [cycle, progressPercentage, timerTime];
 }
 
-function resetPomodoroTimerTimeValue() {
+function resetPomodoroTimerTimeValue(time) {
     const pomodoroTimerMinutesElement = document.getElementById('pomodoro-timer-minutes');
     const pomodoroTimerSecondsElement = document.getElementById('pomodoro-timer-seconds')
 
-    pomodoroTimerMinutesElement.textContent = "25";
+    if (time < 10)
+        pomodoroTimerMinutesElement.textContent = `0${time}`;
+    else
+        pomodoroTimerMinutesElement.textContent = time;
+
     pomodoroTimerSecondsElement.textContent = "00";
 }
 
@@ -260,20 +264,24 @@ function initializePomodoroSession() {
     let progressPercentage = 0;
     let intervalId = 0;
     let cycle = 1;
-    let timerTime = 25;
+    let workTime = 25, shortBreakTime = 5, longBreakTime = 20;
+    let timerTime = workTime;
 
-    function resetPomodoroTimer() {
+    function stopPomodoroTimer() {
         clearInterval(intervalId);
         intervalId = 0;
+    }
+
+    function resetPomodoroTimer() {
+        stopPomodoroTimer();
 
         progressPercentage = 0;
-        timerTime = 25;
+        timerTime = workTime;
         updatePomodoroTimerCircleProgress(progressPercentage, timerTime);
 
-        resetPomodoroTimerTimeValue();
+        resetPomodoroTimerTimeValue(workTime);
 
         cycle = 1;
-
         const pomodoroTimerCycleElement = document.getElementById('pomodoro-timer-cycle');
         pomodoroTimerCycleElement.textContent = "Cycle 1";
 
@@ -284,7 +292,7 @@ function initializePomodoroSession() {
     function startPomodoroTimer() {
         intervalId = setInterval(() => {
             progressPercentage = updatePomodoroTimerCircleProgress(progressPercentage, timerTime);
-            [cycle, progressPercentage, timerTime] = updatePomodoroTimerTimeValue(cycle, progressPercentage, timerTime);
+            [cycle, progressPercentage, timerTime] = updatePomodoroTimerTimeValue(workTime, shortBreakTime, longBreakTime, cycle, progressPercentage, timerTime);
 
             if (cycle === -1)
                 resetPomodoroTimer();
@@ -292,13 +300,22 @@ function initializePomodoroSession() {
         }, 1000)
     }
 
-    function stopPomodoroTimer() {
-        clearInterval(intervalId);
+    function savePomodoroTimerSettings() {
+        const updatedWorkTime = document.getElementById('work-time').value;
+        const updatedShortBreakTime = document.getElementById('short-break-time').value;
+        const updatedLongBreakTime = document.getElementById('long-break-time').value;
+
+        workTime = Number(updatedWorkTime);
+        shortBreakTime = Number(updatedShortBreakTime);
+        longBreakTime = Number(updatedLongBreakTime);
+
+        resetPomodoroTimer();
     }
 
     document.getElementById('btnStartPomodoroTimer').addEventListener('click', startPomodoroTimer);
     document.getElementById('btnStopPomodoroTimer').addEventListener('click', stopPomodoroTimer);
     document.getElementById('btnResetPomodoroTimer').addEventListener('click', resetPomodoroTimer);
+    document.getElementById('btnSavePomodoroTimerSettings').addEventListener('click', savePomodoroTimerSettings);
 }
 
 (() => {
