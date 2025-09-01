@@ -223,12 +223,23 @@ class TaskList(LoginRequiredMixin, ListView):
     paginate_by = 8
 
     def get(self, request, *args, **kwargs):
-        url_page_specifier = 'page'
         query_dict = request.GET.copy()
+        query_dict_modified = False
+
+        url_filter_specifier = 'filter'
+        if url_filter_specifier not in query_dict:
+            # set the default filter to "all" when no filter is set
+            query_dict[url_filter_specifier] = 'all'
+            query_dict_modified = True
+
+        url_page_specifier = 'page'
         if url_page_specifier not in query_dict:
             # add default page number to url at first rendering
             # keeping all other query parameters
             query_dict[url_page_specifier] = 1
+            query_dict_modified = True
+
+        if query_dict_modified == True:
             return redirect(f"{request.path}?{query_dict.urlencode()}")
 
         return super().get(request, *args, **kwargs)
