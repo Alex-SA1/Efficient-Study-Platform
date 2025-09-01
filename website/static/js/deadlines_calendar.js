@@ -1,26 +1,11 @@
-(() => {
+function generateDeadlinesCalendar(calendarYear) {
     const calendar = document.getElementById('calendar');
-    const calendarTitle = document.getElementById('calendar-title');
     const monthLabels = document.getElementById('month-labels');
     const deadlinesFrequency = JSON.parse(
         document.getElementById('deadlines-frequency-data').textContent
     );
 
-    let currentDatetime = document.currentScript.dataset.datetime;
-    const [date, time] = currentDatetime.split("T")
-    const [tmpYear, tmpMonth, tmpDay] = date.split("-").map(Number)
-    // const [tmpHourString, tmpMinuteString, secondsExtended] = time.split(":")
-    // const [tmpSecondsString, fractionalSeconds_Timezone] = secondsExtended.split(".")
-
-    // const tmpHour = Number(tmpHourString)
-    // const tmpMinute = Number(tmpMinuteString)
-    // const tmpSeconds = Number(tmpSecondsString)
-
-    const yearTitle = document.createElement('h6');
-    yearTitle.textContent = tmpYear;
-    calendarTitle.appendChild(yearTitle);
-
-    let currentYearStart = new Date(tmpYear, 0, 1, 0, 0, 0);
+    let currentYearStart = new Date(calendarYear, 0, 1, 0, 0, 0);
     let currentMonth = 0;
 
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -40,7 +25,7 @@
         11: 0
     }
 
-    let nextYearStart = new Date(tmpYear + 1, 0, 1, 0, 0, 0);
+    let nextYearStart = new Date(calendarYear + 1, 0, 1, 0, 0, 0);
 
     while (currentYearStart < nextYearStart) {
         const column = document.createElement('div');
@@ -74,7 +59,7 @@
 
             const day = document.createElement('a');
             day.classList.add('day');
-            day.href = document.currentScript.dataset.toDoListPageUrl + "?deadline=" + deadlineDate;
+            day.href = document.getElementById('main-page-main-script').dataset.toDoListPageUrl + "?deadline=" + deadlineDate;
             column.appendChild(day);
 
             const currentDate = currentYearStart.getFullYear() + "-" + currentYearStart.getMonth() + "-" + currentYearStart.getDate();
@@ -135,5 +120,62 @@
 
         prevColumns = columns - 1;
     }
+}
+
+function deleteDeadlinesCalendar() {
+    // deleting the calendar columns
+    const calendar = document.getElementById('calendar');
+    while (calendar.hasChildNodes()) {
+        const firstChildNode = calendar.firstChild;
+        calendar.removeChild(firstChildNode);
+    }
+
+    // deleting the calendar month labels
+    const monthLabels = document.getElementById('month-labels');
+    while (monthLabels.hasChildNodes()) {
+        const firstChildNode = monthLabels.firstChild;
+        monthLabels.removeChild(firstChildNode);
+    }
+}
+
+(() => {
+    let currentDatetime = document.currentScript.dataset.datetime;
+    const [date, time] = currentDatetime.split("T")
+    const [currentYear, currentMonth, currentDay] = date.split("-").map(Number)
+    // const [tmpHourString, tmpMinuteString, secondsExtended] = time.split(":")
+    // const [tmpSecondsString, fractionalSeconds_Timezone] = secondsExtended.split(".")
+
+    // const currentHour = Number(tmpHourString)
+    // const currentMinute = Number(tmpMinuteString)
+    // const currentSeconds = Number(tmpSecondsString)
+
+    const currentYearBtn = document.getElementById('btnCurrentYear');
+    currentYearBtn.textContent = currentYear;
+
+    const nextYearBtn = document.getElementById('btnNextYear');
+    nextYearBtn.textContent = currentYear + 1;
+
+    generateDeadlinesCalendar(currentYear);
+
+    currentYearBtn.addEventListener('click', () => {
+        if ((currentYearBtn.classList.value).includes('active') == false) {
+
+            deleteDeadlinesCalendar();
+            generateDeadlinesCalendar(currentYear);
+
+            currentYearBtn.classList = "btn current-year-btn active";
+            nextYearBtn.classList = "btn next-year-btn";
+        }
+    });
+
+    nextYearBtn.addEventListener('click', () => {
+        if ((nextYearBtn.classList.value).includes('active') == false) {
+            deleteDeadlinesCalendar();
+            generateDeadlinesCalendar(currentYear + 1);
+
+            nextYearBtn.classList = "btn next-year-btn active";
+            currentYearBtn.classList = "btn current-year-btn";
+        }
+    });
 
 })();

@@ -128,6 +128,10 @@
                 <div class="deadlines-calendar-card mt-4 text-center">
                     <div class="calendar-title pt-3" id="calendar-title">
                         <h4>deadlines calendar</h4>
+                        <div class="calendar-year d-flex justify-content-center">
+                            <button id="btnCurrentYear" type="button" class="btn current-year-btn active"></button>
+                            <button id="btnNextYear" type="button" class="btn next-year-btn"></button>
+                        </div>
                     </div>
                     <div class="container-fluid deadlines-calendar">
                         <div class="month-labels" id="month-labels"></div>
@@ -153,7 +157,7 @@
 
     {% if user.user_profile.country %}
     {{ deadlines|json_script:"deadlines-frequency-data" }}
-    <script src="{% static '/js/deadlines_calendar.js' %}" defer data-datetime="{{ datetime }}"
+    <script id="main-page-main-script" src="{% static '/js/deadlines_calendar.js' %}" defer data-datetime="{{ datetime }}"
         data-to-do-list-page-url="{% url 'to-do-list' %}"></script>
     {% endif %}
 </body>
