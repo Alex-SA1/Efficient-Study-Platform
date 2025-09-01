@@ -257,6 +257,10 @@ class TaskList(LoginRequiredMixin, ListView):
         if filter == "completed" or filter == "uncompleted":
             is_complete_value = True if filter == "completed" else False
             queryset = queryset.filter(is_complete=is_complete_value)
+        elif filter == "deadline-over":
+            current_datetime = timezone.now()
+            queryset = queryset.filter(is_complete=False)
+            queryset = queryset.filter(deadline__lt=current_datetime)
 
         return queryset
 
