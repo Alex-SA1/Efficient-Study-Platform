@@ -123,6 +123,16 @@
                         </div>
                     </div>
 
+                    <div class="col">
+                        <div class="app-card h-100">
+                            <div class="app-card-body">
+                                <h5 class="app-card-title">search users</h5>
+                                <br>
+                                <a href="{% url 'search_users' %}" class="btn btn-primary">Open</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 {% if user.user_profile.country %}
                 <div class="deadlines-calendar-card mt-4 text-center">
@@ -157,8 +167,8 @@
 
     {% if user.user_profile.country %}
     {{ deadlines|json_script:"deadlines-frequency-data" }}
-    <script id="main-page-main-script" src="{% static '/js/deadlines_calendar.js' %}" defer data-datetime="{{ datetime }}"
-        data-to-do-list-page-url="{% url 'to-do-list' %}"></script>
+    <script id="main-page-main-script" src="{% static '/js/deadlines_calendar.js' %}" defer
+        data-datetime="{{ datetime }}" data-to-do-list-page-url="{% url 'to-do-list' %}"></script>
     {% endif %}
 </body>
 

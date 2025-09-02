@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import TaskList, TaskCreate, TaskUpdate, TaskDelete
+from .views import TaskList, TaskCreate, TaskUpdate, TaskDelete, UsersList
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -28,5 +28,6 @@ urlpatterns = [
     path('main/collaborative-study-session-menu/study-session/<str:session_code>',
          views.study_session, name='study_session'),
     path('generate-study-session-code/', views.generate_study_session_code,
-         name='generate_study_session_code')
+         name='generate_study_session_code'),
+    path('main/search_users', UsersList.as_view(), name='search_users')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

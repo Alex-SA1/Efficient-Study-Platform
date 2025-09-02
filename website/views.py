@@ -27,6 +27,7 @@ from django.utils import timezone
 from .forms import CreateTaskForm, UpdateTaskForm, JoinStudySessionForm
 from django.core.cache import cache
 from .serializers import StudySessionMessageSerializer
+import re
 
 
 def home(request):
@@ -603,3 +604,41 @@ def generate_study_session_code(request):
                 code_uniqueness = True
 
         return JsonResponse({'study_session_code': session_code})
+
+
+class UsersList(LoginRequiredMixin, ListView):
+    """
+    class responsible with showing users according to an entered keyword
+    """
+    model = User
+    template_name = 'search_users.html'
+    context_object_name = 'users'
+
+    login_url = '/login'
+    redirect_field_name = 'next'
+
+    paginate_by = 20
+
+    def get(self, request, *args, **kwargs):
+        query_dict = request.GET
+
+        url_search_string_specifier = 'username'
+        if url_search_string_specifier in query_dict:
+            search_string = query_dict[url_search_string_specifier]
+            if search_string == "":
+                return redirect(request.path)
+
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = User.objects.none()
+
+        if 'username' in self.request.GET:
+            input_username = self.request.GET.get('username')
+
+            username_regex = r"^[\w.@+-]{1,150}\Z"
+            if re.match(username_regex, input_username):
+                queryset = User.objects.filter(
+                    username__startswith=input_username)
+
+        return queryset
