@@ -228,7 +228,8 @@ class TaskList(LoginRequiredMixin, ListView):
         query_dict_modified = False
 
         url_filter_specifier = 'filter'
-        if url_filter_specifier not in query_dict:
+        deadline_filter_specifier = 'deadline'
+        if url_filter_specifier not in query_dict and deadline_filter_specifier not in query_dict:
             # set the default filter to "all" when no filter is set
             query_dict[url_filter_specifier] = 'all'
             query_dict_modified = True
