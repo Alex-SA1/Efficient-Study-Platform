@@ -62,3 +62,28 @@ class StudySessionMessage(models.Model):
 
     class Meta:
         ordering = ['create']
+
+
+class FriendRequest(models.Model):
+    """
+    class responsible with the details about a friend request
+    """
+    class RequestStatus(models.TextChoices):
+        PENDING = "pending",
+        ACCEPTED = "accepted",
+        REJECTED = "rejected"
+
+    sender = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=True, related_name="request_sender")
+    receiver = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=True, related_name="request_receiver")
+    status = models.CharField(
+        max_length=8,
+        null=False, blank=True,
+        choices=RequestStatus,
+        default=RequestStatus.PENDING
+    )
+    create = models.DateTimeField(auto_now_add=True, null=False, blank=True)
+
+    def __str__(self):
+        return f"Request sent by {self.sender} to {self.receiver} has the status: {self.status}"

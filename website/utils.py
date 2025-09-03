@@ -1,7 +1,8 @@
 from django.core.cache import cache
 from django.utils import timezone
-from .models import Task, StudySessionMessage
+from .models import Task, StudySessionMessage, FriendRequest
 from django.db.models.query import QuerySet
+from django.contrib.auth.models import User
 import string
 import random
 import json
@@ -150,3 +151,27 @@ def remove_study_session(session_code: string):
     cache.delete(session_code)
     cache.delete(study_session_group_key)
     delete_study_session_chat_history(session_code)
+
+
+def get_friend_request(user_1: User, user_2: User):
+    """
+    helper function that checks if there is a friend request between two users
+    returns the friend request object, if there is a friend request between the users, or None otherwise
+
+    precondition: user_1 and user_2 are both valid users
+    """
+
+    # first search: user_1 as sender, user_2 as receiver
+    try:
+        friend_request = FriendRequest.objects.get(
+            sender=user_1, receiver=user_2)
+    except:
+        # second search: user_2 as sender, user_1 as receiver
+        try:
+            friend_request = FriendRequest.objects.get(
+                sender=user_2, receiver=user_1)
+        except:
+            return None
+
+    return friend_request
+

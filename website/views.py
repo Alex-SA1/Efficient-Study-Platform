@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from .forms import SignUpForm, ResetPasswordForm, EditAccountForm
 from django.views.generic.list import ListView
-from .models import Task
+from .models import Task, FriendRequest
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -642,3 +642,58 @@ class UsersList(LoginRequiredMixin, ListView):
                     username__startswith=input_username)
 
         return queryset
+
+
+@require_POST
+@csrf_protect
+@ajax_request_required
+def send_friend_request(request):
+    """
+    send a friend request to a user
+    """
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+        receiver_username = data.get('receiver_username')
+        sender_user = request.user
+
+        if sender_user.username == receiver_username:
+            return JsonResponse({
+                'error': "You can't send a friend request to yourself!",
+            }, status=400)
+
+        try:
+            receiver_user = User.objects.get(username=receiver_username)
+        except:
+            return JsonResponse({
+                'error': "The receiver username doesn't correspond to an user!"
+            }, status=400)
+
+        friend_request = get_friend_request(sender_user, receiver_user)
+
+        if friend_request is not None:
+            status = friend_request.status
+
+            if status == "pending":
+                return JsonResponse({
+                    'error': "You already sent a friend request to this user!"
+                }, status=400)
+            elif status == "accepted":
+                return JsonResponse({
+                    'error': "You are friend with this user!"
+                }, status=400)
+            elif status == "rejected":
+                # change the status of the friend request from "rejected" to "pending"
+                setattr(friend_request, 'status', 'pending')
+                friend_request.save()
+
+            return JsonResponse({
+                'message': 'Success!'
+            })
+
+        FriendRequest.objects.create(
+            sender=sender_user, receiver=receiver_user)
+
+        return JsonResponse({
+            'message': 'Success!'
+        })

@@ -29,5 +29,7 @@ urlpatterns = [
          views.study_session, name='study_session'),
     path('generate-study-session-code/', views.generate_study_session_code,
          name='generate_study_session_code'),
-    path('main/search_users', UsersList.as_view(), name='search_users')
+    path('main/search_users', UsersList.as_view(), name='search_users'),
+    path('send-friend-request/', views.send_friend_request,
+         name="send_friend_request")
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

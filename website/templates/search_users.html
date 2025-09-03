@@ -47,12 +47,12 @@
                 =>
                 "account", "account123", "accountTest", . . .)
             </div>
-            {% for user in users %}
+            {% for user_iterator in users %}
             <div class="user-card col-md-6 px-5 py-4 mx-auto mt-2 d-sm-flex align-items-center">
-                <div class="d-flex align-items-center">
+                <div class="w-100 d-flex align-items-center justify-content-between">
                     <div class="flex-shrink-0">
-                        {% if user.user_profile.profile_picture %}
-                        <img src="{{ user.user_profile.profile_picture.url }}"
+                        {% if user_iterator.user_profile.profile_picture %}
+                        <img src="{{ user_iterator.user_profile.profile_picture.url }}"
                             class="img-fluid rounded-circle border border-dark border-3"
                             style="width: 70px; height: 70px;">
                         {% else %}
@@ -62,19 +62,49 @@
                         {% endif %}
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <div class="d-flex flex-row align-items-center mb-2">
+                        <div class="d-flex flex-row align-items-center">
                             <p class="mb-0 me-2 mt-2">
-                                @{{ user.username }}
+                                @{{ user_iterator.username }}
                                 <br>
-                                {{ user.last_name }} {{ user.first_name }}
+                                {{ user_iterator.last_name }} {{ user.first_name }}
                             </p>
                         </div>
                     </div>
+
+                    <ul class="user-card-buttons">
+                        <li type="button" class="button">
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
+                                </svg>
+                            </a>
+                        </li>
+                        {% if user.username != user_iterator.username %}
+                        <li class="button">
+                            <button type="button" style="border: none; background: none; color: white; padding: 0;"
+                                onclick="sendFriendRequest('{{user_iterator.username}}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-person-add" viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                                    <path
+                                        d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z" />
+                                </svg>
+                            </button>
+                        </li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script id="search-users-page-main-script" src="{% static '/js/search_users.js' %}" defer
+        data-send-friend-request-url="{% url 'send_friend_request' %}" data-csrf-token="{{csrf_token}}"></script>
 </body>
 
 </html>
