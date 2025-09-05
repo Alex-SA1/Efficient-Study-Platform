@@ -702,9 +702,14 @@ def send_friend_request(request):
             status = friend_request.status
 
             if status == "pending":
-                return JsonResponse({
-                    'error': "You already sent a friend request to this user!"
-                }, status=400)
+                if friend_request.sender.username == sender_user.username:
+                    return JsonResponse({
+                        'error': "You already sent a friend request to this user!"
+                    }, status=400)
+                else:
+                    return JsonResponse({
+                        'error': "There is a pending friend request sent by this user to you!"
+                    }, status=400)
             elif status == "accepted":
                 return JsonResponse({
                     'error': "You are friend with this user!"
@@ -712,6 +717,10 @@ def send_friend_request(request):
             elif status == "rejected":
                 # change the status of the friend request from "rejected" to "pending"
                 setattr(friend_request, 'status', 'pending')
+                if friend_request.sender.username != sender_user.username:
+                    setattr(friend_request, 'receiver', friend_request.sender)
+                    setattr(friend_request, 'sender', sender_user)
+
                 friend_request.save()
 
             return JsonResponse({
