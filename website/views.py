@@ -439,7 +439,7 @@ def my_account(request):
         action = request.GET.get('action')
         if action == "friend-requests-inbox":
             friend_requests = FriendRequest.objects.filter(
-                receiver=request.user)
+                receiver=request.user, status='pending')
             paginator = Paginator(friend_requests, 20)
 
             page_number = query_dict.get('page')
