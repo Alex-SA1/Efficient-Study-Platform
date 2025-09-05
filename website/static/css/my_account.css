@@ -14,7 +14,8 @@ body {
     color: #ffffff;
 }
 
-.btn-edit {
+.custom-btn {
+    text-decoration: none;
     background: #5c5470;
     border: none;
     border-radius: 0.5rem;
@@ -24,7 +25,7 @@ body {
     color: #e4e0f3;
 }
 
-.btn-edit:hover {
+.custom-btn:hover {
     background: #6e6584;
 }
 
@@ -40,4 +41,81 @@ body {
 
 .btn-back:hover {
     background: #252130;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.pagination .page-link {
+    background-color: transparent;
+    border: 1px solid #444;
+    color: #fff;
+}
+
+.pagination .page-link:hover {
+    background-color: #222;
+    color: #fff;
+}
+
+.pagination .active .page-link {
+    background-color: #444;
+    border-color: #666;
+    color: #fff;
+}
+
+.friend-request {
+    background-color: #1e1b26;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    max-width: 500px;
+    margin: 40px auto;
+}
+
+.friend-request img {
+    width: 70px;
+    height: 70px;
+}
+
+.friend-request-info {
+    flex-grow: 1;
+}
+
+.friend-request-info h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.friend-request-info p {
+    margin: 2px 0 0;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.action-buttons .btn {
+    margin-left: 8px;
+}
+
+.btn-accept {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-decline {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-accept:hover {
+    background-color: #218838;
+}
+
+.btn-decline:hover {
+    background-color: #c82333;
 }

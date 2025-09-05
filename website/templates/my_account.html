@@ -18,7 +18,7 @@
 
 <body>
     <section class="h-100">
-        <div class="container py-3 h-100">
+        <div class="container user-profile-card py-3 h-100">
             <div class="row d-flex justify-content-center">
                 <div class="col col-lg-9 col-xl-8">
 
@@ -56,12 +56,21 @@
                             <p class="mt-4">No description</p>
                             {% endif %}
 
-                            <div class="mt-4">
-                                <a href="{% url 'edit_account' %}">
-                                    <button type="button" class="btn-edit">
-                                        edit profile
+                            <div class="nav-buttons row mt-4">
+                                <div class="col-6">
+                                    <button id="editAccountBtn" type="button" class="custom-btn edit-account"
+                                        data-edit-account-url="{% url 'edit_account' %}">
+                                        edit account
                                     </button>
-                                </a>
+                                </div>
+                                <div class="col-6">
+                                    <form method="GET">
+                                        <button id="friendRequestsInboxBtn" type="submit" name="action"
+                                            class="custom-btn friend-requests-inbox" value="friend-requests-inbox">
+                                            friend requests inbox
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -69,7 +78,90 @@
                 </div>
             </div>
         </div>
+
+        {% if friend_requests_inbox %}
+        <div class="container friend-requests-inbox">
+            {% for friend_request in friend_requests_page %}
+            <div class="friend-request">
+                {% if friend_request.sender.user_profile.profile_picture %}
+                <img src="{{ friend_request.sender.user_profile.profile_picture.url }}" class="rounded-circle mb-3">
+                {% else %}
+                <img src="https://robohash.org/default_profile_picture?set=set1&size=200x200"
+                    class="rounded-circle mb-3" width="150" height="150">
+                {% endif %}
+                <div class="friend-request-info">
+                    <h5>{{ friend_request.sender }}</h5>
+                    <p>sent you a friend request</p>
+                </div>
+                <div class="action-buttons d-flex">
+                    <button class="btn btn-sm btn-accept">Accept</button>
+                    <button class="btn btn-sm btn-decline">Decline</button>
+                </div>
+            </div>
+
+            {% empty %}
+            <div class="w-100 d-flex justify-content-center">
+                <div class="alert alert-info text-center mt-4 col-6" role="alert"
+                    style="background-color: #1c1924; margin: none; color: #e4e0f3; border: none;">
+                    <i class="bi bi-info-circle"></i> There are no friend requests!
+                </div>
+            </div>
+            {% endfor %}
+            <div class="pagination-container">
+                <nav>
+                    <ul class="pagination">
+                        {% if friend_requests_page.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ friend_requests_page.previous_page_number }}">Previous</a>
+                        </li>
+                        {% endif %}
+
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ friend_requests_page.previous_page_number }}">
+                                {{ friend_requests_page.previous_page_number }}</a>
+                        </li>
+                        {% endif %}
+
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ friend_requests_page.number }}"
+                                style="background-color: #222;">{{ friend_requests_page.number }}</a>
+                        </li>
+
+                        {% if friend_requests_page.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ friend_requests_page.next_page_number }}">
+                                {{ friend_requests_page.next_page_number }}</a>
+                        </li>
+                        {% endif %}
+
+
+                        {% if friend_requests_page.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ friend_requests_page.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ friend_requests_page.paginator.num_pages }}">Last</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
     </section>
+
+    <script src="{% static '/js/my_account.js' %}" defer></script>
 </body>
 
 </html>

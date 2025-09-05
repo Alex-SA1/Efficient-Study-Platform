@@ -28,6 +28,7 @@ from .forms import CreateTaskForm, UpdateTaskForm, JoinStudySessionForm
 from django.core.cache import cache
 from .serializers import StudySessionMessageSerializer
 import re
+from django.core.paginator import Paginator
 
 
 def home(request):
@@ -228,8 +229,8 @@ class TaskList(LoginRequiredMixin, ListView):
         query_dict_modified = False
 
         url_filter_specifier = 'filter'
-        deadline_filter_specifier = 'deadline'
-        if url_filter_specifier not in query_dict and deadline_filter_specifier not in query_dict:
+        url_deadline_specifier = 'deadline'
+        if url_filter_specifier not in query_dict and url_deadline_specifier not in query_dict:
             # set the default filter to "all" when no filter is set
             query_dict[url_filter_specifier] = 'all'
             query_dict_modified = True
@@ -426,7 +427,32 @@ def my_account(request):
     """
     rendering the template for my account page
     """
-    return render(request, 'my_account.html', {})
+    query_dict = request.GET.copy()
+    url_page_specifier = 'page'
+    url_action_specifier = 'action'
+
+    if url_action_specifier in query_dict and url_page_specifier not in query_dict:
+        query_dict['page'] = 1
+        return redirect(f"{request.path}?{query_dict.urlencode()}")
+
+    if url_action_specifier in query_dict:
+        action = request.GET.get('action')
+        if action == "friend-requests-inbox":
+            friend_requests = FriendRequest.objects.filter(
+                receiver=request.user)
+            paginator = Paginator(friend_requests, 20)
+
+            page_number = query_dict.get('page')
+            friend_requests_page = paginator.get_page(page_number)
+
+            return render(request, 'my_account.html', {
+                'friend_requests_inbox': True,
+                'friend_requests_page': friend_requests_page
+            })
+
+    return render(request, 'my_account.html', {
+        'friend_requests_inbox': False
+    })
 
 
 @login_required(login_url='login')

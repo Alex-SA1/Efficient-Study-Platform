@@ -158,7 +158,7 @@
                             </li>
                             {% endif %}
 
-                            {% if page_obj.has_previous %}
+                            {% if task_page.has_previous %}
                             <li class="page-item">
                                 <a class="page-link"
                                     href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ task_page.previous_page_number }}">
