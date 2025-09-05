@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from .forms import SignUpForm, ResetPasswordForm, EditAccountForm
 from django.views.generic.list import ListView
-from .models import Task, FriendRequest
+from .models import Task, UserProfile, FriendRequest, Friendship
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -21,7 +21,6 @@ from django.core.mail import send_mail
 from .decorators import login_required_restrictive, country_required
 from .decorators import ajax_request_required
 from django.contrib.auth.models import User
-from .models import UserProfile
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from .forms import CreateTaskForm, UpdateTaskForm, JoinStudySessionForm
@@ -729,6 +728,51 @@ def send_friend_request(request):
 
         FriendRequest.objects.create(
             sender=sender_user, receiver=receiver_user)
+
+        return JsonResponse({
+            'message': 'Success!'
+        })
+
+
+@require_POST
+@csrf_protect
+@ajax_request_required
+def manage_friend_request(request):
+    """
+    accept/reject a friend request
+    """
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+        action = data.get('action')
+        sender_username = data.get('sender_username')
+        receiver_user = request.user
+
+        try:
+            sender_user = User.objects.get(username=sender_username)
+        except:
+            return JsonResponse({
+                'error': "The sender username doesn't correspond to an user!"
+            }, status=400)
+
+        friend_request = get_friend_request(sender_user, receiver_user)
+
+        if friend_request is None:
+            return JsonResponse({
+                'error': f"There is no friend request sent by {sender_username} to you!"
+            }, status=400)
+
+        if action == "accept":
+            setattr(friend_request, 'status', 'accepted')
+            friend_request.save()
+
+            Friendship.objects.create(
+                user_1=sender_user,
+                user_2=receiver_user
+            )
+        elif action == "reject":
+            setattr(friend_request, 'status', 'rejected')
+            friend_request.save()
 
         return JsonResponse({
             'message': 'Success!'

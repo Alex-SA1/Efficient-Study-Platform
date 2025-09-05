@@ -94,8 +94,10 @@
                     <p>sent you a friend request</p>
                 </div>
                 <div class="action-buttons d-flex">
-                    <button class="btn btn-sm btn-accept">Accept</button>
-                    <button class="btn btn-sm btn-decline">Decline</button>
+                    <button class="btn btn-sm btn-accept" type="button"
+                        onclick="acceptFriendRequest('{{friend_request.sender}}')">Accept</button>
+                    <button class="btn btn-sm btn-decline" type="button"
+                        onclick="rejectFriendRequest('{{friend_request.sender}}')">Decline</button>
                 </div>
             </div>
 
@@ -161,7 +163,9 @@
         {% endif %}
     </section>
 
-    <script src="{% static '/js/my_account.js' %}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script id="my-account-page-main-script" src="{% static '/js/my_account.js' %}" defer
+        data-manage-friend-request-url="{% url 'manage_friend_request' %}" data-csrf-token="{{csrf_token}}"></script>
 </body>
 
 </html>

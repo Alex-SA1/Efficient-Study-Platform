@@ -87,3 +87,21 @@ class FriendRequest(models.Model):
 
     def __str__(self):
         return f"Request sent by {self.sender} to {self.receiver} has the status: {self.status}"
+
+
+class Friendship(models.Model):
+    """
+    class responsible with the details about a friendship between two users
+    the friendship is bidirectional
+    """
+
+    user_1 = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=True, related_name="friendship_user_1"
+    )
+    user_2 = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=True, related_name="friendship_user_2"
+    )
+    create = models.DateTimeField(auto_now_add=True, null=False, blank=True)
+
+    def __str__(self):
+        return f"{self.user_1.username} is friend with {self.user_2.username}"

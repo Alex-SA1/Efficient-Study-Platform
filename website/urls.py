@@ -31,5 +31,7 @@ urlpatterns = [
          name='generate_study_session_code'),
     path('main/search_users', UsersList.as_view(), name='search_users'),
     path('send-friend-request/', views.send_friend_request,
-         name="send_friend_request")
+         name="send_friend_request"),
+    path('manage_friend_request/', views.manage_friend_request,
+         name='manage_friend_request')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
