@@ -777,3 +777,17 @@ def manage_friend_request(request):
         return JsonResponse({
             'message': 'Success!'
         })
+
+
+def profile(request, username):
+    """
+    renders a page for user profile
+    """
+    try:
+        user = User.objects.get(username=username)
+    except:
+        return render(request, '404.html')
+
+    return render(request, 'profile.html', {
+        'profile_user': user
+    })
