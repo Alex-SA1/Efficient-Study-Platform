@@ -1,6 +1,6 @@
 from django.core.cache import cache
 from django.utils import timezone
-from .models import Task, StudySessionMessage, FriendRequest
+from .models import Task, StudySessionMessage, FriendRequest, Friendship
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 import string
@@ -175,3 +175,43 @@ def get_friend_request(user_1: User, user_2: User):
 
     return friend_request
 
+
+def check_friendship(user_1: User, user_2: User):
+    """
+    helper function that cheks if two given users are friends
+
+    precondition: user_1 and user_2 are both valid users
+    """
+    friends = False
+
+    try:
+        friendship = Friendship.objects.get(user_1=user_1, user_2=user_2)
+        friends = True
+    except:
+        try:
+            friendship = Friendship.objects.get(user_1=user_2, user_2=user_1)
+            friends = True
+        except:
+            friends = False
+
+    return friends
+
+
+def check_pending_friend_request(sender_user: User, receiver_user: User):
+    """
+    helper function that cheks if there is a friend request in pending sent by sender_user to receiver_user
+
+    precondition: sender_user and receiver_user are both valid users
+    """
+
+    found = False
+
+    try:
+        friend_request = FriendRequest.objects.get(
+            sender=sender_user, receiver=receiver_user, status='pending')
+
+        found = True
+    except:
+        found = False
+
+    return found
