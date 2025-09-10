@@ -105,3 +105,19 @@ class Friendship(models.Model):
 
     def __str__(self):
         return f"{self.user_1.username} is friend with {self.user_2.username}"
+
+
+class FlashcardsFolder(models.Model):
+    """
+    class responsible with the details about a flashcards folder
+    """
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=True)
+    name = models.CharField(max_length=128, null=False, blank=False)
+    flashcards_number = models.PositiveIntegerField(
+        default=0, null=False, blank=True)
+    create = models.DateTimeField(auto_now_add=True, null=False, blank=True)
+
+    def __str__(self):
+        return self.name

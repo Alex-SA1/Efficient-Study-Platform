@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
+
+body {
+    font-family: "Baloo 2", cursive;
+    font-size: 16px;
+    color: #ffffff;
+    text-rendering: optimizeLegibility;
+    font-weight: initial;
+    background: #110f16;
+}
+
+.header {
+    background-color: #1c1924;
+    padding: 3rem 1rem;
+}
+
+.header .title-text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.btn-create {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(145deg, #542c9f, #6545a1);
+    color: #e4e0f3;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-create:hover {
+    color: #ffffff;
+    filter: brightness(1.1);
+    box-shadow: 0 6px 14px rgba(106, 72, 189, 0.35);
+}
+
+.btn-create svg {
+    width: 18px;
+    height: 18px;
+}
+
+.modal-content {
+    background-color: #131119;
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-footer {
+    border: none;
+}
+
+.close-modal-btn {
+    color: #e4e0f3;
+    background-color: rgba(127, 95, 215, 0.35);
+}
+
+.close-modal-btn:hover {
+    background-color: rgba(157, 129, 234, 0.35);
+}
+
+.submit-form-btn {
+    color: #e6e0f7;
+    background-color: rgba(127, 95, 215, 0.35);
+    border: none;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+}
+
+.submit-form-btn:hover {
+    background-color: rgba(157, 129, 234, 0.35);
+}
+
+.form-control {
+    color: #e6e0f7;
+    background: #2a2633;
+    border-color: #444;
+    padding: 7px 9px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    color: #e4e0f3;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px
+}
+
+.form-control:focus {
+    color: #e6e0f7;
+    background: #332e41;
+    border-color: #7f5fd7;
+    box-shadow: 0 0 0 3px rgba(127, 95, 215, 0.35);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #88829c;
+}
+
+.folder-card {
+    background: #1c1a24;
+    border: 1px solid #2a2733;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.folder-card:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+    background: #24222f;
+}
+
+.folder-icon {
+    color: #f4b400;
+    margin-right: 0.5rem;
+}
+
+.folder-header {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+    color: #f8f9fa;
+}
+
+.folder-description {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+}

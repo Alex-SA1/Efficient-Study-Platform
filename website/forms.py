@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django import forms
-from .models import UserProfile, Task
+from .models import UserProfile, Task, FlashcardsFolder
 from .validators import *
 from django.utils import timezone
 import string
@@ -231,3 +231,25 @@ class JoinStudySessionForm(forms.Form):
             return None
 
         return cleaned_data
+
+
+class FlashcardsFolderForm(forms.ModelForm):
+    """
+    class responsible with flashcards folder creation
+    """
+
+    class Meta:
+        model = FlashcardsFolder
+        fields = ['name']
+
+    def __init__(self, user=None, *args, **kwargs):
+        super(FlashcardsFolderForm, self).__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+
+        if FlashcardsFolder.objects.filter(user=self.user, name=name).exists():
+            raise ValidationError("The folder name should be unique!")
+
+        return name

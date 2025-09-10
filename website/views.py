@@ -6,9 +6,9 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.contrib import messages
-from .forms import SignUpForm, ResetPasswordForm, EditAccountForm
+from .forms import SignUpForm, ResetPasswordForm, EditAccountForm, FlashcardsFolderForm
 from django.views.generic.list import ListView
-from .models import Task, UserProfile, FriendRequest, Friendship
+from .models import Task, UserProfile, FriendRequest, Friendship, FlashcardsFolder
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -791,3 +791,28 @@ def profile(request, username):
     return render(request, 'profile.html', {
         'profile_user': user
     })
+
+
+def flashcards(request):
+    """
+    renders that main page for the flashcards app
+    """
+
+    if request.method == "POST":
+        form = FlashcardsFolderForm(request.user, request.POST)
+        if form.is_valid():
+            folder_name = form.cleaned_data['name']
+
+            FlashcardsFolder.objects.create(
+                user=request.user, name=folder_name)
+
+            return redirect('flashcards')
+        else:
+            messages.error(
+                request, f"The form has some errors! Open the form to see the errors!")
+    else:
+        form = FlashcardsFolderForm()
+
+    folders = FlashcardsFolder.objects.filter(user=request.user)
+
+    return render(request, 'flashcards.html', {'form': form, 'folders': folders})
