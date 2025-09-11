@@ -6,9 +6,9 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.contrib import messages
-from .forms import SignUpForm, ResetPasswordForm, EditAccountForm, FlashcardsFolderForm
+from .forms import SignUpForm, ResetPasswordForm, EditAccountForm, FlashcardsFolderForm, FlashcardForm
 from django.views.generic.list import ListView
-from .models import Task, UserProfile, FriendRequest, Friendship, FlashcardsFolder
+from .models import Task, UserProfile, FriendRequest, Friendship, FlashcardsFolder, Flashcard
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -779,6 +779,7 @@ def manage_friend_request(request):
         })
 
 
+@login_required(login_url='login')
 def profile(request, username):
     """
     renders a page for user profile
@@ -793,6 +794,7 @@ def profile(request, username):
     })
 
 
+@login_required(login_url='login')
 def flashcards(request):
     """
     renders that main page for the flashcards app
@@ -816,3 +818,36 @@ def flashcards(request):
     folders = FlashcardsFolder.objects.filter(user=request.user)
 
     return render(request, 'flashcards.html', {'form': form, 'folders': folders})
+
+
+def flashcard_create(request):
+    """
+    renders and handles the flashcard creation form
+    """
+
+    if request.method == "POST":
+        form = FlashcardForm(request.user, request.POST)
+
+        if form.is_valid():
+            folder_name = form.cleaned_data['folder']
+            front_side_text = form.cleaned_data['front_side_text']
+            back_side_text = form.cleaned_data['back_side_text']
+
+            folder = FlashcardsFolder.objects.get(
+                user=request.user, name=folder_name)
+            Flashcard.objects.create(user=request.user, folder=folder,
+                                     front_side_text=front_side_text, back_side_text=back_side_text)
+
+            increment_folder_flashcards_number(folder)
+
+            return redirect('flashcards')
+    else:
+        form = FlashcardForm()
+
+    flashcards_folders = FlashcardsFolder.objects.filter(user=request.user)
+    folder_names = [folder.name for folder in flashcards_folders]
+
+    return render(request, 'create_flashcard.html', {
+        'folder_names': folder_names,
+        'form': form
+    })

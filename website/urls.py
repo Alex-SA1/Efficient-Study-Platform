@@ -35,5 +35,7 @@ urlpatterns = [
     path('manage_friend_request/', views.manage_friend_request,
          name='manage_friend_request'),
     path('main/profile/<str:username>', views.profile, name='profile'),
-    path('main/flashcards', views.flashcards, name='flashcards')
+    path('main/flashcards', views.flashcards, name='flashcards'),
+    path('main/flashcards/create-flashcard',
+         views.flashcard_create, name='create_flashcard')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

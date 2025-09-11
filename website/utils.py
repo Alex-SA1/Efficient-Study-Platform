@@ -1,6 +1,6 @@
 from django.core.cache import cache
 from django.utils import timezone
-from .models import Task, StudySessionMessage, FriendRequest, Friendship
+from .models import Task, StudySessionMessage, FriendRequest, Friendship, FlashcardsFolder
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 import string
@@ -178,7 +178,7 @@ def get_friend_request(user_1: User, user_2: User):
 
 def check_friendship(user_1: User, user_2: User):
     """
-    helper function that cheks if two given users are friends
+    helper function that checks if two given users are friends
 
     precondition: user_1 and user_2 are both valid users
     """
@@ -199,7 +199,7 @@ def check_friendship(user_1: User, user_2: User):
 
 def check_pending_friend_request(sender_user: User, receiver_user: User):
     """
-    helper function that cheks if there is a friend request in pending sent by sender_user to receiver_user
+    helper function that checks if there is a friend request in pending sent by sender_user to receiver_user
 
     precondition: sender_user and receiver_user are both valid users
     """
@@ -215,3 +215,15 @@ def check_pending_friend_request(sender_user: User, receiver_user: User):
         found = False
 
     return found
+
+
+def increment_folder_flashcards_number(folder: FlashcardsFolder):
+    """
+    helper function that increments by 1 the flashcards number of a given folder
+
+    precondition: folder is a valid FlashcardsFolder
+    """
+
+    new_folder_flashcards_number = folder.flashcards_number + 1
+    setattr(folder, "flashcards_number", new_folder_flashcards_number)
+    folder.save()

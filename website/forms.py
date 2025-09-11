@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django import forms
-from .models import UserProfile, Task, FlashcardsFolder
+from .models import UserProfile, Task, FlashcardsFolder, Flashcard
 from .validators import *
 from django.utils import timezone
 import string
@@ -253,3 +253,31 @@ class FlashcardsFolderForm(forms.ModelForm):
             raise ValidationError("The folder name should be unique!")
 
         return name
+
+
+class FlashcardForm(forms.ModelForm):
+    """
+    class responsible with flashcard creating form
+    """
+    folder = forms.CharField(label="Folder name")
+
+    class Meta:
+        model = Flashcard
+        fields = ['folder', 'front_side_text', 'back_side_text']
+
+    def __init__(self, user=None, *args, **kwargs):
+        super(FlashcardForm, self).__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_folder(self):
+        folder_name = self.cleaned_data['folder']
+
+        try:
+            folder = FlashcardsFolder.objects.get(
+                user=self.user, name=folder_name)
+        except:
+            self.add_error(
+                "folder", "There is no folder with the name entered!")
+            return None
+
+        return folder
