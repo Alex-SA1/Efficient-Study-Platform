@@ -138,3 +138,13 @@ body {
     font-size: 0.9rem;
     color: #a0a0a0;
 }
+
+.custom-btn {
+    background-color: #3f3753;
+    color: #e6e0f7;
+    border: none;
+}
+
+.custom-btn:hover {
+    background-color: #5a4d72;
+}
