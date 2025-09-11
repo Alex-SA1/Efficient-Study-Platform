@@ -36,8 +36,10 @@
                     {% if form.errors %}
                     <div class="alert alert-primary alert-dismissible fade show" role="alert">
                         Form errors:
+                        <br>
                         {% for field in form %}
                         {% if field.errors %}
+                        {{ field.label }}
                         {{ field.errors }}
                         {% endif %}
                         {% endfor %}
@@ -48,7 +50,6 @@
                     {% endif %}
 
                     <p>
-                        <!-- {{ form.as_p }} -->
                         <input type="text" name="title" id="title" maxlength="200" autofocus class="form-control"
                             placeholder="Title" required>
                     </p>

@@ -69,8 +69,10 @@
                     {% if form.errors %}
                     <div class="alert alert-primary alert-dismissible fade show" role="alert">
                         Form errors:
+                        <br>
                         {% for field in form %}
                         {% if field.errors %}
+                        {{ field.label }}
                         {{ field.errors }}
                         {% endif %}
                         {% endfor %}
@@ -81,7 +83,6 @@
                     {% endif %}
 
                     <p>
-                        <!-- {{ form.as_p }} -->
                         <input type="text" name="username" id="username" maxlength="150" autofocus class="form-control"
                             placeholder="User Name" required aria-describedby="id_username_helptext">
                         <span class="helptext" id="id_username_helptext">
