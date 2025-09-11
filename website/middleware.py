@@ -64,7 +64,7 @@ class TimezoneMiddleware:
             # user_country can be a valid country or an empty string (user doesn't have a selected country)
             user_country = user_profile.country
 
-            if user_country != "":
+            if user_country in COUNTRY_TIMEZONES:
                 tzname = COUNTRY_TIMEZONES.get(user_country)
             else:
                 tzname = 'UTC'  # default timezone for users that doesn't have a selected country
