@@ -272,6 +272,10 @@ class FlashcardForm(forms.ModelForm):
     def clean_folder(self):
         folder_name = self.cleaned_data['folder']
 
+        if folder_name == "" or folder_name == "Select flashcard folder":
+            self.add_error("folder", "You have to select a folder!")
+            return None
+
         try:
             folder = FlashcardsFolder.objects.get(
                 user=self.user, name=folder_name)

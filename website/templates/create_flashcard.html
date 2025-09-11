@@ -47,7 +47,7 @@
 
             <div class="select d-flex justify-content-center align-items-center w-100">
                 <select id="folder" name="folder" class="form-select w-100" required>
-                    <option class="form-option">Select flashcard folder</option>
+                    <option class="form-option" value="Select flashcard folder">Select flashcard folder</option>
                     {% for folder_name in folder_names %}
                     <option class="form-option" value="{{folder_name}}">{{folder_name}}</option>
                     {% endfor %}
