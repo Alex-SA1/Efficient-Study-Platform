@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import UserProfile, Task, FlashcardsFolder, Flashcard
 from .validators import *
+from .middleware import COUNTRY_TIMEZONES
 from django.utils import timezone
 import string
 
@@ -116,6 +117,16 @@ class EditAccountForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EditAccountForm, self).__init__(*args, **kwargs)
+
+    def clean_country(self):
+        country = self.cleaned_data['country']
+
+        if country != "Select country" and country not in COUNTRY_TIMEZONES:
+            self.add_error(
+                "country", "The selected country is not in the list of accepted countries!")
+            return None
+
+        return country
 
     def clean(self):
         cleaned_data = super().clean()

@@ -476,7 +476,7 @@ def edit_account(request):
             modified_profile_picture = True
 
         modified_country = False
-        if new_country is not None and current_country != new_country:
+        if new_country is not None and current_country != new_country and new_country != "Select country":
             modified_country = True
 
         modified_description = False
