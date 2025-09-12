@@ -30,7 +30,7 @@
         </div>
         <br>
         <div class="title w-50 text-center mb-5">
-            <p class="title-text">Flashcards</p>
+            <p class="title-text">Flashcards Folders</p>
         </div>
         <div class="button-section p-2">
             <button class="btn btn-create folder" type="button" data-bs-toggle="modal" data-bs-target="#newFolderForm">
@@ -102,16 +102,25 @@
             <div class="col-md-3 col-sm-12">
                 <div class="folder-card">
                     <div class="folder-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                            class="bi bi-folder folder-icon" viewBox="0 0 16 16">
-                            <path
-                                d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z" />
-                        </svg>
-                        <span>{{folder.name}}</span>
+                        <a href="{% url 'folder' folder.name %}" style="text-decoration: none; color: inherit;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-folder folder-icon" viewBox="0 0 16 16">
+                                <path
+                                    d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z" />
+                            </svg>
+                            <span>{{folder.name}}</span>
+                        </a>
                     </div>
                     <div class="folder-description">
                         {{folder.flashcards_number}} cards
                     </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="w-100 d-flex justify-content-center">
+                <div class="alert alert-info text-center mt-4 col-6" role="alert"
+                    style="background-color: #1c1924; margin: none; color: #e4e0f3; border: none;">
+                    <i class="bi bi-info-circle"></i> There are no folders!
                 </div>
             </div>
             {% endfor %}

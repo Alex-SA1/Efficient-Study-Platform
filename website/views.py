@@ -820,6 +820,7 @@ def flashcards(request):
     return render(request, 'flashcards.html', {'form': form, 'folders': folders})
 
 
+@login_required(login_url='login')
 def flashcard_create(request):
     """
     renders and handles the flashcard creation form
@@ -850,4 +851,26 @@ def flashcard_create(request):
     return render(request, 'create_flashcard.html', {
         'folder_names': folder_names,
         'form': form
+    })
+
+
+@login_required(login_url='login')
+def folder(request, folder_name):
+    """
+    renders a flashcards folder page
+    """
+
+    try:
+        folder = FlashcardsFolder.objects.get(
+            user=request.user, name=folder_name)
+    except:
+        messages.error(
+            request, "The folder that you are trying to access either doesn't exists or belongs to another user!")
+        return render(request, '404.html')
+
+    flashcards = Flashcard.objects.filter(user=request.user, folder=folder)
+
+    return render(request, 'folder.html', {
+        'folder_name': folder_name,
+        'flashcards': flashcards
     })

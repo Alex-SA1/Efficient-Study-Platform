@@ -37,5 +37,6 @@ urlpatterns = [
     path('main/profile/<str:username>', views.profile, name='profile'),
     path('main/flashcards', views.flashcards, name='flashcards'),
     path('main/flashcards/create-flashcard',
-         views.flashcard_create, name='create_flashcard')
+         views.flashcard_create, name='create_flashcard'),
+    path('main/flashcards/folder/<str:folder_name>', views.folder, name='folder')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
