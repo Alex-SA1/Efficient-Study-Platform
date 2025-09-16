@@ -227,3 +227,15 @@ def increment_folder_flashcards_number(folder: FlashcardsFolder):
     new_folder_flashcards_number = folder.flashcards_number + 1
     setattr(folder, "flashcards_number", new_folder_flashcards_number)
     folder.save()
+
+
+def decrement_folder_flashcards_number(folder: FlashcardsFolder):
+    """
+    helper function that decrements by 1 the flashcards number of a given folder
+
+    precondition: folder is a valid FlashcardsFolder, folder.flashcards_number > 0
+    """
+
+    new_folder_flashcards_number = folder.flashcards_number - 1
+    setattr(folder, "flashcards_number", new_folder_flashcards_number)
+    folder.save()

@@ -855,6 +855,65 @@ def flashcard_create(request):
 
 
 @login_required(login_url='login')
+def flashcard_update(request, pk):
+    """
+    renders and handlers the flashcard update form
+    """
+    try:
+        flashcard = Flashcard.objects.get(pk=pk, user=request.user)
+    except:
+        return render(request, '404.html', {})
+
+    if request.method == "POST":
+        form = FlashcardForm(request.user, request.POST)
+
+        if form.is_valid():
+            new_folder = form.cleaned_data['folder']
+            new_front_side_text = form.cleaned_data['front_side_text']
+            new_back_side_text = form.cleaned_data['back_side_text']
+
+            folder_modified = False
+            if new_folder.name != flashcard.folder.name:
+                folder_modified = True
+                decrement_folder_flashcards_number(flashcard.folder)
+
+                new_folder = FlashcardsFolder.objects.get(
+                    user=request.user, name=new_folder.name)
+                increment_folder_flashcards_number(new_folder)
+
+                setattr(flashcard, "folder", new_folder)
+
+            front_side_text_modified = False
+            if new_front_side_text != flashcard.front_side_text:
+                print(new_front_side_text, flashcard.front_side_text)
+                front_side_text_modified = True
+                setattr(flashcard, "front_side_text", new_front_side_text)
+
+            back_side_text_modified = False
+            if new_back_side_text != flashcard.back_side_text:
+                print(new_back_side_text, flashcard.back_side_text)
+                back_side_text_modified = True
+                setattr(flashcard, "back_side_text", new_back_side_text)
+
+            if folder_modified or front_side_text_modified or back_side_text_modified:
+                flashcard.save()
+                return redirect('flashcards')
+
+            form.add_error(None, "No field has been modified")
+    else:
+        form = FlashcardForm()
+
+    flashcards_folders = FlashcardsFolder.objects.filter(user=request.user)
+    folder_names = [folder.name for folder in flashcards_folders]
+
+    return render(request, 'update_flashcard.html', {
+        'flashcard': flashcard,
+        'folder_names': folder_names,
+        'form': form
+    })
+
+
+@login_required(login_url='login')
 def folder(request, folder_name):
     """
     renders a flashcards folder page

@@ -38,5 +38,7 @@ urlpatterns = [
     path('main/flashcards', views.flashcards, name='flashcards'),
     path('main/flashcards/create-flashcard',
          views.flashcard_create, name='create_flashcard'),
-    path('main/flashcards/folder/<str:folder_name>', views.folder, name='folder')
+    path('main/flashcards/folder/<str:folder_name>', views.folder, name='folder'),
+    path('main/flashcards/update-flashcard/flashcard/<int:pk>',
+         views.flashcard_update, name='update_flashcard')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
