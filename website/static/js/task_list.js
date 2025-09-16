@@ -38,6 +38,18 @@ function openDeleteTaskConfirmation(taskTitle, taskId) {
             })
                 .then(response => response.json())
                 .then(data => {
+                    if (data.error) {
+                        Swal.fire({
+                            title: "Oops...",
+                            text: data.error,
+                            icon: "error",
+                            color: '#e4e0f3',
+                            background: '#110f16'
+                        });
+
+                        return;
+                    }
+
                     const taskElementId = "task-" + taskId;
                     const taskElement = document.getElementById(taskElementId);
 

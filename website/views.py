@@ -368,8 +368,17 @@ class TaskDelete(DeleteView):
     @method_decorator(require_POST)
     @method_decorator(csrf_protect)
     def dispatch(self, request, *args, **kwargs):
-        if self.get_object().user_id != request.user.id:
-            return redirect('/main/to-do-list')
+        try:
+            task = self.get_object()
+        except:
+            return JsonResponse({
+                'error': "The task that you are trying to delete either doesn't exists or you have no access to it!"
+            }, status=400)
+
+        if task.user_id != request.user.id:
+            return JsonResponse({
+                'error': "The task that you are trying to delete either doesn't exists or you have no access to it!"
+            }, status=400)
 
         return super().dispatch(request, *args, **kwargs)
 
