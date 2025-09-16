@@ -46,7 +46,7 @@ def error_404(request):
 
 def login_user(request):
     """
-    handle the logic behind logging in an user on the website 
+    handle the logic behind logging in an user on the website
     """
     if request.method == "POST":
         username = request.POST['username']
@@ -855,7 +855,7 @@ def flashcard_create(request):
 @login_required(login_url='login')
 def flashcard_update(request, pk):
     """
-    renders and handlers the flashcard update form
+    renders and handles the flashcard update form
     """
     try:
         flashcard = Flashcard.objects.get(pk=pk, user=request.user)
@@ -909,6 +909,25 @@ def flashcard_update(request, pk):
         'folder_names': folder_names,
         'form': form
     })
+
+
+@require_POST
+@csrf_protect
+def flashcard_delete(request, pk):
+    """
+    handles the flashcard delete request
+    """
+    try:
+        flashcard = Flashcard.objects.get(pk=pk, user=request.user)
+    except:
+        return render(request, '404.html')
+
+    if request.method == "POST":
+        flashcard_folder = flashcard.folder
+        flashcard.delete()
+        decrement_folder_flashcards_number(flashcard_folder)
+
+        return JsonResponse({'message': 'Success!'})
 
 
 @login_required(login_url='login')
