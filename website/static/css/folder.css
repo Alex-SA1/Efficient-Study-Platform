@@ -50,9 +50,18 @@ body {
     background-color: #5a4d72;
 }
 
+.flip-card-box {
+    width: 14rem;
+    height: 16rem;
+    background-color: transparent;
+}
+
+.actions {
+    height: 10%;
+}
+
 .flip-card {
-    width: 12rem;
-    height: 14rem;
+    height: 90%;
     background-color: transparent;
     perspective: 1000px;
     cursor: pointer;
@@ -98,8 +107,16 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-    .flip-card {
+    .flip-card-box {
         width: 10rem;
         height: 12rem;
+    }
+
+    .actions {
+        height: 15%;
+    }
+
+    .flip-card {
+        height: 85%;
     }
 }
