@@ -920,7 +920,9 @@ def flashcard_delete(request, pk):
     try:
         flashcard = Flashcard.objects.get(pk=pk, user=request.user)
     except:
-        return render(request, '404.html')
+        return JsonResponse({
+            'error': "The flashcard that you are trying to delete either doesn't exists or you have no access to it!"
+        }, status=400)
 
     if request.method == "POST":
         flashcard_folder = flashcard.folder
