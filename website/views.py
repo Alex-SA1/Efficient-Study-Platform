@@ -830,12 +830,10 @@ def flashcard_create(request):
         form = FlashcardForm(request.user, request.POST)
 
         if form.is_valid():
-            folder_name = form.cleaned_data['folder']
+            folder = form.cleaned_data['folder']
             front_side_text = form.cleaned_data['front_side_text']
             back_side_text = form.cleaned_data['back_side_text']
 
-            folder = FlashcardsFolder.objects.get(
-                user=request.user, name=folder_name)
             Flashcard.objects.create(user=request.user, folder=folder,
                                      front_side_text=front_side_text, back_side_text=back_side_text)
 
