@@ -19,10 +19,10 @@ def ajax_request_required(view):
     """
     decorator for views that checks that the request includes headers of an Ajax request 
     """
-    def wrapper(request):
+    def wrapper(request, *args, **kwargs):
         if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
             return redirect('/404')
-        return view(request)
+        return view(request, *args, **kwargs)
 
     return wrapper
 

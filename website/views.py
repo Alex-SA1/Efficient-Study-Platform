@@ -968,10 +968,12 @@ def flashcard_update(request, pk):
 
 @require_POST
 @csrf_protect
+@ajax_request_required
 def flashcard_delete(request, pk):
     """
     handles the flashcard delete request
     """
+    
     try:
         flashcard = Flashcard.objects.get(pk=pk, user=request.user)
     except:
@@ -1011,6 +1013,7 @@ def folder(request, folder_name):
 
 @require_POST
 @csrf_protect
+@ajax_request_required
 def folder_delete(request, pk):
     """
     handles the folder delete request
