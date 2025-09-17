@@ -1007,3 +1007,23 @@ def folder(request, folder_name):
         'folder_name': folder_name,
         'flashcards': flashcards
     })
+
+
+@require_POST
+@csrf_protect
+def folder_delete(request, pk):
+    """
+    handles the folder delete request
+    """
+
+    try:
+        folder = FlashcardsFolder.objects.get(user=request.user, pk=pk)
+    except:
+        return JsonResponse({
+            'error': "The folder that you are trying to delete either doesn't exists or you have no access to it!"
+        }, status=400)
+
+    if request.method == "POST":
+        folder.delete()
+
+        return JsonResponse({'message': 'Success!'})
