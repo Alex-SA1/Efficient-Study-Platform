@@ -253,12 +253,21 @@ class FlashcardsFolderForm(forms.ModelForm):
         model = FlashcardsFolder
         fields = ['name']
 
-    def __init__(self, user=None, *args, **kwargs):
+    def __init__(self, user=None, form_type=None, folder=None, *args, **kwargs):
         super(FlashcardsFolderForm, self).__init__(*args, **kwargs)
         self.user = user
+        self.form_type = form_type
+
+        # this attribute will be != None only if form_type == 'Update'
+        self.folder = folder
 
     def clean_name(self):
         name = self.cleaned_data['name']
+
+        if self.form_type == 'Update':
+            old_name = self.folder.name
+            if old_name == name:
+                raise ValidationError("The folder name has not been modified!")
 
         if FlashcardsFolder.objects.filter(user=self.user, name=name).exists():
             raise ValidationError("The folder name should be unique!")

@@ -806,27 +806,73 @@ def profile(request, username):
 @login_required(login_url='login')
 def flashcards(request):
     """
-    renders that main page for the flashcards app
+    renders the main page for the flashcards app
     """
-
     if request.method == "POST":
-        form = FlashcardsFolderForm(request.user, request.POST)
-        if form.is_valid():
-            folder_name = form.cleaned_data['name']
+        form_type = None
+        if ('create_folder_form' in request.POST and request.POST.get('create_folder_form') == 'CreateFolderForm' and
+                'create_folder_btn' in request.POST and request.POST.get('create_folder_btn') == 'Create'):
+            form_type = 'Create'
+        elif ('update_folder_form' in request.POST and request.POST.get('update_folder_form') == 'UpdateFolderForm' and
+              'update_folder_btn' in request.POST and request.POST.get('update_folder_btn') == 'Update'):
+            form_type = 'Update'
 
-            FlashcardsFolder.objects.create(
-                user=request.user, name=folder_name)
-
-            return redirect('flashcards')
+        if form_type is None:
+            messages.error(request, "The folder submitted is invalid!")
+            form = FlashcardsFolderForm()
+            create_folder_form = form
+            update_folder_form = form
         else:
-            messages.error(
-                request, f"The form has some errors! Open the form to see the errors!")
+            error = False
+            if form_type == 'Update':
+                folder_id = request.POST.get('folder_id')
+                try:
+                    folder = FlashcardsFolder.objects.get(
+                        user=request.user, pk=folder_id)
+                    update_folder_form = FlashcardsFolderForm(
+                        request.user, form_type, folder, request.POST)
+                except:
+                    folder = None
+                    error = True
+                    messages.error(
+                        request, "The folder that you are trying to update either doesn't exists or you have no access to it!")
+                    update_folder_form = FlashcardsFolderForm()
+
+                create_folder_form = FlashcardsFolderForm()
+            elif form_type == 'Create':
+                create_folder_form = FlashcardsFolderForm(
+                    request.user, form_type, None, request.POST)
+                update_folder_form = FlashcardsFolderForm()
+
+            if error == False and form_type == 'Create' and create_folder_form.is_valid():
+                folder_name = create_folder_form.cleaned_data['name']
+
+                FlashcardsFolder.objects.create(
+                    user=request.user, name=folder_name)
+
+                return redirect('flashcards')
+            elif error == False and form_type == 'Update' and update_folder_form.is_valid():
+                folder_name = update_folder_form.cleaned_data['name']
+
+                setattr(folder, 'name', folder_name)
+                folder.save()
+
+                return redirect('flashcards')
+            else:
+                messages.error(
+                    request, f"The form has some errors! Open the form to see the errors!")
     else:
         form = FlashcardsFolderForm()
+        create_folder_form = form
+        update_folder_form = form
 
     folders = FlashcardsFolder.objects.filter(user=request.user)
 
-    return render(request, 'flashcards.html', {'form': form, 'folders': folders})
+    return render(request, 'flashcards.html', {
+        'create_folder_form': create_folder_form,
+        'update_folder_form': update_folder_form,
+        'folders': folders
+    })
 
 
 @login_required(login_url='login')

@@ -148,3 +148,7 @@ body {
 .custom-btn:hover {
     background-color: #5a4d72;
 }
+
+.folder-actions {
+    color: #a0a0a0;
+}
