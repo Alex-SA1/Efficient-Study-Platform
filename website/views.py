@@ -774,6 +774,8 @@ def manage_friend_request(request):
         sender_username = data.get('sender_username')
         receiver_user = request.user
 
+        print(sender_username)
+
         try:
             sender_user = User.objects.get(username=sender_username)
         except:
@@ -789,6 +791,16 @@ def manage_friend_request(request):
             }, status=400)
 
         if action == "accept":
+            if friend_request.status == 'rejected':
+                return JsonResponse({
+                    'error': f"You previously rejected the friend request sent by {sender_username}!"
+                }, status=400)
+
+            if friend_request.status == 'accepted':
+                return JsonResponse({
+                    'error': f"You already accepted the friend request sent by {sender_username}!"
+                }, status=400)
+
             setattr(friend_request, 'status', 'accepted')
             friend_request.save()
 
@@ -797,8 +809,22 @@ def manage_friend_request(request):
                 user_2=receiver_user
             )
         elif action == "reject":
+            if friend_request.status == 'accepted':
+                return JsonResponse({
+                    'error': f"You previously accepted the friend request sent by {sender_username}!"
+                }, status=400)
+
+            if friend_request.status == 'rejected':
+                return JsonResponse({
+                    'error': f"You already rejected the friend request sent by {sender_username}!"
+                }, status=400)
+
             setattr(friend_request, 'status', 'rejected')
             friend_request.save()
+        else:
+            return JsonResponse({
+                'error': "Invalid action!"
+            }, status=400)
 
         return JsonResponse({
             'message': 'Success!'

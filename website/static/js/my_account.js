@@ -14,7 +14,7 @@ function acceptFriendRequest(sender_username) {
             'sender_username': sender_username
         })
     })
-        .then(response => response.json)
+        .then(response => response.json())
         .then(data => {
             if (data.error) {
                 Swal.fire({
@@ -68,7 +68,7 @@ function rejectFriendRequest(sender_username) {
             'sender_username': sender_username
         })
     })
-        .then(response => response.json)
+        .then(response => response.json())
         .then(data => {
             if (data.error) {
                 Swal.fire({
