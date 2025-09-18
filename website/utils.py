@@ -239,3 +239,33 @@ def decrement_folder_flashcards_number(folder: FlashcardsFolder):
     new_folder_flashcards_number = folder.flashcards_number - 1
     setattr(folder, "flashcards_number", new_folder_flashcards_number)
     folder.save()
+
+
+def joined_in_study_session(username: string, session_code: string) -> bool:
+    """
+    helper function that checks if a user is joined in a study session
+
+    precondition: username corresponds to a valid user and session code corresponds to a valid study session
+    """
+    users = cache.get(session_code, [])
+    
+    return username in users
+
+
+def allowed_to_study_session(username: string, session_code: string) -> bool:
+    """
+    helper function that checks if a user is allowed to join a study session
+    a user is allowed to join a study session only if he is friend with at least one of the study session participants
+
+    precondition: username corresponds to a valid user and session code corresponds to a valid study session
+    """
+    allowed = False
+    users = cache.get(session_code, [])
+
+    for current_username in users:
+        user_to_check = User.objects.get(username=username)
+        current_user = User.objects.get(username=current_username)
+        if check_friendship(user_to_check, current_user):
+            allowed = True
+
+    return allowed

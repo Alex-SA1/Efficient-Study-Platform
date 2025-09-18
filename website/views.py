@@ -533,8 +533,16 @@ def collaborative_study_session_menu(request):
             session_code = form.cleaned_data['session_code']
 
             if valid_study_session(session_code) == True:
-                add_user_to_study_session(session_code, request.user.username)
-                return redirect('study_session', session_code=session_code)
+                if joined_in_study_session(request.user.username, session_code):
+                    return redirect('study_session', session_code=session_code)
+                elif allowed_to_study_session(request.user.username, session_code):
+                    add_user_to_study_session(
+                        session_code, request.user.username)
+                    return redirect('study_session', session_code=session_code)
+                else:
+                    messages.error(
+                        request, f"You are not allowed to join the study session with the following code: {session_code}. You have to be friend with at least one of the study session participants!")
+                    return redirect('error_404')
             else:
                 messages.error(
                     request, f"There is no active study session with the following session code: {session_code}")
@@ -556,10 +564,15 @@ def study_session(request, session_code):
         messages.error(
             request, f"There is no active study session with the following session code: {session_code}")
         return render(request, '404.html')
-    else:
+    elif not joined_in_study_session(request.user.username, session_code):
         # this is for the case in which the user enters the study session via link, and not by submitting
         # the join study session form with the session code
-        add_user_to_study_session(session_code, request.user.username)
+        if allowed_to_study_session(request.user.username, session_code):
+            add_user_to_study_session(session_code, request.user.username)
+        else:
+            messages.error(
+                request, f"You are not allowed to join the study session with the following code: {session_code}. You have to be friend with at least one of the study session participants!")
+            return redirect('error_404')
 
     if request.method == "POST":
         remove_user_from_study_session(session_code, request.user.username)
