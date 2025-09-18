@@ -106,7 +106,7 @@ def add_user_to_study_session(session_code: string, username: string):
     """
     users = cache.get(session_code, [])
 
-    if not username in users:
+    if username not in users:
         users.append(username)
         cache.set(session_code, users, timeout=None)
 

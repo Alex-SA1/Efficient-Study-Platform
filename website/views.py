@@ -556,6 +556,10 @@ def study_session(request, session_code):
         messages.error(
             request, f"There is no active study session with the following session code: {session_code}")
         return render(request, '404.html')
+    else:
+        # this is for the case in which the user enters the study session via link, and not by submitting
+        # the join study session form with the session code
+        add_user_to_study_session(session_code, request.user.username)
 
     if request.method == "POST":
         remove_user_from_study_session(session_code, request.user.username)
@@ -973,7 +977,7 @@ def flashcard_delete(request, pk):
     """
     handles the flashcard delete request
     """
-    
+
     try:
         flashcard = Flashcard.objects.get(pk=pk, user=request.user)
     except:
