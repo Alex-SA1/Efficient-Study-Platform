@@ -73,9 +73,10 @@ def filter_tasks_by_deadline_date(tasks: QuerySet, deadline_date: string):
     filtered_tasks_pks = []
 
     for task in tasks:
-        deadline_field = str(timezone.localtime(getattr(task, 'deadline')))
-        if deadline_date in deadline_field:
-            filtered_tasks_pks.append(task.pk)
+        if task.deadline:
+            deadline_field = str(timezone.localtime(task.deadline))
+            if deadline_date in deadline_field:
+                filtered_tasks_pks.append(task.pk)
 
     return tasks.filter(pk__in=filtered_tasks_pks)
 
@@ -248,7 +249,7 @@ def joined_in_study_session(username: string, session_code: string) -> bool:
     precondition: username corresponds to a valid user and session code corresponds to a valid study session
     """
     users = cache.get(session_code, [])
-    
+
     return username in users
 
 
