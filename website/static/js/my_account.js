@@ -38,6 +38,13 @@ function acceptFriendRequest(sender_username) {
                 color: '#e4e0f3',
                 background: '#110f16'
             });
+
+            const actionButtonsElement = document.getElementById('action-buttons');
+            actionButtonsElement.remove();
+
+            const friendRequestInfoText = document.getElementById('friend-request-info-text');
+            friendRequestInfoText.textContent = "friend request accepted";
+
         })
         .catch(err => {
             Swal.fire({
@@ -92,6 +99,13 @@ function rejectFriendRequest(sender_username) {
                 color: '#e4e0f3',
                 background: '#110f16'
             });
+
+            const actionButtonsElement = document.getElementById('action-buttons');
+            actionButtonsElement.remove();
+
+            const friendRequestInfoText = document.getElementById('friend-request-info-text');
+            friendRequestInfoText.textContent = "friend request rejected";
+
         })
         .catch(err => {
             Swal.fire({

@@ -91,9 +91,9 @@
                 {% endif %}
                 <div class="friend-request-info">
                     <h5>{{ friend_request.sender }}</h5>
-                    <p>sent you a friend request</p>
+                    <p id="friend-request-info-text">sent you a friend request</p>
                 </div>
-                <div class="action-buttons d-flex">
+                <div id="action-buttons" class="action-buttons d-flex">
                     <button class="btn btn-sm btn-accept" type="button"
                         onclick="acceptFriendRequest('{{friend_request.sender}}')">Accept</button>
                     <button class="btn btn-sm btn-decline" type="button"

@@ -774,8 +774,6 @@ def manage_friend_request(request):
         sender_username = data.get('sender_username')
         receiver_user = request.user
 
-        print(sender_username)
-
         try:
             sender_user = User.objects.get(username=sender_username)
         except:
