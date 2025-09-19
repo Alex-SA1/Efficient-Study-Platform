@@ -203,6 +203,16 @@ def main_page(request):
                 deadline_freq[deadline] = 1
 
     currentDatetime = timezone.localtime(timezone.now()).isoformat()
+
+    pending_friend_requests = FriendRequest.objects.filter(
+        receiver=request.user, status='pending')
+    number_of_pending_friend_requests = len(pending_friend_requests)
+
+    if number_of_pending_friend_requests > 0:
+        request_or_requests = "request" if number_of_pending_friend_requests == 1 else "requests"
+        messages.info(
+            request, f"You have {number_of_pending_friend_requests} friend {request_or_requests} waiting for your response!")
+
     return render(request, 'main.html', {
         'datetime': currentDatetime,
         'deadlines': deadline_freq
