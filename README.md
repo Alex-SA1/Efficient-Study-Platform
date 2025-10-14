@@ -29,3 +29,44 @@ Navigating through the app you will find a tasks management system, a place for 
 - No access to the application features for anonymous users (visitors without an account)
 
 
+### Project Presentation
+
+------------
+
+##### Home Page
+![home-page](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/home_page.png?raw=true)
+
+On this page you will find just some presentation text and two buttons for accessing the login and registration pages.
+
+
+------------
+
+##### Registration Page
+![registration-page](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/register_page.png?raw=true)
+
+Here you will find a registration form with the following field constraints (if the form is submitted with invalid data, you will be notified about it and the account won't be created):
+-  Username: should be unique
+-  Email: should be unique and valid
+- Verification Code: should be equal with the one received on email
+- Password: minimum 8 characters, not too similar to username and email, not a common password, not entirely numeric
+
+This is how the verification mail sent to you would look like.
+![registration-code](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/regsitration_code.png?raw=true)
+
+Note: The email will be marked as spam because is sent from a testing email address and not from an oficial domain.
+
+
+------------
+
+##### Main page (without country selected)
+![main-page-without-country-selected](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_no_country_selected.png?raw=true)
+
+This is the main page of the platform when you have no country selected. As you can see there are some features unavailable because they require a timezone which is automatically set based on your country selection.
+
+
+------------
+
+##### Main page (with country selected)
+![main-page-without-country-selected](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_country_selected.png?raw=true)
+
+After selecting a country, you will have full access to the application. Besides the features that became available to you, there is a calendar where you will see every day colored differently based on the tasks deadline. The color is more intense as you have more tasks with the deadline set to a certain day. You can view the current year or the next year deadlines calendar.
