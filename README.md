@@ -20,6 +20,7 @@
 	- [Flashcards App](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#flashcards-app-pages)
 	- [Search Users](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#search-users-page)
 	- [Collaborative Study Session](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#collaborative-study-session-app-pages)
+- [Run](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#run-locally-the-project)
 
 
 ### Description
@@ -255,3 +256,20 @@ You can edit pomodoro timer minutes.
 The timer circle gets updated as time elapses and it resets for every cycle change.
 
 ![pomodoro-timer-circle](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/pomodoro-timer-circle.png?raw=true)
+
+## Run locally the project
+
+- Clone my repository on your machine
+- Create a .env file with the same format as .env.example in the same directory and fill the values in .env according to the explanations from example file
+- To obtain a Django secret key you can search on Google for a generator
+- To obtain a Mailjet API key you have to create an account (free plan) on the platform and copy the required values from the admin dashboard
+- To obtain a Cloudinary API key you have to create an account (free plan) on the platform and copy the required values from the admin dashboard
+- Make sure that .env file has only LF (not CRLF as on Windows) for new lines (you can check that from Visual Studio Code)
+- Make sure the ports 3306 and 6379 have no services running on them (you can check that from Services on Windows)
+- Run the following command in the root directory:
+
+```bash
+  docker compose up --build
+```
+- After completing all these steps, you should have the website live on your localhost
+    
