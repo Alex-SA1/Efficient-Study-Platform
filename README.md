@@ -5,12 +5,29 @@
 
 ------------
 
+## Table of contents
+- [Description](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#description)
+- [Project Features](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#project-features )
+- [Project Presentation](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#project-presentation)
+	- [Home](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#home-page)
+	- [Registration](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#registration-page)
+	- [Login](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#login-page)
+	- [Forgot Password](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#forgot-password-page)
+	- [Main (without country selected)](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#main-page-without-country-selected)
+	- [Main (with country selected)](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#main-page-with-country-selected)
+	- [My Account](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#my-account-page)
+	- [To-Do App](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#to-do-app-pages)
+	- [Flashcards App](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#flashcards-app-pages)
+	- [Search Users](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#search-users-page)
+	- [Collaborative Study Session](https://github.com/Alex-SA1/Efficient-Study-Platform?tab=readme-ov-file#collaborative-study-session-app-pages)
+
+
 ### Description
 The purpose of the application is to provide an online environment for students that will help them in the study process.
 
 Navigating through the app you will find a tasks management system, a place for creating flashcards, the possibility of editing your own user profile and sending friend requests and also, a section where you can connect with your friends and start live chatting. If you are the kind of person that likes to study for fixed and organised periods of time, the pomodoro timer that you will find in the study session section may help you.
 
-### Project features
+### Project Features
 - Responsiveness (the website design is responsive for every device)
 - Registration with mail confirmation (username and email are unique fields)
 - Forgot password option
@@ -157,7 +174,7 @@ The flashcards are stored in folders.
 
 ![create-folder](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-folder.png?raw=true)
 
-![flashcards-folders-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/flashcards-folders-2.png?raw=true).
+![flashcards-folders-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/flashcards-folders-2.png?raw=true)
 
 ![create-flashcard-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-flashcard-1.png?raw=true)
 
