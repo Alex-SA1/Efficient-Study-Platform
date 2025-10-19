@@ -1,5 +1,4 @@
-# I am still working on readme file...
-------------
+#* I am still working on readme file...*
 # Efficient Study Platform
 
 > *Motivation: I built this project because I wanted to learn a new web framework (Django)  and different kinds of tools and techniques related to full stack development. I chose the project topic guided by the wish of creating something that has a real life applicability and also that would help me.*
@@ -12,6 +11,7 @@ The purpose of the application is to provide an online environment for students 
 Navigating through the app you will find a tasks management system, a place for creating flashcards, the possibility of editing your own user profile and sending friend requests and also, a section where you can connect with your friends and start live chatting. If you are the kind of person that likes to study for fixed and organised periods of time, the pomodoro timer that you will find in the study session section may help you.
 
 ### Project features
+- Responsiveness (the website design is responsive for every device)
 - Registration with mail confirmation (username and email are unique fields)
 - Forgot password option
 - User profile section that allows the user to set a profile picture, a country or a profile description
@@ -192,3 +192,49 @@ To view the flashcards from a folder you have to click on the folder and after t
 ![view-flashcard-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/view-flashcards-1.png?raw=true)
 
 ![view-flashcard-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/view-flashcard-2.png?raw=true)
+
+------------
+
+#### Search Users Page
+
+In this section you can search for users, view their profile or send a friend request.
+
+![search-users-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/search-users-1.png?raw=true)
+
+![search-users-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/search-users-2.png?raw=true)
+
+![view-user-profile](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/view-user-profile.png?raw=true)
+
+![friend-request-sent](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/friend-request-sent.png?raw=true)
+
+After sending a friend request to a user, he will get notified when logs in. Also, the friend request will be displayed in his inbox.
+
+![friend-request-notification](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/friend-request-notification.png?raw=true)
+
+![friend-requests-inbox-updated](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/friend-requests-inbox-updated.png?raw=true)
+
+------------
+
+#### Collaborative Study Session App Pages
+
+This is the place where you can create/join study sessions and start learning together with your friends.
+
+![join-study-session](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/join-study-session.png?raw=true)
+
+![study-session-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-1.png?raw=true)
+
+You can copy the study session code to clipboard.
+
+![study-session-code](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-code.png?raw=true)
+
+![study-session-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-2.png?raw=true)
+
+![study-session-3](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-3.png?raw=true)
+
+You can edit pomodoro timer minutes.
+
+![pomodoro-timer-settings](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/pomodoro-timer-settings.png?raw=true)
+
+The timer circle gets updated as time elapses and it resets for every cycle change.
+
+![pomodoro-timer-circle](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/pomodoro-timer-circle.png?raw=true)
