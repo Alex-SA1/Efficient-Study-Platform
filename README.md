@@ -1,4 +1,5 @@
-#* I am still working on readme file...*
+# I am still working on readme file...
+------------
 # Efficient Study Platform
 
 > *Motivation: I built this project because I wanted to learn a new web framework (Django)  and different kinds of tools and techniques related to full stack development. I chose the project topic guided by the wish of creating something that has a real life applicability and also that would help me.*
@@ -69,7 +70,19 @@ On the login page you will be asked for your account username and password. You 
 
 ------------
 
-#### Main page (without country selected)
+#### Forgot Password Page
+![forgot-password-page](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/reset-password.png?raw=true)
+
+On this page you can reset your account password.
+
+This is how the verification mail sent to you would look like.
+![reset-password-code](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/password_reset_code.png?raw=true)
+
+Note: The email will be marked as spam because is sent from a testing email address and not from an oficial domain.
+
+------------
+
+#### Main Page (without country selected)
 ![main-page-without-country-selected](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_no_country_selected.png?raw=true)
 
 This is the main page of the platform when you have no country selected. As you can see there are some features unavailable because they require a timezone which is automatically set based on your country selection.
@@ -77,14 +90,14 @@ This is the main page of the platform when you have no country selected. As you 
 
 ------------
 
-#### Main page (with country selected)
+#### Main Page (with country selected)
 ![main-page-without-country-selected](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_country_selected.png?raw=true)
 
 After selecting a country, you will have full access to the application. Besides the features that became available to you, there is a calendar where you will see every day colored differently based on the tasks deadline. The color is more intense as you have more tasks with the deadline set to a certain day. You can view the current year or the next year deadlines calendar.
 
 ------------
 
-#### My Account page
+#### My Account Page
 ![user-profile](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/user_profile.png?raw=true)
 
 This is the page where you can edit your account details.  The editable attributes of your user profile are: profile picture, country, description.
@@ -101,7 +114,7 @@ From this page you can also view and manage your friend requests.
 
 ------------
 
-#### To-do App pages
+#### To-do App Pages
 ![tasks-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/tasks_1.png?raw=true)
 
 Here is the place where you can manage your tasks. You can create, update, delete or filter them. By default, the newest created tasks are displayed first and the completed ones last.
@@ -120,6 +133,8 @@ Here is the place where you can manage your tasks. You can create, update, delet
 
 ![edit-task](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/edit_task.png?raw=true)
 
+![delete-task](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/delete-task.png?raw=true)
+
 After you add some tasks, you will notice that the deadlines calendar from main page will get updated. The colors will change as you add more tasks with the deadline on the same day.
 
 ![deadlines-calendar-update-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_deadlines_1.png?raw=true)
@@ -130,3 +145,50 @@ You can also view the next year status of deadlines calendar.
 
 ![deadlines-calendar-next-year](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_next_year.png?raw=true)
 
+------------
+
+#### Flashcards App Pages
+
+This is the place for managing your flashcards.
+
+![flashcards-folders-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/flashcards-folders-1.png?raw=true)
+
+The flashcards are stored in folders.
+
+![create-folder](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-folder.png?raw=true)
+
+![flashcards-folders-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/flashcards-folders-2.png?raw=true).
+
+![create-flashcard-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-flashcard-1.png?raw=true)
+
+![create-flashcard-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-flashcard-2.png?raw=true)
+
+![create-flashcard-3](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-flashcard-3.png?raw=true)
+
+You can reverse the card by clicking on it.
+
+![create-flashcard-4](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-flashcard-4.png?raw=true)
+
+After creating a flashcard, the flashcards counter for the corresponding folder will be updated.
+
+![flashcards-counter-updated](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/flashcards-counter-updated.png?raw=true)
+
+You can also update/delete a folder or a flashcard. If you delete a folder, all flashcards stored in it will be also deleted.
+
+![update-folder](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/update-folder.png?raw=true)
+
+![delete-folder](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/delete-folder.png?raw=true)
+
+By default the action buttons for flashcards are hidden and you have to display them if you want to edit/delete a flashcard.
+
+![show-flashcards-actions](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/view-flashcards-actions.png?raw=true)
+
+![update-flashcard](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/update-flashcard.png?raw=true)
+
+![delete-flashcard](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/delete-flashcard.png?raw=true)
+
+To view the flashcards from a folder you have to click on the folder and after that you can click on any flashcard to reverse it.
+
+![view-flashcard-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/view-flashcards-1.png?raw=true)
+
+![view-flashcard-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/view-flashcard-2.png?raw=true)
