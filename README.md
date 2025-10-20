@@ -1,4 +1,4 @@
-#* I am still working on readme file...*
+* I am still working on readme file...*
 # Efficient Study Platform
 
 > *Motivation: I built this project because I wanted to learn a new web framework (Django)  and different kinds of tools and techniques related to full stack development. I chose the project topic guided by the wish of creating something that has a real life applicability and also that would help me.*
@@ -54,19 +54,20 @@ Navigating through the app you will find a tasks management system, a place for 
 ------------
 
 #### Home Page
+
+The first page that you will see when you enter on website. Here you will find just a presentation text and two buttons for accessing the register and login page.
+
 ![home-page](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/home_page.png?raw=true)
-
-On this page you will find just some presentation text and two buttons for accessing the login and registration pages.
-
 
 ------------
 
 #### Registration Page
+
 ![registration-page](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/register_page.png?raw=true)
 
 Here you will find a registration form with the following field constraints (if the form is submitted with invalid data, you will be notified about it and the account won't be created):
--  Username: should be unique
--  Email: should be unique and valid
+- Username: should be unique
+- Email: should be unique and valid
 - Verification Code: should be equal with the one received on email
 - Password: minimum 8 characters, not too similar to username and email, not a common password, not entirely numeric
 
@@ -79,46 +80,73 @@ Below you will find an image with the registration form filled with data. The pa
 
 ![registration-form-filled](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/registration_form_filled.png?raw=true)
 
+The verification code will be stored for 3 minutes in cache memory (Redis) and after that it will be deleted and no longer valid. It is associated with the email that you entered so any other code different from the one received on the mail will be invalid.
+
+The password is hashed using SHA256 and stored in this way in the database.
+
 ------------
 
 #### Login Page
-![login-page](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/login_page.png?raw=true)
 
-On the login page you will be asked for your account username and password. You can click on eye icon and the password will be revelead for a few seconds. Also, you will find useful links on this page such as a redirection link to the "Forgot Password" page or to the registration page.
+You will be asked for your account username and password. You can click on eye icon and the password will be revelead for a few seconds. Also, you will find links to "Forgot Password" page and registration page.
+
+![login-page](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/login_page.png?raw=true)
 
 ------------
 
 #### Forgot Password Page
+
 ![forgot-password-page](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/reset-password.png?raw=true)
 
-On this page you can reset your account password.
+Here you can reset your account password.
+
+The verification code system works similar to the one from registration process, but what is different here is the way by which the code is identified in the cache memory because it will be associated with the reset password process so that there are no collisions with the registration verification codes.
 
 This is how the verification mail sent to you would look like.
 ![reset-password-code](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/password_reset_code.png?raw=true)
 
 Note: The email will be marked as spam because is sent from a testing email address and not from an oficial domain.
 
+Same constraints that are applied to the password in the registration form, are also applied when you want to reset the password.
+
 ------------
 
 #### Main Page (without country selected)
+
+This is the first page that you will be redirected to after logging in.
+
 ![main-page-without-country-selected](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_no_country_selected.png?raw=true)
 
-This is the main page of the platform when you have no country selected. As you can see there are some features unavailable because they require a timezone which is automatically set based on your country selection.
-
+By default, on your user profile you will not have a country selected so, as you can see some platform features are unavailable. To obtain full access to the application you have to set your country so that the app can identify your timezone and offer you a customized experience.
 
 ------------
 
 #### Main Page (with country selected)
-![main-page-without-country-selected](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_country_selected.png?raw=true)
 
-After selecting a country, you will have full access to the application. Besides the features that became available to you, there is a calendar where you will see every day colored differently based on the tasks deadline. The color is more intense as you have more tasks with the deadline set to a certain day. You can view the current year or the next year deadlines calendar.
+After selecting a country, you will have full access to the application. 
+
+Besides the features that became available to you, there is a calendar where you will see every day colored differently based on the tasks deadline. The color is more intense as you have more tasks with the deadline set to a certain day. You can view the current year or the next year deadlines calendar.
+
+![main-page-without-country-selected](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_country_selected.png?raw=true)
 
 ------------
 
 #### My Account Page
+
+Here you can view your account details.
+
 ![user-profile](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/user_profile.png?raw=true)
 
-This is the page where you can edit your account details.  The editable attributes of your user profile are: profile picture, country, description.
+You can edit your account from a dedicated page that you can access by clicking on "edit account" button. 
+
+The editable attributes of your user profile are: profile picture, country, description.
+
+Profile picture has some validators that are checking for:
+- extensions (.jpg, .jpeg, .png)
+- image integrity
+- image size (max. 2 mb)
+
+Country has to be selected from a given list.
 
 ![edit-user-profile](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/edit_account.png?raw=true)
 
