@@ -1,4 +1,4 @@
-* I am still working on readme file...*
+I am still working on readme file...
 # Efficient Study Platform
 
 > *Motivation: I built this project because I wanted to learn a new web framework (Django)  and different kinds of tools and techniques related to full stack development. I chose the project topic guided by the wish of creating something that has a real life applicability and also that would help me.*
@@ -29,7 +29,6 @@ The purpose of the application is to provide an online environment for students 
 Navigating through the app you will find a tasks management system, a place for creating flashcards, the possibility of editing your own user profile and sending friend requests and also, a section where you can connect with your friends and start live chatting. If you are the kind of person that likes to study for fixed and organised periods of time, the pomodoro timer that you will find in the study session section may help you.
 
 ### Project Features
-- Responsiveness (the website design is responsive for every device)
 - Registration with mail confirmation (username and email are unique fields)
 - Forgot password option
 - User profile section that allows the user to set a profile picture, a country or a profile description
@@ -47,6 +46,8 @@ Navigating through the app you will find a tasks management system, a place for 
 - Datetime based on the user timezone
 - Access restricted for users without a country selected
 - No access to the application features for anonymous users (visitors without an account)
+- Responsiveness (the website design is responsive for every device)
+- Server-side validation for every feature that has a client-side validation (because client-side validations can be bypassed easily)
 
 
 ### Project Presentation
@@ -142,7 +143,7 @@ You can edit your account from a dedicated page that you can access by clicking 
 The editable attributes of your user profile are: profile picture, country, description.
 
 Profile picture has some validators that are checking for:
-- extensions (.jpg, .jpeg, .png)
+- extension (.jpg, .jpeg, .png)
 - image integrity
 - image size (max. 2 mb)
 
@@ -154,16 +155,23 @@ Below is an image with the account details after editing them.
 
 ![account-modified](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/account_modified.png?raw=true)
 
-From this page you can also view and manage your friend requests.
+From the account page you can also view and manage your friend requests.
 
 ![friend-requests-inbox](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/friend-requests-inbox.png?raw=true)
 
 ------------
 
 #### To-do App Pages
+
+A place where you can manage your tasks. You can create, update, delete or filter them. 
+
+By default, the newest created tasks are displayed first and the completed ones last.
+
 ![tasks-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/tasks_1.png?raw=true)
 
-Here is the place where you can manage your tasks. You can create, update, delete or filter them. By default, the newest created tasks are displayed first and the completed ones last.
+The deadline has to be a future date, otherwise an error message will be shown after submitting the form and the task won't be created.
+
+You can select a tag for you task only from the available ones.
 
 ![create-task-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create_task_1.png?raw=true)
 
@@ -177,17 +185,23 @@ Here is the place where you can manage your tasks. You can create, update, delet
 
 ![tasks-3](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/tasks_3.png?raw=true)
 
+If you want to mark a task as completed, you have to go on its edit page and you will find there an option.
+
+From the task edit page you can update any of its fields.
+
 ![edit-task](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/edit_task.png?raw=true)
+
+When you want to delete a task, you will be prompted with a message box that asks for your confirmation.
 
 ![delete-task](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/delete-task.png?raw=true)
 
-After you add some tasks, you will notice that the deadlines calendar from main page will get updated. The colors will change as you add more tasks with the deadline on the same day.
+After adding some tasks, you will notice that the deadlines calendar from the main page will get updated. The colors will change as you add more tasks with the deadline on the same day.
 
 ![deadlines-calendar-update-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_deadlines_1.png?raw=true)
 
 ![deadlines-calendar-update-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_deadlines_2.png?raw=true)
 
-You can also view the next year status of deadlines calendar.
+You can also view the next year status of the deadlines calendar.
 
 ![deadlines-calendar-next-year](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/main_page_next_year.png?raw=true)
 
@@ -195,15 +209,21 @@ You can also view the next year status of deadlines calendar.
 
 #### Flashcards App Pages
 
-This is the place for managing your flashcards.
+This is the place where you can manage your flashcards.
+
+All flashcards that you are creating have to be stored in folders.
 
 ![flashcards-folders-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/flashcards-folders-1.png?raw=true)
 
-The flashcards are stored in folders.
+When you create a folder you have to pay attention to its name because it has to be unique. If you want to create two folders with the same name, an error message will be shown and the second folder won't be created.
 
 ![create-folder](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-folder.png?raw=true)
 
+Every folder has a flashcards counter which gets updated based on your actions.
+
 ![flashcards-folders-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/flashcards-folders-2.png?raw=true)
+
+When you create a flashcard you have to select a folder from the available ones to indicate the location where you want to save it. After that, you have to enter information on both sides. The flashcard can be reversed by clicking on it.
 
 ![create-flashcard-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-flashcard-1.png?raw=true)
 
@@ -211,11 +231,9 @@ The flashcards are stored in folders.
 
 ![create-flashcard-3](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-flashcard-3.png?raw=true)
 
-You can reverse the card by clicking on it.
-
 ![create-flashcard-4](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/create-flashcard-4.png?raw=true)
 
-After creating a flashcard, the flashcards counter for the corresponding folder will be updated.
+After creating a flashcard, the flashcards counter for the corresponding folder will get updated.
 
 ![flashcards-counter-updated](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/flashcards-counter-updated.png?raw=true)
 
@@ -223,13 +241,19 @@ You can also update/delete a folder or a flashcard. If you delete a folder, all 
 
 ![update-folder](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/update-folder.png?raw=true)
 
+When you try to delete a folder, a message box which asks for your confirmation will be prompted.
+
 ![delete-folder](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/delete-folder.png?raw=true)
 
 By default the action buttons for flashcards are hidden and you have to display them if you want to edit/delete a flashcard.
 
 ![show-flashcards-actions](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/view-flashcards-actions.png?raw=true)
 
+You can update all details from a flashcard, even the folder in which is stored.
+
 ![update-flashcard](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/update-flashcard.png?raw=true)
+
+For the deletion, a confirmation box will also be prompted. 
 
 ![delete-flashcard](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/delete-flashcard.png?raw=true)
 
@@ -251,11 +275,15 @@ In this section you can search for users, view their profile or send a friend re
 
 ![view-user-profile](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/view-user-profile.png?raw=true)
 
+If the friend request was sent successfully, you will see a notification box that confirms that. Otherwise, a notification box with error details will be shown.
+
 ![friend-request-sent](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/friend-request-sent.png?raw=true)
 
-After sending a friend request to a user, he will get notified when logs in. Also, the friend request will be displayed in his inbox.
+After sending a friend request to a user, he will get notified when logs in his account about the number of friend requests that are in pending. Also, the friend request will be displayed in his inbox.
 
 ![friend-request-notification](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/friend-request-notification.png?raw=true)
+
+If you decline the friend request, the user can send you another one.
 
 ![friend-requests-inbox-updated](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/friend-requests-inbox-updated.png?raw=true)
 
@@ -263,25 +291,43 @@ After sending a friend request to a user, he will get notified when logs in. Als
 
 #### Collaborative Study Session App Pages
 
-This is the place where you can create/join study sessions and start learning together with your friends.
+In this website section you can create a study session or join an existing one and start learning together with your friends.
+
+If an invalid study session code is entered, you will see an error message after pressing the join button telling you what is wrong.
+
+If the study session code has a valid structure, but doesn't correspond to an existing study session, you will be redirected to a 404 error page where an error message will be shown.
+
+If the study session code has a valid structure and corresponds to an existing study session, but you are not friend with at least one of the session participants, you will be redirected to a 404 error page where an error message will be shown.
 
 ![join-study-session](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/join-study-session.png?raw=true)
 
+If the study session code is valid from all perspectives, you will be successfully redirected to the study session page where you can chat with all session participants and you can also use the pomodoro timer available there.
+
 ![study-session-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-1.png?raw=true)
+
+The study session code is generated uniquely by comparing it with all available ones. They are stored in cache memory (Redis) along with other study session details such as usernames for users that are in the session.
+
+The study sessions are automatically deleted after all users leave the session. When a study session gets deleted, all data stored in it will be also deleted (study session code, study session information stored along with the code, chat history messages).
 
 You can copy the study session code to clipboard.
 
 ![study-session-code](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-code.png?raw=true)
 
+The messages are sent in realtime using WebSockets and Django Channels and for persistence they are stored in the database.
+
 ![study-session-2](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-2.png?raw=true)
 
 ![study-session-3](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-3.png?raw=true)
 
-You can edit pomodoro timer minutes.
+The pomodoro timer has four cycles. A cycle has work session and a short break After all cycles are done, a long break will come.
+
+You can edit pomodoro timer minutes for every mode (work, short break, long break). 
+
+The timer is entirely made on the client-side, so it will reset after reloading the page.
 
 ![pomodoro-timer-settings](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/pomodoro-timer-settings.png?raw=true)
 
-The timer circle gets updated as time elapses and it resets for every cycle change.
+The timer circle gets filled as time elapses and it resets for every mode change (ex. from work to short break).
 
 ![pomodoro-timer-circle](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/pomodoro-timer-circle.png?raw=true)
 
