@@ -1,4 +1,3 @@
-I am still working on readme file...
 # Efficient Study Platform
 
 > *Motivation: I built this project because I wanted to learn a new web framework (Django)  and different kinds of tools and techniques related to full stack development. I chose the project topic guided by the wish of creating something that has a real life applicability and also that would help me.*
