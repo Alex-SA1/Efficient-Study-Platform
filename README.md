@@ -165,7 +165,7 @@ From the account page you can also view and manage your friend requests.
 
 A place where you can manage your tasks. You can create, update, delete or filter them. 
 
-By default, the newest created tasks are displayed first and the completed ones last.
+By default, the tasks are displayed in ascending order by deadline (the tasks that have the deadline sooner are shown first and the ones with no deadline last). The completed tasks are shown last.
 
 ![tasks-1](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/tasks_1.png?raw=true)
 
@@ -319,7 +319,7 @@ The messages are sent in realtime using WebSockets and Django Channels and for p
 
 ![study-session-3](https://github.com/Alex-SA1/Efficient-Study-Platform/blob/main/images/study-session-3.png?raw=true)
 
-The pomodoro timer has four cycles. A cycle has work session and a short break After all cycles are done, a long break will come.
+The pomodoro timer has four cycles. A cycle has a work session and a short break. After all cycles are done, a long break will come.
 
 You can edit pomodoro timer minutes for every mode (work, short break, long break). 
 
